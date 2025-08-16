@@ -1,4 +1,4 @@
-import { Instagram, X, Github, MapPin, Coffee } from 'lucide-react';
+import { Instagram, X, Github, MapPin, Coffee, ArrowUpRight } from 'lucide-react';
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -12,7 +12,7 @@ function Footer() {
     {
       icon: X,
       href: 'https://twitter.com/your-profile',
-      label: 'Twitter',
+      label: 'X',
     },
     {
       icon: Github,
@@ -22,94 +22,67 @@ function Footer() {
   ];
 
   return (
-    <footer className="relative w-full bg-slate-950 border-t border-slate-800/30 mt-auto overflow-hidden">
-      {/* Subtle background pattern - hide on mobile */}
-      <div className="absolute inset-0 opacity-5 hidden md:block">
-        <div className="absolute top-10 left-10 w-32 h-32 border border-slate-700 rounded-full"></div>
-        <div className="absolute bottom-20 right-16 w-24 h-24 border border-slate-700 rounded-full"></div>
-        <div className="absolute top-1/2 right-1/3 w-16 h-16 border border-slate-700 rounded-full"></div>
-      </div>
+    <footer className="relative w-full  mt-auto">
+      {/* Minimal geometric accent */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent opacity-50"></div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* Mobile Layout */}
-        <div className="block md:hidden space-y-6">
-          {/* Mobile: Personal Brand */}
-          <div className="text-center space-y-3">
-            <h3 className="text-xl font-semibold text-white">Ichwan Ardi</h3>
-            <p className="text-sm text-slate-400 leading-relaxed max-w-sm mx-auto">Crafting digital experiences with passion and precision.</p>
+      <div className="max-w-6xl mx-auto px-6 py-16">
+        {/* Main content */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+          {/* Left section - Name & tagline */}
+          <div className="lg:col-span-5 space-y-6">
+            <div>
+              <h3 className="text-2xl font-light text-white tracking-wide mb-3">Ichwan Ardi</h3>
+              <p className="text-slate-400 text-sm leading-relaxed font-light max-w-md">Digital craftsman focused on creating meaningful experiences through thoughtful design and code.</p>
+            </div>
+
+            {/* Status indicator */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full">
+              <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
+              <span className="text-xs text-slate-300 font-medium">Open to opportunities</span>
+            </div>
           </div>
 
-          {/* Mobile: Social Links */}
-          <div className="flex justify-center">
-            <div className="flex items-center space-x-1 bg-slate-900/50 rounded-full p-2 border border-slate-800/50">
-              {socialLinks.map((social) => (
-                <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="p-3 hover:bg-slate-800 rounded-full transition-all duration-200 group" aria-label={`Visit ${social.label}`}>
-                  <social.icon className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
+          {/* Center spacer */}
+          <div className="lg:col-span-2"></div>
+
+          {/* Right section - Contact & social */}
+          <div className="lg:col-span-5 space-y-6">
+            {/* Location */}
+            <div className="flex items-center gap-3 text-slate-400">
+              <MapPin className="w-4 h-4" />
+              <span className="text-sm font-light">Purwokerto, Central Java</span>
+            </div>
+
+            {/* Social links - vertical layout */}
+            <div className="space-y-3 w-fit">
+              <p className="text-xs uppercase tracking-wider text-slate-500 font-medium mb-4">Connect</p>
+              {socialLinks.map((social, index) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-4 py-2 text-slate-400 hover:text-white transition-all duration-300"
+                  style={{ transitionDelay: `${index * 50}ms` }}
+                >
+                  <social.icon className="w-4 h-4 transition-transform group-hover:scale-110" />
+                  <span className="text-sm font-light">{social.label}</span>
+                  <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-0 group-hover:translate-x-1" />
                 </a>
               ))}
-            </div>
-          </div>
-
-          {/* Mobile: Status & Location */}
-          <div className="flex flex-col items-center space-y-3">
-            <div className="inline-flex items-center space-x-2 px-3 py-1.5 bg-green-500/10 border border-green-500/20 rounded-full">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-xs text-green-400 font-medium">Available for work</span>
-            </div>
-            <div className="flex items-center justify-center space-x-4 text-xs text-slate-500">
-              <div className="flex items-center space-x-1">
-                <MapPin className="w-3 h-3" />
-                <span>Purwokerto, Indonesia</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Coffee className="w-3 h-3" />
-                <span>Fueled by coffee</span>
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Desktop Layout */}
-        <div className="hidden md:grid md:grid-cols-3 gap-8 items-start">
-          {/* Desktop: Personal Brand */}
-          <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-white">Ichwan Ardi</h3>
-            <p className="text-sm text-slate-400 leading-relaxed">Crafting digital experiences with passion and precision.</p>
-            <div className="flex items-center space-x-2 text-xs text-slate-500">
-              <MapPin className="w-3 h-3" />
-              <span>Purwokerto, Indonesia</span>
-            </div>
-          </div>
-
-          {/* Desktop: Social Links */}
-          <div className="flex justify-center">
-            <div className="flex items-center space-x-1 bg-slate-900/50 rounded-full p-2 border border-slate-800/50">
-              {socialLinks.map((social) => (
-                <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="p-2 hover:bg-slate-800 rounded-full transition-all duration-200 group" aria-label={`Visit ${social.label}`}>
-                  <social.icon className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Desktop: Status */}
-          <div className="text-right space-y-3">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-xs text-green-400 font-medium">Available for work</span>
-            </div>
-            <div className="flex items-center justify-end space-x-2 text-xs text-slate-500">
+        {/* Bottom section */}
+        <div className="mt-16 pt-8 border-t border-slate-800/50">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-xs text-slate-500 font-light">© {currentYear} — Crafted with intention</p>
+            <div className="flex items-center gap-2 text-slate-500">
               <Coffee className="w-3 h-3" />
-              <span>Fueled by coffee</span>
+              <span className="text-xs font-light">Powered by curiosity</span>
             </div>
-          </div>
-        </div>
-
-        {/* Bottom line - Responsive */}
-        <div className="mt-8 sm:mt-12 pt-6 border-t border-slate-800/30">
-          <div className="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0 text-center sm:text-left">
-            <p className="text-xs text-slate-500">© {currentYear} — Built with curiosity and late nights</p>
-            <p className="text-xs text-slate-600">Version 2.0.1</p>
           </div>
         </div>
       </div>
