@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import { Instagram, X, Github } from 'lucide-react';
 import { useApp } from '../../../contexts/AppContext';
 import { NAVIGATION_LINKS, TEXTS } from '../../../utils/constants';
@@ -29,9 +30,14 @@ const MobileMenu = ({ isOpen, onClose }) => {
           {/* Navigation Links */}
           <nav className="space-y-2 mb-12">
             {navLinks.map((link) => (
-              <a key={link.name} href={link.href} onClick={onClose} className="block group py-3 px-4 rounded-lg hover:bg-slate-800/50 transition-all duration-200">
-                <span className="text-lg font-medium text-slate-200 group-hover:text-white group-hover:translate-x-1 inline-block transition-all duration-200">{link.name}</span>
-              </a>
+              <NavLink
+                key={link.name}
+                to={link.href}
+                onClick={onClose}
+                className={({ isActive }) => `block group py-3 px-4 rounded-lg transition-all duration-200 ${isActive ? 'bg-slate-800 text-slate-50' : 'text-slate-400 hover:bg-slate-800/50'}`}
+              >
+                <span className="text-lg font-medium inline-block group-hover:translate-x-1 transition-all duration-200">{link.name}</span>
+              </NavLink>
             ))}
           </nav>
 

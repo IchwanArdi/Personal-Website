@@ -1,15 +1,15 @@
 export const NAVIGATION_LINKS = {
   en: [
-    { name: 'HOME', href: '#home' },
-    { name: 'PROJECTS', href: '#projects' },
-    { name: 'BLOGS', href: '#blogs' },
-    { name: 'ABOUT ME', href: '#about' },
+    { name: 'HOME', href: '/' },
+    { name: 'PROJECTS', href: '/projects' },
+    { name: 'BLOGS', href: '/blogs' },
+    { name: 'ABOUT ME', href: '/about' },
   ],
   id: [
-    { name: 'BERANDA', href: '#home' },
-    { name: 'PROYEK', href: '#projects' },
-    { name: 'BLOG', href: '#blogs' },
-    { name: 'TENTANG SAYA', href: '#about' },
+    { name: 'BERANDA', href: '/' },
+    { name: 'PROYEK', href: '/projects' },
+    { name: 'BLOG', href: '/blogs' },
+    { name: 'TENTANG SAYA', href: '/about' },
   ],
 };
 

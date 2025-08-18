@@ -1,5 +1,6 @@
 import { Settings } from 'lucide-react';
 import { useState, useRef } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useApp } from '../../../contexts/AppContext';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import { NAVIGATION_LINKS } from '../../../utils/constants';
@@ -31,9 +32,9 @@ const Navbar = () => {
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-8">
               {navLinks.map((link) => (
-                <a key={link.name} href={link.href} className="text-sm font-semibold text-slate-200 hover:text-blue-400 transition-colors duration-200">
+                <NavLink key={link.name} to={link.href} className={({ isActive }) => `text-sm font-semibold transition-colors duration-200 ${isActive ? 'text-blue-400' : 'text-slate-200 hover:text-blue-400'}`}>
                   {link.name}
-                </a>
+                </NavLink>
               ))}
             </nav>
 
