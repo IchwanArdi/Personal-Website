@@ -26,9 +26,9 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="w-full sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md shadow-lg">
+      <header className="w-full sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-24">
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-8">
               {navLinks.map((link) => (
