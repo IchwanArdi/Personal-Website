@@ -12,7 +12,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
     <>
       {/* Mobile Menu */}
       <div className={`mobile-menu lg:hidden fixed top-0 right-0 h-screen w-80 bg-slate-900/95 backdrop-blur-md shadow-2xl z-40 transition-all duration-400 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="p-6 pt-20">
+        <div className="p-6 pt-25">
           {/* Close Button */}
           <button onClick={onClose} className="absolute top-6 right-6 p-2 hover:bg-slate-800/50 rounded-lg transition-colors group">
             <div className="w-5 h-5 relative">
