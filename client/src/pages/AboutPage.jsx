@@ -95,7 +95,7 @@ function AboutPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
+    <div className="min-h-screen bg-slate-950/90 text-white overflow-hidden">
       {/* Hero Section - More Personal */}
       <div className="relative pt-20 pb-16">
         <div className="max-w-6xl mx-auto px-6">

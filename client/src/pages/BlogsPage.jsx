@@ -79,7 +79,7 @@ function BlogsPage() {
   const otherItems = filteredContent.filter((item) => item !== featuredItem);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-slate-950/90 text-white">
       {/* Search Bar */}
       <div className="w-full flex justify-center pt-8 pb-4">
         <div className="relative w-full max-w-2xl mx-4">
