@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Calendar, ExternalLink } from 'lucide-react';
+import { useApp } from '../contexts/AppContext';
+import { HOME } from '../utils/constants';
 
 // Mock images - ganti dengan import img1, img2, img3 Anda
 const images = {
@@ -12,7 +14,7 @@ const contentSections = [
   {
     bgImage: images.img1,
     mainImage: images.img1,
-    tag: 'Latest Project',
+    tag: 'latestProject',
     date: '5/20/25',
     title: 'Ini Project Terbaru',
     link: '#',
@@ -20,7 +22,7 @@ const contentSections = [
   {
     bgImage: images.img2,
     mainImage: images.img2,
-    tag: 'Latest Blogs',
+    tag: 'latestBlogs',
     date: '5/20/25',
     title: 'Ini Blog Terbaru',
     link: '#',
@@ -28,7 +30,7 @@ const contentSections = [
   {
     bgImage: images.img3,
     mainImage: images.img3,
-    tag: 'Latest Update',
+    tag: 'latestUpdate',
     date: '5/20/25',
     title: 'Tentang Saya',
     link: '#',
@@ -36,6 +38,9 @@ const contentSections = [
 ];
 
 function HomePage() {
+  const { language } = useApp();
+  const t = HOME[language];
+
   const [hoveredSection, setHoveredSection] = useState(null);
 
   return (
@@ -83,7 +88,7 @@ function HomePage() {
               <div className="space-y-3 sm:space-y-4 lg:space-y-6">
                 {/* Tag with better styling */}
                 <div className="flex justify-start">
-                  <span className="inline-flex px-2 py-1 font-bold bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 italic rounded-md text-xs sm:text-sm tracking-wide shadow-lg">{section.tag}</span>
+                  <span className="inline-flex px-2 py-1 font-bold bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 italic rounded-md text-xs sm:text-sm tracking-wide shadow-lg">{t[section.tag]}</span>
                 </div>
 
                 {/* Date with icon */}

@@ -69,3 +69,16 @@ export const TEXTS = {
     poweredByCuriosity: 'Didukung rasa ingin tahu',
   },
 };
+
+export const HOME = {
+  en: {
+    latestProject: 'Latest Project',
+    latestBlogs: 'Latest Blogs',
+    latestUpdate: 'Latest Update',
+  },
+  id: {
+    latestProject: 'Proyek Terbaru',
+    latestBlogs: 'Blog Terbaru',
+    latestUpdate: 'Pembaruan Terbaru',
+  },
+};
