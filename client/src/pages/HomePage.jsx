@@ -39,7 +39,7 @@ function HomePage() {
   const [hoveredSection, setHoveredSection] = useState(null);
 
   return (
-    <div className="w-full mx-auto">
+    <div className="w-full mx-auto bg-slate-950/90">
       {contentSections.map((section, index) => (
         <div
           key={index}
@@ -82,23 +82,23 @@ function HomePage() {
             <div className="w-full lg:w-2/5 flex flex-col justify-center px-2 text-center lg:text-left order-2 lg:order-none">
               <div className="space-y-3 sm:space-y-4 lg:space-y-6">
                 {/* Tag with better styling */}
-                <div className="flex justify-center lg:justify-start">
-                  <span className="inline-flex px-3 py-2 font-bold bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 italic rounded-md text-xs sm:text-sm tracking-wide shadow-lg">{section.tag}</span>
+                <div className="flex justify-start">
+                  <span className="inline-flex px-2 py-1 font-bold bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 italic rounded-md text-xs sm:text-sm tracking-wide shadow-lg">{section.tag}</span>
                 </div>
 
                 {/* Date with icon */}
-                <div className="flex items-center justify-center lg:justify-start gap-2 text-white/90">
+                <div className="flex items-center justify-start gap-2 text-white/90">
                   <Calendar className="w-4 h-4" />
                   <span className="font-semibold text-sm tracking-wide">{section.date}</span>
                 </div>
 
                 {/* Title with better typography */}
-                <div className="space-y-2 sm:space-y-3">
-                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight tracking-tight">{section.title}</h2>
+                <div className="space-y-2 sm:space-y-3 ">
+                  <h2 className="text-left text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight tracking-tight">{section.title}</h2>
 
                   {/* Subtle underline decoration */}
-                  <div className="flex justify-center lg:justify-start">
-                    <div className="w-12 sm:w-16 h-1 bg-gradient-to-r from-amber-500 to-transparent rounded-full" />
+                  <div className="flex justify-start">
+                    <div className="w-15 sm:w-25 h-1 bg-gradient-to-r from-amber-500 to-transparent rounded-full" />
                   </div>
                 </div>
               </div>

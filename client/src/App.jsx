@@ -8,7 +8,7 @@ function App() {
     <AppProvider>
       <div className="min-h-screen bg-slate-950/90">
         <Navbar />
-        <main className="">
+        <main className="bg-slate-950/90">
           <Outlet /> {/* 👉 ini tempat halaman anak tampil */}
         </main>
         <Footer />
