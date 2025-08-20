@@ -35,15 +35,12 @@ const Navbar = () => {
                 <div key={link.name} className="relative group" style={{ animationDelay: `${index * 100}ms` }}>
                   <NavLink
                     to={link.href}
-                    className={({ isActive }) => `relative text-sm font-semibold transition-all duration-300 px-3 py-2 rounded-lg ${isActive ? 'text-blue-400' : 'text-slate-200 hover:text-blue-400 hover:bg-slate-800/30'}`}
+                    className={({ isActive }) => `relative text-sm font-semibold transition-all duration-300 px-3 py-2 rounded-lg ${isActive ? 'text-yellow-400' : 'text-slate-200 hover:text-yellow-400 hover:bg-slate-800/30'}`}
                   >
                     {link.name}
 
                     {/* Animated underline */}
-                    <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all duration-300 transform -translate-x-1/2 group-hover:w-full" />
-
-                    {/* Background glow effect */}
-                    <span className="absolute inset-0 rounded-lg bg-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full transition-all duration-300 transform -translate-x-1/2 group-hover:w-full" />
                   </NavLink>
                 </div>
               ))}
@@ -62,16 +59,13 @@ const Navbar = () => {
               <div className="relative" ref={settingsRef}>
                 <button className="settings-toggle relative p-3 group rounded-lg hover:bg-slate-800/50 transition-all duration-300 hover:scale-110" onClick={() => setIsSettingsOpen(!isSettingsOpen)}>
                   {/* Background pulse effect */}
-                  <div className={`absolute inset-0 rounded-lg bg-blue-400/20 transition-all duration-300 ${isSettingsOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`} />
+                  <div className={`absolute inset-0 rounded-lg bg-slate-700/30 transition-all duration-300 ${isSettingsOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`} />
 
                   {/* Rotating background */}
                   <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-slate-700/30 to-slate-800/30 opacity-0 group-hover:opacity-100 transition-all duration-300" />
 
                   <div className="relative w-5 h-5">
                     <Settings className={`w-5 h-5 text-slate-300 transition-all duration-500 ease-out ${isSettingsOpen ? 'rotate-180 text-blue-400 scale-110' : 'group-hover:rotate-90 group-hover:text-slate-100 group-hover:scale-105'}`} />
-
-                    {/* Spinning ring effect */}
-                    <div className={`absolute inset-0 border-2 border-blue-400/30 rounded-full transition-all duration-700 ${isSettingsOpen ? 'rotate-180 scale-150 opacity-100' : 'rotate-0 scale-100 opacity-0'}`} />
                   </div>
                 </button>
 
@@ -94,7 +88,7 @@ const Navbar = () => {
 
                   {/* Middle line */}
                   <span
-                    className={`absolute w-5 h-0.5 bg-slate-300 rounded-full transition-all duration-300 ${
+                    className={`absolute w-3 h-0.5 bg-slate-300 rounded-full transition-all duration-300 ${
                       isMenuOpen ? 'opacity-0 scale-x-0 rotate-180' : 'opacity-100 scale-x-100 group-hover:bg-slate-100 group-hover:w-3 group-hover:translate-x-1'
                     }`}
                   />
@@ -105,9 +99,6 @@ const Navbar = () => {
                       isMenuOpen ? '-rotate-45 translate-y-0 bg-blue-400 scale-110' : 'translate-y-1.5 group-hover:bg-slate-100 group-hover:w-4 group-hover:translate-x-0.5'
                     }`}
                   />
-
-                  {/* Rotating background circle */}
-                  <div className={`absolute inset-0 border border-slate-600/50 rounded-full transition-all duration-700 ${isMenuOpen ? 'rotate-180 scale-150 border-blue-400/50' : 'rotate-0 scale-100'}`} />
                 </div>
 
                 {/* Ripple effect on click */}
@@ -116,9 +107,6 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-
-        {/* Navbar bottom border animation */}
-        <div className={`h-0.5 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent transition-all duration-1000 ${isMenuOpen || isSettingsOpen ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'}`} />
       </header>
 
       <MobileMenu isOpen={isMenuOpen} onClose={closeMenu} />

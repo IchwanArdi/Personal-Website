@@ -18,10 +18,10 @@ const Footer = () => {
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent opacity-50" />
 
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-start">
           {/* Left section */}
           <div className="lg:col-span-5 space-y-6">
-            <div>
+            <div className="">
               <h3 className="text-2xl font-light text-white tracking-wide mb-3">Ichwan Ardi</h3>
               <p className="text-slate-400 text-sm leading-relaxed font-light max-w-md">{t.footerTagline}</p>
             </div>
@@ -35,7 +35,7 @@ const Footer = () => {
           <div className="lg:col-span-2" />
 
           {/* Right section */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-6 ">
             <div className="flex items-center gap-3 text-slate-400">
               <MapPin className="w-4 h-4" />
               <span className="text-sm font-light">{t.location}</span>

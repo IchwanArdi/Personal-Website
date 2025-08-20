@@ -24,7 +24,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
           {/* Menu Title */}
           <div className={`mb-8 transform transition-all duration-700 delay-100 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
             <h2 className="text-xl font-semibold text-white">{t.navigation}</h2>
-            <div className={`h-0.5 bg-gradient-to-r from-slate-400 to-slate-600 mt-2 transition-all duration-1000 delay-300 ${isOpen ? 'w-8' : 'w-0'}`} />
+            <div className={`h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 mt-2 transition-all duration-1000 delay-300 ${isOpen ? 'w-8' : 'w-0'}`} />
           </div>
 
           {/* Navigation Links */}
@@ -39,7 +39,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
                   }
                 >
                   {/* Background slide effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-slate-700 to-slate-800 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-700 to-yellow-800 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
 
                   <span className="text-lg font-medium inline-block group-hover:translate-x-2 transition-all duration-300 relative z-10 group-hover:text-white">{link.name}</span>
 
@@ -62,7 +62,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
                 { icon: Github, href: '#', delay: '800ms' },
               ].map((social, index) => (
                 <div key={index} className={`transform transition-all duration-500 ${isOpen ? 'scale-100 rotate-0 opacity-100' : 'scale-0 rotate-180 opacity-0'}`} style={{ transitionDelay: social.delay }}>
-                  <a href={social.href} target="_blank" rel="noopener noreferrer" className="group relative p-3 bg-slate-800/70 hover:bg-slate-700 rounded-lg transition-all duration-300 hover:scale-110 hover:-translate-y-1 hover:shadow-lg">
+                  <a href={social.href} target="_blank" rel="noopener noreferrer" className="group relative p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:-translate-y-1 hover:shadow-lg">
                     {/* Background glow effect */}
                     <div className="absolute inset-0 bg-gradient-to-br from-slate-600/20 to-slate-800/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -76,9 +76,6 @@ const MobileMenu = ({ isOpen, onClose }) => {
             </div>
           </div>
         </div>
-
-        {/* Decorative gradient line */}
-        <div className={`absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-slate-600 via-slate-500 to-slate-600 transition-all duration-1000 ${isOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0'}`} />
       </div>
 
       {/* Enhanced Backdrop */}
