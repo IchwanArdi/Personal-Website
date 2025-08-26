@@ -31,7 +31,7 @@ const HomePage = () => {
         const result = await response.json();
 
         if (response.ok) {
-          console.log(result);
+          console.log(result.Blogs);
           setHomeData(result);
 
           // Process the API data into content sections

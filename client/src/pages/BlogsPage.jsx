@@ -1,82 +1,122 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Calendar, ArrowRight, Tag } from 'lucide-react';
-
-// Mock images
-const images = {
-  img1: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
-  img2: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop',
-  img3: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop',
-  img4: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop',
-  img5: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=600&fit=crop',
-  img6: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=600&fit=crop',
-};
-
-const allContent = [
-  {
-    bgImage: images.img1,
-    date: '4/26/25',
-    title: 'Uncaptured Moments: Enter & Escape Mission To Guarded Factory Complex',
-    category: 'UNCAPTURED MOMENTS',
-    featured: true,
-    readTime: '5 min read',
-    excerpt: 'Exploring the intersection of technology and creativity in modern digital landscapes.',
-  },
-  {
-    bgImage: images.img2,
-    date: '4/25/25',
-    title: 'Project Development: Building Modern Web Applications',
-    category: 'ED MOMENTS',
-    readTime: '8 min read',
-    excerpt: 'A comprehensive guide to creating scalable and maintainable web applications.',
-  },
-  {
-    bgImage: images.img3,
-    date: '4/24/25',
-    title: 'Photography Tips: Capturing the Perfect Shot',
-    category: 'UNCAPTURED MOMENTS',
-    readTime: '6 min read',
-    excerpt: 'Professional techniques for capturing stunning photographs in any environment.',
-  },
-  {
-    bgImage: images.img4,
-    date: '4/23/25',
-    title: 'Technology Review: Latest Gadgets and Tools',
-    category: 'UNCAPTURED',
-    readTime: '4 min read',
-    excerpt: 'In-depth analysis of the newest technology trends and innovations.',
-  },
-  {
-    bgImage: images.img5,
-    date: '4/22/25',
-    title: 'Creative Writing: Storytelling in Digital Age',
-    category: 'ED MOMENTS',
-    readTime: '7 min read',
-    excerpt: 'How digital platforms are transforming the art of storytelling.',
-  },
-  {
-    bgImage: images.img6,
-    date: '4/21/25',
-    title: 'Design Principles: Creating Beautiful User Interfaces',
-    category: 'UNCAPTURED MOMENTS',
-    readTime: '9 min read',
-    excerpt: 'Essential design principles for creating intuitive and beautiful interfaces.',
-  },
-];
+import { toast } from 'react-toastify';
 
 function BlogsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const [loading, setLoading] = useState(false); // Fixed: was string 'false', should be boolean
+  const [blogData, setBlogData] = useState([]); // Initialize as empty array
 
-  const categories = ['ALL', 'ED MOMENTS', 'UNCAPTURED MOMENTS', 'UNCAPTURED'];
+  // Helper function to format date
+  const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear().toString().slice(-2)}`;
+    } catch (error) {
+      console.error(error);
+      return dateString; // Return original if formatting fails
+    }
+  };
 
-  const filteredContent = allContent.filter((item) => {
-    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) || item.category.toLowerCase().includes(searchTerm.toLowerCase()) || item.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+  // Helper function to strip HTML tags and create clean excerpt
+  const createExcerpt = (htmlContent, maxLength = 150) => {
+    if (!htmlContent) return 'No excerpt available';
+
+    // Remove HTML tags
+    const textOnly = htmlContent.replace(/<[^>]*>/g, '');
+
+    // Remove extra whitespace and newlines
+    const cleanText = textOnly.replace(/\s+/g, ' ').trim();
+
+    // Remove emoji or special characters if needed (optional)
+    // const noEmoji = cleanText.replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '');
+
+    if (cleanText.length <= maxLength) return cleanText;
+
+    // Truncate and add ellipsis
+    return cleanText.substring(0, maxLength).trim() + '...';
+  };
+
+  useEffect(() => {
+    const fetchBlog = async () => {
+      // Fixed typo: fecthBlog -> fetchBlog
+      setLoading(true);
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blog`, {
+          credentials: 'include',
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          // Transform the data to match expected format
+          if (result.Blogs && Array.isArray(result.Blogs)) {
+            const transformedBlogs = result.Blogs.map((blog) => ({
+              bgImage: blog.gambar, // Fallback image
+              title: blog.judul,
+              content: blog.konten, // Fixed typo: contect -> content
+              date: formatDate(blog.tanggal),
+              category: blog.kategori,
+              readTime: `${Math.max(1, Math.ceil((blog.konten?.length || 0) / 1000))} min read`, // Calculate read time based on content length
+              excerpt: createExcerpt(blog.konten, 150), // Use helper function to create clean excerpt
+              featured: false, // You can add logic to determine featured posts
+            }));
+
+            // Mark first post as featured if exists
+            if (transformedBlogs.length > 0) {
+              transformedBlogs[0].featured = true;
+            }
+
+            setBlogData(transformedBlogs);
+          } else {
+            setBlogData([]);
+          }
+        } else {
+          toast.error(result.message || 'Gagal mengambil data blog.');
+          setBlogData([]);
+        }
+      } catch (error) {
+        console.error('Error fetching blog:', error);
+        toast.error('Error fetching data');
+        setBlogData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlog();
+  }, []);
+
+  // Get unique categories from blog data
+  const getCategories = () => {
+    const categories = ['ALL'];
+    const uniqueCategories = [...new Set(blogData.map((blog) => blog.category).filter(Boolean))];
+    return [...categories, ...uniqueCategories];
+  };
+
+  const categories = getCategories();
+
+  // Filter content based on search and category
+  const filteredContent = blogData.filter((item) => {
+    const matchesSearch = item.title?.toLowerCase().includes(searchTerm.toLowerCase()) || item.category?.toLowerCase().includes(searchTerm.toLowerCase()) || item.excerpt?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'ALL' || item.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   const featuredItem = filteredContent.find((item) => item.featured) || filteredContent[0];
   const otherItems = filteredContent.filter((item) => item !== featuredItem);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-950/90 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+          <p className="text-xl">Loading blogs...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-950/90 text-white">
@@ -86,7 +126,7 @@ function BlogsPage() {
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search blogs..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full bg-transparent border border-gray-600 rounded-lg py-3 pl-12 pr-4 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500 transition-colors"
@@ -197,13 +237,13 @@ function BlogsPage() {
         )}
 
         {/* No Results */}
-        {filteredContent.length === 0 && (
+        {filteredContent.length === 0 && !loading && (
           <div className="text-center py-16">
             <div className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
               <Search className="w-12 h-12 text-gray-600" />
             </div>
             <h3 className="text-2xl font-bold mb-2">No articles found</h3>
-            <p className="text-gray-400">Try adjusting your search or filter criteria</p>
+            <p className="text-gray-400">{blogData.length === 0 ? 'No blog posts available at the moment' : 'Try adjusting your search or filter criteria'}</p>
           </div>
         )}
       </div>
