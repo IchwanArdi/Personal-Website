@@ -60,7 +60,7 @@ const HomePage = () => {
               tag: 'latestBlogs',
               date: formatDate(blog.tanggal),
               title: blog.judul,
-              link: `/blog/${blog._id}`, // Assuming you have blog detail route
+              link: `/blog/${encodeURIComponent(blog.judul)}`, // Assuming you have blog detail route
               type: 'blog',
             });
           }
@@ -147,7 +147,7 @@ const HomePage = () => {
                 <a
                   href={section.link}
                   className="block relative overflow-hidden rounded-lg sm:rounded-xl shadow-2xl transform transition-all duration-500 hover:scale-105"
-                  target={section.link.startsWith('http') ? '_blank' : '_self'}
+                  target={section.link.startsWith('http') ? '_self' : ''}
                   rel={section.link.startsWith('http') ? 'noopener noreferrer' : ''}
                 >
                   <img
