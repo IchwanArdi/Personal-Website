@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage.jsx';
 import BlogsPage from './pages/BlogsPage.jsx';
 import ProjectsPage from './pages/ProjectsPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
+import BlogDetailPage from './pages/BlogDetailPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,8 @@ const router = createBrowserRouter([
       { path: 'projects', element: <ProjectsPage /> },
       { path: 'blogs', element: <BlogsPage /> },
       { path: 'about', element: <AboutPage /> },
+      // Updated routing for blog details using judul parameter
+      { path: 'blog/:judul', element: <BlogDetailPage /> },
     ],
   },
 ]);
