@@ -30,7 +30,7 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-24">
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-8">
+            <nav className="hidden lg:flex items-center">
               {navLinks.map((link, index) => (
                 <div key={link.name} className="relative group" style={{ animationDelay: `${index * 100}ms` }}>
                   <NavLink

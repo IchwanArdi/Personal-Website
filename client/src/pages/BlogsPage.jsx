@@ -4,16 +4,6 @@ import { Search, Calendar, ArrowRight, Tag } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
-// Mock images (fallback)
-const images = {
-  img1: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
-  img2: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop',
-  img3: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop',
-  img4: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop',
-  img5: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=600&fit=crop',
-  img6: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=600&fit=crop',
-};
-
 function BlogsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
@@ -64,7 +54,7 @@ function BlogsPage() {
           // Transform the data to match expected format
           if (result.Blogs && Array.isArray(result.Blogs)) {
             const transformedBlogs = result.Blogs.map((blog) => ({
-              bgImage: blog.gambar || images.img1, // Fallback image
+              bgImage: blog.gambar,
               title: blog.judul,
               content: blog.konten, // Fixed typo: contect -> content
               date: formatDate(blog.tanggal),
@@ -171,14 +161,7 @@ function BlogsPage() {
                   {/* Left Side Image */}
                   <div className="lg:w-3/5 relative">
                     <div className="relative overflow-hidden h-80 lg:h-96">
-                      <img
-                        src={featuredItem.bgImage}
-                        alt="Featured content"
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        onError={(e) => {
-                          e.target.src = images.img1; // Fallback image
-                        }}
-                      />
+                      <img src={featuredItem.bgImage} alt="Featured content" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                       <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-black/60" />
                       <div className="absolute top-6 left-6">
                         <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-4 py-2 rounded-full text-sm font-bold">FEATURED</span>
@@ -228,14 +211,7 @@ function BlogsPage() {
                   <article className="group cursor-pointer">
                     <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 hover:transform hover:scale-[1.02]">
                       <div className="relative overflow-hidden">
-                        <img
-                          src={item.bgImage}
-                          alt={item.title}
-                          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
-                          onError={(e) => {
-                            e.target.src = images.img1; // Fallback image
-                          }}
-                        />
+                        <img src={item.bgImage} alt={item.title} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                         <div className="absolute bottom-4 left-4">
                           <span className="bg-black/70 backdrop-blur-sm text-yellow-400 px-3 py-1 rounded-full text-xs font-medium">{item.category}</span>
