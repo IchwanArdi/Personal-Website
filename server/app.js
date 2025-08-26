@@ -46,9 +46,11 @@ app.use(
 // Import Routes
 const HomeRoute = require('./routes/api/home');
 const BlogRoute = require('./routes/api/blog');
+const BlogDetailRoute = require('./routes/api/detailBlog');
 
 // Routes ke FrontEnd
 app.use('/api', HomeRoute);
 app.use('/api', BlogRoute);
+app.use('/api/blog', BlogDetailRoute);
 
 module.exports = app;
