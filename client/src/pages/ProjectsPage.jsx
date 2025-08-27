@@ -10,13 +10,10 @@ const allProjects = [
     image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop',
     technologies: ['React', 'Node.js', 'MongoDB', 'Express', 'Stripe', 'JWT'],
     category: 'FULLSTACK',
-    status: 'COMPLETED',
-    date: '2024-12',
+    date: '2/1/25',
     githubUrl: 'https://github.com/username/ecommerce',
     liveUrl: 'https://ecommerce-demo.com',
     featured: true,
-    stars: 45,
-    commits: 128,
   },
   {
     id: 2,
@@ -25,13 +22,10 @@ const allProjects = [
     image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop',
     technologies: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Socket.io'],
     category: 'FULLSTACK',
-    status: 'IN PROGRESS',
-    date: '2024-11',
+    date: '2/1/25',
     githubUrl: 'https://github.com/username/task-manager',
     liveUrl: 'https://taskboard-demo.com',
     featured: false,
-    stars: 23,
-    commits: 67,
   },
   {
     id: 3,
@@ -40,13 +34,10 @@ const allProjects = [
     image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=600&fit=crop',
     technologies: ['Express', 'MongoDB', 'Redis', 'Cloudinary', 'JWT'],
     category: 'BACKEND',
-    status: 'COMPLETED',
-    date: '2024-10',
+    date: '1/1/25',
     githubUrl: 'https://github.com/username/social-api',
     liveUrl: null,
     featured: false,
-    stars: 31,
-    commits: 89,
   },
   {
     id: 4,
@@ -55,13 +46,10 @@ const allProjects = [
     image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop',
     technologies: ['React', 'Tailwind CSS', 'Framer Motion', 'Vite'],
     category: 'FRONTEND',
-    status: 'COMPLETED',
-    date: '2024-09',
+    date: '2/1/25',
     githubUrl: 'https://github.com/username/portfolio',
     liveUrl: 'https://myportfolio.com',
     featured: false,
-    stars: 18,
-    commits: 42,
   },
   {
     id: 5,
@@ -70,13 +58,10 @@ const allProjects = [
     image: 'https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=800&h=600&fit=crop',
     technologies: ['Vue.js', 'Socket.io', 'Node.js', 'MongoDB', 'AWS S3'],
     category: 'FULLSTACK',
-    status: 'COMPLETED',
-    date: '2024-08',
+    date: '2/1/25',
     githubUrl: 'https://github.com/username/chat-app',
     liveUrl: 'https://chatapp-demo.com',
     featured: false,
-    stars: 37,
-    commits: 95,
   },
   {
     id: 6,
@@ -85,47 +70,30 @@ const allProjects = [
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
     technologies: ['React', 'D3.js', 'Chart.js', 'Python', 'FastAPI'],
     category: 'FULLSTACK',
-    status: 'IN PROGRESS',
-    date: '2024-07',
+    date: '2/1/25',
     githubUrl: 'https://github.com/username/data-viz',
     liveUrl: null,
     featured: false,
-    stars: 29,
-    commits: 73,
   },
 ];
 
 function ProjectsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
-  const [selectedStatus, setSelectedStatus] = useState('ALL');
 
   const categories = ['ALL', 'FULLSTACK', 'FRONTEND', 'BACKEND'];
-  const statuses = ['ALL', 'COMPLETED', 'IN PROGRESS'];
 
   const filteredProjects = allProjects.filter((project) => {
     const matchesSearch =
       project.title.toLowerCase().includes(searchTerm.toLowerCase()) || project.description.toLowerCase().includes(searchTerm.toLowerCase()) || project.technologies.some((tech) => tech.toLowerCase().includes(searchTerm.toLowerCase()));
 
     const matchesCategory = selectedCategory === 'ALL' || project.category === selectedCategory;
-    const matchesStatus = selectedStatus === 'ALL' || project.status === selectedStatus;
 
-    return matchesSearch && matchesCategory && matchesStatus;
+    return matchesSearch && matchesCategory;
   });
 
   const featuredProject = filteredProjects.find((project) => project.featured) || filteredProjects[0];
   const otherProjects = filteredProjects.filter((project) => project !== featuredProject);
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'COMPLETED':
-        return 'bg-green-500/20 text-green-400 border-green-500/30';
-      case 'IN PROGRESS':
-        return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-      default:
-        return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
-    }
-  };
 
   return (
     <div className="min-h-screen bg-slate-950/90 text-white">
@@ -158,19 +126,6 @@ function ProjectsPage() {
               </button>
             ))}
           </div>
-
-          {/* Status Filter */}
-          <div className="flex flex-wrap gap-4">
-            {statuses.map((status) => (
-              <button
-                key={status}
-                onClick={() => setSelectedStatus(status)}
-                className={`px-4 py-2 text-sm font-semibold transition-colors ${selectedStatus === status ? 'text-yellow-400 border-b-2 border-yellow-400' : 'text-gray-400 hover:text-white'}`}
-              >
-                {status}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -188,9 +143,6 @@ function ProjectsPage() {
                     <div className="absolute top-6 left-6">
                       <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-4 py-2 rounded-full text-sm font-bold">FEATURED</span>
                     </div>
-                    <div className="absolute top-6 right-6 flex gap-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(featuredProject.status)}`}>{featuredProject.status}</span>
-                    </div>
                   </div>
                 </div>
                 <div className="lg:w-2/5 p-8 lg:p-12 flex flex-col justify-center">
@@ -198,15 +150,6 @@ function ProjectsPage() {
                     <span className="flex items-center gap-2 text-yellow-400 text-sm font-medium">
                       <Calendar className="w-4 h-4" />
                       {featuredProject.date}
-                    </span>
-                    <span className="text-gray-400 text-sm">•</span>
-                    <span className="flex items-center gap-1 text-gray-400 text-sm">
-                      <Star className="w-3 h-3" />
-                      {featuredProject.stars}
-                    </span>
-                    <span className="flex items-center gap-1 text-gray-400 text-sm">
-                      <GitBranch className="w-3 h-3" />
-                      {featuredProject.commits}
                     </span>
                   </div>
 
@@ -263,9 +206,6 @@ function ProjectsPage() {
                     <div className="relative overflow-hidden">
                       <img src={project.image} alt={project.title} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                      <div className="absolute top-4 left-4">
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(project.status)}`}>{project.status}</span>
-                      </div>
                       <div className="absolute bottom-4 left-4">
                         <span className="bg-black/70 backdrop-blur-sm text-yellow-400 px-3 py-1 rounded-full text-xs font-medium">{project.category}</span>
                       </div>
@@ -276,11 +216,6 @@ function ProjectsPage() {
                         <span className="flex items-center gap-1 text-gray-400 text-sm">
                           <Calendar className="w-3 h-3" />
                           {project.date}
-                        </span>
-                        <span className="text-gray-500">•</span>
-                        <span className="flex items-center gap-1 text-gray-400 text-sm">
-                          <Star className="w-3 h-3" />
-                          {project.stars}
                         </span>
                       </div>
 
