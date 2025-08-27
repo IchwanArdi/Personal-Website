@@ -60,6 +60,20 @@ function BlogsPage() {
 
         const result = await response.json();
 
+        // Helper function to calculate read time based on word count
+        const getReadTime = (content) => {
+          if (!content) return '1 min read';
+
+          // hapus semua tag HTML
+          const plainText = content.replace(/<[^>]+>/g, ' ');
+          // hitung jumlah kata
+          const words = plainText.trim().split(/\s+/).length;
+          // rata-rata orang baca 200 kata/menit
+          const minutes = Math.max(1, Math.ceil(words / 200));
+
+          return `${minutes} min read`;
+        };
+
         if (response.ok) {
           // Transform the data to match expected format
           if (result.Blogs && Array.isArray(result.Blogs)) {
@@ -69,7 +83,7 @@ function BlogsPage() {
               content: blog.konten, // Fixed typo: contect -> content
               date: formatDate(blog.tanggal),
               category: blog.kategori,
-              readTime: `${Math.max(1, Math.ceil((blog.konten?.length || 0) / 1000))} min read`, // Calculate read time based on content length
+              readTime: getReadTime(blog.konten), // baru
               excerpt: createExcerpt(blog.konten, 150), // Use helper function to create clean excerpt
               featured: false, // You can add logic to determine featured posts
               slug: blog.slug || createSlug(blog.judul), // Generate slug if not exists

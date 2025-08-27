@@ -46,6 +46,18 @@ function BlogDetailPage() {
 
         const result = await response.json();
 
+        // Helper function untuk hitung waktu baca
+        const getReadTime = (content) => {
+          if (!content) return '1 min read';
+          // hapus semua tag HTML
+          const plainText = content.replace(/<[^>]+>/g, ' ');
+          // hitung jumlah kata
+          const words = plainText.trim().split(/\s+/).length;
+          // rata-rata orang baca 200 kata per menit
+          const minutes = Math.max(1, Math.ceil(words / 200));
+          return `${minutes} min read`;
+        };
+
         if (response.ok) {
           if (result.mainBlog) {
             const transformedBlog = {
@@ -54,7 +66,7 @@ function BlogDetailPage() {
               content: result.mainBlog.konten,
               date: formatDate(result.mainBlog.tanggal),
               category: result.mainBlog.kategori,
-              readTime: `${Math.max(1, Math.ceil((result.mainBlog.konten?.length || 0) / 1000))} min read`,
+              readTime: getReadTime(result.mainBlog.konten),
               author: 'Ichwan',
             };
             setBlogDetailData(transformedBlog);
