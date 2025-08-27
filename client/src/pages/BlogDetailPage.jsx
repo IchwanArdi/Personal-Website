@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Calendar, Clock, Tag, ArrowLeft, Share2 } from 'lucide-react';
+import { Calendar, Clock, Tag, ArrowLeft, Share2, User } from 'lucide-react';
 
 function BlogDetailPage() {
-  const { judul } = useParams(); // Get judul from URL params
+  const { slug } = useParams(); // Get judul from URL params
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [blogDetailData, setBlogDetailData] = useState(null); // Single blog object, not array
@@ -30,8 +30,8 @@ function BlogDetailPage() {
   };
 
   useEffect(() => {
-    if (!judul) {
-      toast.error('Judul blog tidak ditemukan');
+    if (!slug) {
+      toast.error('Slug blog tidak ditemukan');
       navigate('/blogs');
       return;
     }
@@ -39,15 +39,14 @@ function BlogDetailPage() {
     const fetchDetailBlog = async () => {
       setLoading(true);
       try {
-        // Updated API call to match backend route
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blog/detail/${encodeURIComponent(judul)}`, {
+        // Use slug instead of encoded title
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blog/detail/${slug}`, {
           credentials: 'include',
         });
 
         const result = await response.json();
 
         if (response.ok) {
-          // Handle single blog object response
           if (result.mainBlog) {
             const transformedBlog = {
               bgImage: result.mainBlog.gambar,
@@ -56,9 +55,8 @@ function BlogDetailPage() {
               date: formatDate(result.mainBlog.tanggal),
               category: result.mainBlog.kategori,
               readTime: `${Math.max(1, Math.ceil((result.mainBlog.konten?.length || 0) / 1000))} min read`,
-              author: 'Ichwan', // You can add author field to your database
+              author: 'Ichwan',
             };
-
             setBlogDetailData(transformedBlog);
           } else {
             toast.error('Blog tidak ditemukan');
@@ -78,7 +76,7 @@ function BlogDetailPage() {
     };
 
     fetchDetailBlog();
-  }, [judul, navigate]);
+  }, [slug, navigate]);
 
   // Loading state
   if (loading) {
@@ -150,9 +148,8 @@ function BlogDetailPage() {
               <span>{blogDetailData.readTime}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span>
-                Oleh <span className="text-white font-medium">{blogDetailData.author}</span>
-              </span>
+              <User className="w-4 h-4 text-yellow-400" />
+              <span>{blogDetailData.author}</span>
             </div>
             <button
               onClick={() => {

@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Calendar, ArrowRight, Tag } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
@@ -10,12 +9,23 @@ function BlogsPage() {
   const [loading, setLoading] = useState(false); // Fixed: was string 'false', should be boolean
   const [blogData, setBlogData] = useState([]); // Initialize as empty array
 
+  // Helper function to create slug from title
+  const createSlug = (title) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-') // Replace multiple hyphens with single
+      .trim('-'); // Remove leading/trailing hyphens
+  };
+
   // Helper function to format date
   const formatDate = (dateString) => {
     try {
       const date = new Date(dateString);
       return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear().toString().slice(-2)}`;
     } catch (error) {
+      console.error('Error fetching blog:', error);
       return dateString; // Return original if formatting fails
     }
   };
@@ -62,6 +72,7 @@ function BlogsPage() {
               readTime: `${Math.max(1, Math.ceil((blog.konten?.length || 0) / 1000))} min read`, // Calculate read time based on content length
               excerpt: createExcerpt(blog.konten, 150), // Use helper function to create clean excerpt
               featured: false, // You can add logic to determine featured posts
+              slug: blog.slug || createSlug(blog.judul), // Generate slug if not exists
             }));
 
             // Mark first post as featured if exists
@@ -207,9 +218,9 @@ function BlogsPage() {
             <h3 className="text-2xl font-bold mb-8">More Articles</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {otherItems.map((item, index) => (
-                <Link key={index} to={`/blog/${encodeURIComponent(item.title)}`}>
+                <Link key={index} to={`/blog/${item.slug}`}>
                   <article className="group cursor-pointer">
-                    <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 hover:transform">
+                    <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 hover:transform hover:scale-[1.02]">
                       <div className="relative overflow-hidden">
                         <img src={item.bgImage} alt={item.title} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
