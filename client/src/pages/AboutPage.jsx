@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Coffee, Code, Music, Heart, Lightbulb, Target, Rocket, Star, MapPin, Calendar, Zap, BookOpen, Users, Github } from 'lucide-react';
 
 function AboutPage() {
@@ -12,6 +12,32 @@ function AboutPage() {
     '🎯 Goal 2025: Mastering Next.js & TypeScript',
     '💡 Always excited tentang tech baru!',
   ];
+
+  // Tech stack dengan kategori untuk tampilan yang lebih terorganisir
+  const techCategories = {
+    frontend: [
+      { name: 'React', color: '#61DAFB', bgColor: 'bg-cyan-400' },
+      { name: 'Next.js', color: '#000000', bgColor: 'bg-gray-900' },
+      { name: 'TypeScript', color: '#3178C6', bgColor: 'bg-blue-600' },
+      { name: 'Tailwind', color: '#06B6D4', bgColor: 'bg-cyan-500' },
+      { name: 'JavaScript', color: '#F7DF1E', bgColor: 'bg-yellow-400' },
+    ],
+    backend: [
+      { name: 'Node.js', color: '#339933', bgColor: 'bg-green-500' },
+      { name: 'Express', color: '#000000', bgColor: 'bg-gray-800' },
+      { name: 'Socket.io', color: '#010101', bgColor: 'bg-gray-700' },
+    ],
+    database: [
+      { name: 'MongoDB', color: '#47A248', bgColor: 'bg-green-600' },
+      { name: 'MySQL', color: '#4479A1', bgColor: 'bg-blue-700' },
+      { name: 'Firebase', color: '#FFCA28', bgColor: 'bg-yellow-500' },
+    ],
+    tools: [
+      { name: 'Git', color: '#F05032', bgColor: 'bg-orange-500' },
+      { name: 'VS Code', color: '#007ACC', bgColor: 'bg-blue-600' },
+      { name: 'Postman', color: '#FF6C37', bgColor: 'bg-orange-600' },
+    ],
+  };
 
   const journey = [
     {
@@ -120,13 +146,66 @@ function AboutPage() {
             </div>
 
             <div className="flex items-center justify-center gap-2 text-gray-400">
-              <MapPin className="w-4 h-4" />
+              <MapPin className="w-6 h-6 md:w-4 md:h-4" />
               <span>Purwokerto, Central Java</span>
               <span className="mx-2">•</span>
-              <Calendar className="w-4 h-4" />
+              <Calendar className="w-6 h-6  md:w-4 md:h-4" />
               <span>Available for remote work</span>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Enhanced Tech Stack Section */}
+      <div className="relative py-16 max-w-7xl mx-auto">
+        <div className="mb-12 px-6">
+          <h2 className="text-3xl lg:text-4xl font-bold text-center mb-4">
+            My <span className="text-yellow-400">Tech</span> Arsenal
+          </h2>
+          <p className="text-center text-gray-400 max-w-2xl mx-auto">Technologies I work with daily to build amazing web applications</p>
+        </div>
+
+        <div className="space-y-8">
+          {Object.entries(techCategories).map(([category, techs], categoryIndex) => (
+            <div key={category} className="relative overflow-hidden">
+              <div className="mb-4 px-6">
+                <h3 className="text-lg font-semibold text-gray-300 capitalize flex items-center gap-2">
+                  {category === 'frontend' && <Code className="w-5 h-5 text-cyan-400" />}
+                  {category === 'backend' && <Rocket className="w-5 h-5 text-green-400" />}
+                  {category === 'database' && <BookOpen className="w-5 h-5 text-blue-400" />}
+                  {category === 'tools' && <Star className="w-5 h-5 text-orange-400" />}
+                  {category}
+                </h3>
+              </div>
+
+              {/* Smooth sliding animation */}
+              <div className="relative h-16 overflow-hidden">
+                {/* Gradient overlays */}
+                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent z-10"></div>
+                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-slate-950 via-slate-950/80 to-transparent z-10"></div>
+
+                <div
+                  className="flex animate-pulse"
+                  style={{
+                    animation: `slide-${categoryIndex % 2 === 0 ? 'right' : 'left'} ${15 + categoryIndex * 2}s linear infinite`,
+                  }}
+                >
+                  {/* Duplicate for seamless loop */}
+                  {[...Array(3)].map((_, repeatIndex) =>
+                    techs.map((tech, techIndex) => (
+                      <div
+                        key={`${repeatIndex}-${techIndex}`}
+                        className="flex-shrink-0 mx-3 flex items-center gap-3 bg-gray-800/60 backdrop-blur-sm rounded-xl px-6 py-3 border border-gray-600/30 hover:border-gray-500/50 transition-all duration-300 shadow-lg"
+                      >
+                        <div className={`w-3 h-3 rounded-full ${tech.bgColor} shadow-md`}></div>
+                        <span className="text-white font-medium whitespace-nowrap">{tech.name}</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -201,7 +280,7 @@ function AboutPage() {
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-xl flex items-center justify-center">
                     <Icon className="w-6 h-6 text-black" />
                   </div>
                   <h3 className="text-xl font-bold group-hover:text-yellow-400 transition-colors">{item.trait}</h3>
@@ -297,6 +376,27 @@ function AboutPage() {
           </div>
         </div>
       </div>
+
+      {/* Custom CSS for animations */}
+      <style jsx="true">{`
+        @keyframes slide-right {
+          from {
+            transform: translateX(-100%);
+          }
+          to {
+            transform: translateX(100vw);
+          }
+        }
+
+        @keyframes slide-left {
+          from {
+            transform: translateX(100vw);
+          }
+          to {
+            transform: translateX(-100%);
+          }
+        }
+      `}</style>
     </div>
   );
 }
