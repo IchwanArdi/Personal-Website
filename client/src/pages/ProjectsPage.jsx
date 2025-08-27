@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, Github, ExternalLink, Code, Database, Globe, Calendar, Tag, Star, GitBranch } from 'lucide-react';
+import { useState } from 'react';
+import { Search, Github, ExternalLink, Code, Calendar, Tag } from 'lucide-react';
 
 // Mock project data
 const allProjects = [

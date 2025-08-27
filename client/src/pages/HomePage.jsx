@@ -125,7 +125,7 @@ const HomePage = () => {
           onMouseLeave={() => setHoveredSection(null)}
         >
           {/* Background Image with improved overlay */}
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 ">
             <img
               src={section.bgImage}
               alt={`background-${section.type}`}
@@ -192,7 +192,7 @@ const HomePage = () => {
 
                 {/* Title with better typography */}
                 <div className="space-y-2 sm:space-y-3 ">
-                  <h2 className="text-left text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight tracking-tight">{section.title}</h2>
+                  <h2 className="text-left text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl xl:w-2xl font-bold text-white leading-tight tracking-tight">{section.title}</h2>
 
                   {/* Subtle underline decoration */}
                   <div className="flex justify-start">
