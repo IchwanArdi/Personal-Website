@@ -18,7 +18,7 @@ connectDB();
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'https://layanandesa.vercel.app'], // frontend
+    origin: ['http://localhost:5173', 'https://personal-website-plum-nine-53.vercel.app'], // frontend
     credentials: true,
   })
 );
