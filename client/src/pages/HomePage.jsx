@@ -45,7 +45,7 @@ const HomePage = () => {
               mainImage: project.gambar,
               tag: 'latestProject',
               date: formatDate(project.tanggal),
-              title: project.deskripsi,
+              title: project.title,
               link: project.link || '#',
               type: 'project',
             });
