@@ -48,11 +48,13 @@ const HomeRoute = require('./routes/api/home');
 const BlogRoute = require('./routes/api/blog');
 const BlogDetailRoute = require('./routes/api/detailBlog');
 const ProjectRoute = require('./routes/api/projects');
+const ProjectDetailRoute = require('./routes/api/detailProject');
 
 // Routes ke FrontEnd
 app.use('/api', HomeRoute);
 app.use('/api', BlogRoute);
 app.use('/api/blog', BlogDetailRoute);
 app.use('/api', ProjectRoute);
+app.use('/api/project', ProjectDetailRoute);
 
 module.exports = app;
