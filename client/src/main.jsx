@@ -10,6 +10,7 @@ import BlogsPage from './pages/BlogsPage.jsx';
 import ProjectsPage from './pages/ProjectsPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import BlogDetailPage from './pages/BlogDetailPage.jsx';
+import ProjectDetailPage from './pages/ProjectDetailPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: 'about', element: <AboutPage /> },
       // Updated routing for blog details using slug parameter
       { path: 'blog/:slug', element: <BlogDetailPage /> },
+      { path: 'project/:id', element: <ProjectDetailPage /> },
     ],
   },
 ]);
