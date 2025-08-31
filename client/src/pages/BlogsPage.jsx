@@ -180,7 +180,7 @@ function BlogsPage() {
         {/* Featured Article */}
         {featuredItem && (
           <div className="mb-16">
-            <Link to={`/blog/${encodeURIComponent(featuredItem.title)}`}>
+            <Link to={`/blog/${featuredItem.slug}`}>
               <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-500 cursor-pointer">
                 <div className="lg:flex">
                   {/* Left Side Image */}

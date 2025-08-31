@@ -1,68 +1,95 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Github, ExternalLink, Calendar, Tag, Star, Users, Clock, CheckCircle, Play, FileImage, Code2 } from 'lucide-react';
-
-// Mock project detail data - nanti diganti dengan data dari database
-const projectDetail = {
-  id: 1,
-  title: 'E-Commerce Platform',
-  shortDescription: 'Full-stack e-commerce solution with modern features',
-  description:
-    'A comprehensive e-commerce platform built with modern web technologies. This project features a complete user authentication system, secure payment processing, admin dashboard for inventory management, and real-time notifications. The platform is designed to handle high traffic loads and provides an excellent user experience across all devices.',
-  images: [
-    'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop',
-  ],
-  technologies: ['React', 'Node.js', 'MongoDB', 'Express', 'Stripe', 'JWT', 'Redis', 'Socket.io', 'Tailwind CSS'],
-  category: 'FULLSTACK',
-  date: '2/1/25',
-  githubUrl: 'https://github.com/username/ecommerce',
-  liveUrl: 'https://ecommerce-demo.com',
-  featured: true,
-  duration: '3 months',
-  teamSize: '2 developers',
-  status: 'Completed',
-  features: [
-    'User Authentication & Authorization',
-    'Product Catalog Management',
-    'Shopping Cart & Checkout',
-    'Payment Integration (Stripe)',
-    'Admin Dashboard',
-    'Real-time Inventory Tracking',
-    'Order Management System',
-    'Email Notifications',
-    'Responsive Design',
-    'Search & Filtering',
-  ],
-  challenges: [
-    {
-      title: 'Payment Security',
-      description: 'Implementing secure payment processing while maintaining user experience',
-      solution: 'Used Stripe API with proper error handling and validation',
-    },
-    {
-      title: 'Real-time Updates',
-      description: 'Synchronizing inventory across multiple users simultaneously',
-      solution: 'Implemented Socket.io for real-time inventory updates',
-    },
-    {
-      title: 'Performance Optimization',
-      description: 'Loading large product catalogs efficiently',
-      solution: 'Added pagination, lazy loading, and Redis caching',
-    },
-  ],
-  // Removed metrics - not all projects need performance data
-};
+import { toast } from 'react-toastify';
 
 function ProjectDetailPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [projectDetail, setProjectDetail] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showAllFeatures, setShowAllFeatures] = useState(false);
 
+  useEffect(() => {
+    const fetchProjectDetail = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/project/detail/${id}`, {
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          throw new Error('Project not found');
+        }
+
+        const result = await response.json();
+        console.log(result);
+
+        // Transform the API data to match the component's expected structure
+        const transformedProject = {
+          id: result.id || result._id,
+          title: result.title,
+          shortDescription: result.description || result.deskripsi,
+          description: result.detailedDescription || result.displayDescription,
+          images: result.images && result.images.length > 0 ? result.images : result.allImages && result.allImages.length > 0 ? result.allImages : [result.image || result.gambar],
+          technologies: result.technologies || [],
+          category: result.category || result.kategori?.toUpperCase() || 'OTHER',
+          date: result.date || new Date(result.tanggal).toLocaleDateString() || 'Not specified',
+          githubUrl: result.githubUrl || '#',
+          liveUrl: result.liveUrl || result.link || null,
+          featured: result.featured || false,
+          duration: result.duration || 'Not specified',
+          teamSize: result.teamSize || 'Not specified',
+          status: result.status || 'Completed',
+          features: result.features || [],
+          challenges: result.challenges || [],
+        };
+
+        setProjectDetail(transformedProject);
+      } catch (error) {
+        console.error('Error fetching project details:', error);
+        toast.error('Error fetching project details');
+        // Redirect back to projects page if project not found
+        navigate('/projects');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchProjectDetail();
+    }
+  }, [id, navigate]);
+
   const goBack = () => {
-    // Nanti implementasi routing back ke /projects
-    console.log('Navigate back to projects');
+    navigate('/projects');
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-950/90 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading project details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!projectDetail) {
+    return (
+      <div className="min-h-screen bg-slate-950/90 text-white flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-2">Project Not Found</h2>
+          <p className="text-gray-400 mb-4">The project you're looking for doesn't exist.</p>
+          <button onClick={goBack} className="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-2 rounded-lg font-medium transition-colors">
+            Back to Projects
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-950/90 text-white">
@@ -96,16 +123,18 @@ function ProjectDetailPage() {
             )}
           </div>
 
-          <h1 className="text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">{projectDetail.title}</h1>
+          <h1 className="text-4xl lg:text-5xl md:p-2 font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">{projectDetail.title}</h1>
 
           <p className="text-xl text-gray-300 mb-6 leading-relaxed max-w-4xl">{projectDetail.shortDescription}</p>
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-4">
-            <a href={projectDetail.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-lg font-medium transition-all hover:scale-105">
-              <Github className="w-5 h-5" />
-              View Code
-            </a>
+            {projectDetail.githubUrl && projectDetail.githubUrl !== '#' && (
+              <a href={projectDetail.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-lg font-medium transition-all hover:scale-105">
+                <Github className="w-5 h-5" />
+                View Code
+              </a>
+            )}
             {projectDetail.liveUrl && (
               <a
                 href={projectDetail.liveUrl}
@@ -127,22 +156,38 @@ function ProjectDetailPage() {
             <section>
               <div className="relative">
                 <div className="relative overflow-hidden rounded-2xl bg-gray-900 group">
-                  <img src={projectDetail.images[currentImageIndex]} alt={`${projectDetail.title} screenshot ${currentImageIndex + 1}`} className="w-full h-96 object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <img
+                    src={projectDetail.images[currentImageIndex]}
+                    alt={`${projectDetail.title} screenshot ${currentImageIndex + 1}`}
+                    className="w-full h-96 object-cover transition-transform duration-500 group-hover:scale-105"
+                    onError={(e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop';
+                    }}
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
                 </div>
 
-                {/* Thumbnail Navigation */}
-                <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
-                  {projectDetail.images.map((image, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentImageIndex(index)}
-                      className={`relative flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden transition-all ${currentImageIndex === index ? 'ring-2 ring-yellow-400 opacity-100' : 'opacity-60 hover:opacity-80'}`}
-                    >
-                      <img src={image} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
-                    </button>
-                  ))}
-                </div>
+                {/* Thumbnail Navigation - Only show if multiple images */}
+                {projectDetail.images.length > 1 && (
+                  <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+                    {projectDetail.images.map((image, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className={`relative flex-shrink-0 w-20 h-16 m-1 rounded-lg overflow-hidden transition-all ${currentImageIndex === index ? 'ring-2 ring-yellow-400 opacity-100' : 'opacity-60 hover:opacity-80'}`}
+                      >
+                        <img
+                          src={image}
+                          alt={`Thumbnail ${index + 1}`}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop';
+                          }}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </section>
 
@@ -157,50 +202,54 @@ function ProjectDetailPage() {
               </div>
             </section>
 
-            {/* Features */}
-            <section>
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <CheckCircle className="w-6 h-6 text-yellow-400" />
-                Key Features
-              </h2>
-              <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {(showAllFeatures ? projectDetail.features : projectDetail.features.slice(0, 6)).map((feature, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <CheckCircle className="w-4 h-4 text-yellow-400 flex-shrink-0" />
-                      <span className="text-gray-300">{feature}</span>
+            {/* Features - Only show if features exist */}
+            {projectDetail.features && projectDetail.features.length > 0 && (
+              <section>
+                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                  <CheckCircle className="w-6 h-6 text-yellow-400" />
+                  Key Features
+                </h2>
+                <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {(showAllFeatures ? projectDetail.features : projectDetail.features.slice(0, 6)).map((feature, index) => (
+                      <div key={index} className="flex items-center gap-3">
+                        <CheckCircle className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+                        <span className="text-gray-300">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {projectDetail.features.length > 6 && (
+                    <button onClick={() => setShowAllFeatures(!showAllFeatures)} className="mt-4 text-yellow-400 hover:text-yellow-300 text-sm font-medium transition-colors">
+                      {showAllFeatures ? 'Show Less' : `Show ${projectDetail.features.length - 6} More Features`}
+                    </button>
+                  )}
+                </div>
+              </section>
+            )}
+
+            {/* Challenges & Solutions - Only show if challenges exist */}
+            {projectDetail.challenges && projectDetail.challenges.length > 0 && (
+              <section>
+                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                  <Code2 className="w-6 h-6 text-yellow-400" />
+                  Challenges & Solutions
+                </h2>
+                <div className="space-y-4">
+                  {projectDetail.challenges.map((challenge, index) => (
+                    <div key={index} className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+                      <h3 className="text-lg font-semibold mb-2 text-yellow-200">{challenge.title}</h3>
+                      <p className="text-gray-400 mb-3">{challenge.description}</p>
+                      <div className="bg-gray-800/50 rounded-lg p-3 border-l-4 border-yellow-400">
+                        <p className="text-gray-300 text-sm">
+                          <strong className="text-yellow-400">Solution:</strong> {challenge.solution}
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>
-
-                {projectDetail.features.length > 6 && (
-                  <button onClick={() => setShowAllFeatures(!showAllFeatures)} className="mt-4 text-yellow-400 hover:text-yellow-300 text-sm font-medium transition-colors">
-                    {showAllFeatures ? 'Show Less' : `Show ${projectDetail.features.length - 6} More Features`}
-                  </button>
-                )}
-              </div>
-            </section>
-
-            {/* Challenges & Solutions */}
-            <section>
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <Code2 className="w-6 h-6 text-yellow-400" />
-                Challenges & Solutions
-              </h2>
-              <div className="space-y-4">
-                {projectDetail.challenges.map((challenge, index) => (
-                  <div key={index} className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
-                    <h3 className="text-lg font-semibold mb-2 text-yellow-200">{challenge.title}</h3>
-                    <p className="text-gray-400 mb-3">{challenge.description}</p>
-                    <div className="bg-gray-800/50 rounded-lg p-3 border-l-4 border-yellow-400">
-                      <p className="text-gray-300 text-sm">
-                        <strong className="text-yellow-400">Solution:</strong> {challenge.solution}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
+              </section>
+            )}
           </div>
 
           {/* Sidebar */}
@@ -234,33 +283,35 @@ function ProjectDetailPage() {
             </div>
 
             {/* Technologies */}
-            <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
-              <h3 className="text-xl font-bold mb-4">Technologies Used</h3>
-              <div className="flex flex-wrap gap-2">
-                {projectDetail.technologies.map((tech, index) => (
-                  <span key={index} className="bg-gray-800/50 hover:bg-yellow-400/10 text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 cursor-default">
-                    {tech}
-                  </span>
-                ))}
+            {projectDetail.technologies && projectDetail.technologies.length > 0 && (
+              <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+                <h3 className="text-xl font-bold mb-4">Technologies Used</h3>
+                <div className="flex flex-wrap gap-2">
+                  {projectDetail.technologies.map((tech, index) => (
+                    <span key={index} className="bg-gray-800/50 hover:bg-yellow-400/10 text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 cursor-default">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            {/* Performance Metrics - Removed for universal compatibility */}
+            )}
 
             {/* Quick Actions */}
             <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
               <h3 className="text-xl font-bold mb-4">Quick Actions</h3>
               <div className="space-y-3">
-                <a
-                  href={projectDetail.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 w-full bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white px-4 py-3 rounded-lg transition-all group"
-                >
-                  <Github className="w-4 h-4 group-hover:text-yellow-400" />
-                  <span>View Source Code</span>
-                  <ExternalLink className="w-3 h-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
+                {projectDetail.githubUrl && projectDetail.githubUrl !== '#' && (
+                  <a
+                    href={projectDetail.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 w-full bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white px-4 py-3 rounded-lg transition-all group"
+                  >
+                    <Github className="w-4 h-4 group-hover:text-yellow-400" />
+                    <span>View Source Code</span>
+                    <ExternalLink className="w-3 h-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </a>
+                )}
 
                 {projectDetail.liveUrl && (
                   <a
@@ -279,51 +330,22 @@ function ProjectDetailPage() {
           </div>
         </div>
 
-        {/* Architecture & Technical Details */}
-        <div className="mt-16">
-          <h2 className="text-3xl font-bold mb-8 text-center">Technical Architecture</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 text-center">
-              <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                <Code2 className="w-6 h-6 text-yellow-400" />
-              </div>
-              <h4 className="font-semibold mb-2">Frontend</h4>
-              <p className="text-sm text-gray-400">React, Tailwind CSS</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 text-center">
-              <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                <Code2 className="w-6 h-6 text-yellow-400" />
-              </div>
-              <h4 className="font-semibold mb-2">Backend</h4>
-              <p className="text-sm text-gray-400">Node.js, Express</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 text-center">
-              <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                <Code2 className="w-6 h-6 text-yellow-400" />
-              </div>
-              <h4 className="font-semibold mb-2">Database</h4>
-              <p className="text-sm text-gray-400">MongoDB, Redis</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 text-center">
-              <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                <Code2 className="w-6 h-6 text-yellow-400" />
-              </div>
-              <h4 className="font-semibold mb-2">Payment</h4>
-              <p className="text-sm text-gray-400">Stripe API</p>
+        {/* Technical Architecture - Only show if technologies exist */}
+        {projectDetail.technologies && projectDetail.technologies.length > 0 && (
+          <div className="mt-16">
+            <h2 className="text-3xl font-bold mb-8 text-center">Technologies Used</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {projectDetail.technologies.slice(0, 8).map((tech, index) => (
+                <div key={index} className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 text-center">
+                  <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                    <Code2 className="w-6 h-6 text-yellow-400" />
+                  </div>
+                  <h4 className="font-semibold mb-2">{tech}</h4>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-
-        {/* Project Description */}
-        <div className="mt-16">
-          <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/20">
-            <h2 className="text-2xl font-bold mb-6">Project Overview</h2>
-            <p className="text-gray-300 leading-relaxed text-lg">{projectDetail.description}</p>
-          </div>
-        </div>
+        )}
 
         {/* Navigation to other projects */}
         <div className="mt-16 pt-8 border-t border-gray-800/50">
