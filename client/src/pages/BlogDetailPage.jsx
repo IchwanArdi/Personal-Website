@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Calendar, Clock, Tag, ArrowLeft, Share2, User } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 function BlogDetailPage() {
-  const { slug } = useParams(); // Get judul from URL params
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [blogDetailData, setBlogDetailData] = useState(null); // Single blog object, not array
+  const [blogDetailData, setBlogDetailData] = useState(null);
 
   // Helper function to format date
   const formatDate = (dateString) => {
@@ -22,6 +23,16 @@ function BlogDetailPage() {
       console.error(error);
       return dateString;
     }
+  };
+
+  // Helper function to create excerpt from content
+  const createExcerpt = (content, maxLength = 160) => {
+    if (!content) return '';
+    const plainText = content
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    return plainText.length > maxLength ? plainText.substring(0, maxLength) + '...' : plainText;
   };
 
   // Helper function to render HTML content safely
@@ -39,21 +50,16 @@ function BlogDetailPage() {
     const fetchDetailBlog = async () => {
       setLoading(true);
       try {
-        // Use slug instead of encoded title
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blog/detail/${slug}`, {
           credentials: 'include',
         });
 
         const result = await response.json();
 
-        // Helper function untuk hitung waktu baca
         const getReadTime = (content) => {
           if (!content) return '1 min read';
-          // hapus semua tag HTML
           const plainText = content.replace(/<[^>]+>/g, ' ');
-          // hitung jumlah kata
           const words = plainText.trim().split(/\s+/).length;
-          // rata-rata orang baca 200 kata per menit
           const minutes = Math.max(1, Math.ceil(words / 200));
           return `${minutes} min read`;
         };
@@ -65,9 +71,12 @@ function BlogDetailPage() {
               title: result.mainBlog.judul,
               content: result.mainBlog.konten,
               date: formatDate(result.mainBlog.tanggal),
+              rawDate: result.mainBlog.tanggal,
               category: result.mainBlog.kategori,
               readTime: getReadTime(result.mainBlog.konten),
               author: 'Ichwan',
+              excerpt: createExcerpt(result.mainBlog.konten),
+              slug: slug,
             };
             setBlogDetailData(transformedBlog);
           } else {
@@ -118,8 +127,66 @@ function BlogDetailPage() {
     );
   }
 
+  const currentUrl = `${window.location.origin}/blog/${slug}`;
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: blogDetailData.title,
+    description: blogDetailData.excerpt,
+    image: blogDetailData.bgImage,
+    author: {
+      '@type': 'Person',
+      name: blogDetailData.author,
+    },
+    publisher: {
+      '@type': 'Person',
+      name: 'Ichwan',
+      url: window.location.origin,
+    },
+    datePublished: blogDetailData.rawDate,
+    dateModified: blogDetailData.rawDate,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': currentUrl,
+    },
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
+      <Helmet>
+        {/* Basic Meta Tags */}
+        <title>{blogDetailData.title} - Ichwan Blog</title>
+        <meta name="description" content={blogDetailData.excerpt} />
+        <meta name="keywords" content={`${blogDetailData.category}, blog, artikel, ${blogDetailData.title.split(' ').slice(0, 5).join(', ')}`} />
+        <meta name="author" content={blogDetailData.author} />
+        <link rel="canonical" href={currentUrl} />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={blogDetailData.title} />
+        <meta property="og:description" content={blogDetailData.excerpt} />
+        <meta property="og:image" content={blogDetailData.bgImage} />
+        <meta property="og:url" content={currentUrl} />
+        <meta property="og:site_name" content="Ichwan Blog" />
+        <meta property="article:author" content={blogDetailData.author} />
+        <meta property="article:published_time" content={blogDetailData.rawDate} />
+        <meta property="article:section" content={blogDetailData.category} />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={blogDetailData.title} />
+        <meta name="twitter:description" content={blogDetailData.excerpt} />
+        <meta name="twitter:image" content={blogDetailData.bgImage} />
+        <meta name="twitter:creator" content="@ichwan" />
+
+        {/* Additional Meta Tags */}
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
+
       {/* Header dengan back button */}
       <div className="sticky top-5 z-50 mb-6 bg-black/80 backdrop-blur-sm ">
         <div className="max-w-5xl mx-auto px-6 py-4">
