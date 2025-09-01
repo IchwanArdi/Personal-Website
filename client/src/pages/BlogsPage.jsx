@@ -234,7 +234,7 @@ function BlogsPage() {
               {otherItems.map((item, index) => (
                 <Link key={index} to={`/blog/${item.slug}`}>
                   <article className="group cursor-pointer">
-                    <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/40 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/30 hover:border-yellow-400/40 transition-all duration-500 hover:transform">
+                    <div className=" bg-gray-900/70 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/30 hover:border-yellow-400/40 transition-all duration-500 hover:transform">
                       <div className="relative overflow-hidden">
                         <img src={item.bgImage} alt={item.title} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

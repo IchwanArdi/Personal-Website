@@ -7,7 +7,7 @@ import { NAVIGATION_LINKS } from '../../../utils/constants';
 import SettingsDropdown from './SettingsDropdown';
 import MobileMenu from './MobileMenu';
 
-import logo from '../../../assets/logo.png';
+import logo from '../../../assets/logo.webp';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
