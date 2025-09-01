@@ -31,7 +31,6 @@ const HomePage = () => {
         const result = await response.json();
 
         if (response.ok) {
-          console.log(result.Blogs);
           setHomeData(result);
 
           // Process the API data into content sections
@@ -101,7 +100,7 @@ const HomePage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950/90 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
           <p className="text-gray-400">Loading...</p>
@@ -112,14 +111,14 @@ const HomePage = () => {
 
   if (!homeData || contentSections.length === 0) {
     return (
-      <div className="w-full mx-auto bg-slate-950/90 min-h-screen flex items-center justify-center">
+      <div className="w-full mx-auto bg-black min-h-screen flex items-center justify-center">
         <div className="text-white text-xl">No data available</div>
       </div>
     );
   }
 
   return (
-    <div className="w-full mx-auto bg-slate-950/90">
+    <div className="w-full mx-auto bg-black">
       {contentSections.map((section, index) => (
         <div
           key={`${section.type}-${index}`}

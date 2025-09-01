@@ -9,7 +9,7 @@ const SettingsDropdown = ({ isOpen }) => {
 
   return (
     <div
-      className={`settings-menu absolute top-full right-0 mt-2 w-64 bg-slate-800/95 backdrop-blur-md rounded-lg shadow-xl border border-slate-700/50 overflow-hidden transition-all duration-300 ${
+      className={`settings-menu absolute top-full right-0 mt-2 w-64 bg-slate-900 backdrop-blur-md rounded-lg shadow-xl border border-slate-700/50 overflow-hidden transition-all duration-300 ${
         isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95 pointer-events-none'
       }`}
     >

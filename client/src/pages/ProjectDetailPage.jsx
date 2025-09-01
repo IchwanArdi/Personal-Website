@@ -24,7 +24,6 @@ function ProjectDetailPage() {
         }
 
         const result = await response.json();
-        console.log(result);
 
         // Transform the API data to match the component's expected structure
         const transformedProject = {
@@ -68,7 +67,7 @@ function ProjectDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950/90 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
           <p className="text-gray-400">Loading project details...</p>
@@ -79,7 +78,7 @@ function ProjectDetailPage() {
 
   if (!projectDetail) {
     return (
-      <div className="min-h-screen bg-slate-950/90 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">Project Not Found</h2>
           <p className="text-gray-400 mb-4">The project you're looking for doesn't exist.</p>
@@ -92,11 +91,11 @@ function ProjectDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950/90 text-white">
+    <div className="min-h-screen bg-black text-white">
       {/* Back Button */}
-      <div className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-sm border-b border-gray-800/50">
+      <div className="sticky top-5 z-50 bg-black backdrop-blur-sm ">
         <div className="max-w-7xl mx-auto px-6 py-4">
-          <button onClick={goBack} className="flex items-center gap-2 text-gray-400 hover:text-yellow-400 transition-colors group">
+          <button onClick={goBack} className="flex font-semibold items-center gap-2 text-yellow-500 hover:text-yellow-400 transition-colors group">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             Back to Projects
           </button>
@@ -123,14 +122,14 @@ function ProjectDetailPage() {
             )}
           </div>
 
-          <h1 className="text-4xl lg:text-5xl md:p-2 font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">{projectDetail.title}</h1>
+          <h1 className="text-4xl lg:text-5xl md:py-2 font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">{projectDetail.title}</h1>
 
-          <p className="text-xl text-gray-300 mb-6 leading-relaxed max-w-4xl">{projectDetail.shortDescription}</p>
+          <p className="text-md md:text-xl text-gray-300 mb-6 leading-relaxed max-w-4xl">{projectDetail.shortDescription}</p>
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-4">
             {projectDetail.githubUrl && projectDetail.githubUrl !== '#' && (
-              <a href={projectDetail.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-lg font-medium transition-all hover:scale-105">
+              <a href={projectDetail.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-lg font-medium transition-all">
                 <Github className="w-5 h-5" />
                 View Code
               </a>
@@ -140,7 +139,7 @@ function ProjectDetailPage() {
                 href={projectDetail.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black px-6 py-3 rounded-lg font-medium transition-all hover:scale-105"
+                className="flex items-center gap-2 border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black px-6 py-3 rounded-lg font-medium transition-all"
               >
                 <ExternalLink className="w-5 h-5" />
                 Live Demo
@@ -197,7 +196,7 @@ function ProjectDetailPage() {
                 <FileImage className="w-6 h-6 text-yellow-400" />
                 About This Project
               </h2>
-              <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+              <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30  backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
                 <p className="text-gray-300 leading-relaxed text-lg">{projectDetail.description}</p>
               </div>
             </section>
@@ -209,7 +208,7 @@ function ProjectDetailPage() {
                   <CheckCircle className="w-6 h-6 text-yellow-400" />
                   Key Features
                 </h2>
-                <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+                <div className="bg-gradient-to-br mb-5 from-gray-900/20 to-gray-900/30  backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {(showAllFeatures ? projectDetail.features : projectDetail.features.slice(0, 6)).map((feature, index) => (
                       <div key={index} className="flex items-center gap-3">
@@ -237,7 +236,7 @@ function ProjectDetailPage() {
                 </h2>
                 <div className="space-y-4">
                   {projectDetail.challenges.map((challenge, index) => (
-                    <div key={index} className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+                    <div key={index} className="bg-gradient-to-br from-gray-900/20 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
                       <h3 className="text-lg font-semibold mb-2 text-yellow-200">{challenge.title}</h3>
                       <p className="text-gray-400 mb-3">{challenge.description}</p>
                       <div className="bg-gray-800/50 rounded-lg p-3 border-l-4 border-yellow-400">
@@ -255,7 +254,7 @@ function ProjectDetailPage() {
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-8">
             {/* Project Info */}
-            <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+            <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
               <h3 className="text-xl font-bold mb-4">Project Info</h3>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
@@ -284,7 +283,7 @@ function ProjectDetailPage() {
 
             {/* Technologies */}
             {projectDetail.technologies && projectDetail.technologies.length > 0 && (
-              <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+              <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
                 <h3 className="text-xl font-bold mb-4">Technologies Used</h3>
                 <div className="flex flex-wrap gap-2">
                   {projectDetail.technologies.map((tech, index) => (
@@ -297,7 +296,7 @@ function ProjectDetailPage() {
             )}
 
             {/* Quick Actions */}
-            <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+            <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
               <h3 className="text-xl font-bold mb-4">Quick Actions</h3>
               <div className="space-y-3">
                 {projectDetail.githubUrl && projectDetail.githubUrl !== '#' && (
@@ -331,7 +330,7 @@ function ProjectDetailPage() {
         </div>
 
         {/* Navigation to other projects */}
-        <div className="mt-16 pt-8 border-t border-gray-800/50">
+        <div className="mx-16 pt-8 border-t border-gray-800/50">
           <div className="text-center">
             <button onClick={goBack} className="inline-flex items-center gap-2 bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white px-6 py-3 rounded-lg transition-all">
               <ArrowLeft className="w-4 h-4" />
@@ -340,9 +339,6 @@ function ProjectDetailPage() {
           </div>
         </div>
       </div>
-
-      {/* Bottom spacing */}
-      <div className="h-20"></div>
     </div>
   );
 }

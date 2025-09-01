@@ -14,7 +14,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative w-full mt-auto bg-slate-950/90">
+    <footer className="relative w-full mt-auto bg-black">
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent opacity-50" />
 
       <div className="max-w-7xl mx-auto px-6 py-16">

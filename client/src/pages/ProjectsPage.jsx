@@ -33,7 +33,6 @@ function ProjectsPage() {
         }));
 
         setDataProjects(transformedProjects);
-        console.log('Transformed projects:', transformedProjects);
       } catch (error) {
         console.error('Error fetching projects:', error);
         toast.error('Error fetching data');
@@ -79,7 +78,7 @@ function ProjectsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950/90 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
           <p className="text-gray-400">Loading projects...</p>
@@ -89,7 +88,7 @@ function ProjectsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950/90 text-white">
+    <div className="min-h-screen bg-black text-white">
       {/* Search Bar */}
       <div className="w-full flex justify-center pt-8 pb-4">
         <div className="relative w-full max-w-2xl mx-4">
@@ -128,7 +127,7 @@ function ProjectsPage() {
         {featuredProject && (
           <div className="mb-16">
             <Link to={`/project/${featuredProject.id}`}>
-              <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-500">
+              <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900/20 to-gray-900/40 backdrop-blur-sm border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-500">
                 <div className="lg:flex">
                   <div className="lg:w-3/5 relative">
                     <div className="relative overflow-hidden h-80 lg:h-96">
@@ -203,13 +202,13 @@ function ProjectsPage() {
 
         {/* Other Projects Grid */}
         {otherProjects.length > 0 && (
-          <div>
-            <h3 className="text-2xl font-bold mb-8">Other Projects</h3>
+          <div className="">
+            <h3 className="text-2xl font-bold mb-8 border-l-4 border-yellow-400 pl-4">Other Projects</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {otherProjects.map((project, index) => (
                 <Link key={index} to={`/project/${project.id}`}>
                   <article className="group cursor-pointer">
-                    <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 hover:transform">
+                    <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/40 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/30 hover:border-yellow-400/40 transition-all duration-500 hover:transform">
                       <div className="relative overflow-hidden">
                         <img
                           src={project.image}
@@ -273,7 +272,6 @@ function ProjectsPage() {
             </div>
           </div>
         )}
-
         {/* No Results */}
         {filteredProjects.length === 0 && !loading && (
           <div className="text-center py-16">

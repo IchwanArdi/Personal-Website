@@ -7,6 +7,8 @@ import { NAVIGATION_LINKS } from '../../../utils/constants';
 import SettingsDropdown from './SettingsDropdown';
 import MobileMenu from './MobileMenu';
 
+import logo from '../../../assets/logo.png';
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -26,7 +28,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="w-full sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/50 transition-all duration-300">
+      <header className="w-full sticky top-0 z-50 bg-black backdrop-blur-md border-b border-slate-800/50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-24">
             {/* Desktop Navigation */}
@@ -49,7 +51,7 @@ const Navbar = () => {
             {/* Mobile Logo */}
             <div className="lg:hidden">
               <a href="/home" className="text-white text-xl font-bold hover:text-blue-400 transition-all duration-300 transform hover:scale-105">
-                LOGO
+                <img src={logo} alt="Logo" className="w-20 mix-blend-screen" />
               </a>
             </div>
 

@@ -135,7 +135,7 @@ function BlogsPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950/90 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
           <p className="text-gray-400">Loading blogs...</p>
@@ -145,7 +145,7 @@ function BlogsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950/90 text-white">
+    <div className="min-h-screen bg-black text-white">
       {/* Search Bar */}
       <div className="w-full flex justify-center pt-8 pb-4">
         <div className="relative w-full max-w-2xl mx-4">
@@ -181,7 +181,7 @@ function BlogsPage() {
         {featuredItem && (
           <div className="mb-16">
             <Link to={`/blog/${featuredItem.slug}`}>
-              <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-500 cursor-pointer">
+              <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900/20 to-gray-900/40 backdrop-blur-sm border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-500 cursor-pointer">
                 <div className="lg:flex">
                   {/* Left Side Image */}
                   <div className="lg:w-3/5 relative">
@@ -229,12 +229,12 @@ function BlogsPage() {
         {/* Other Articles Grid */}
         {otherItems.length > 0 && (
           <div>
-            <h3 className="text-2xl font-bold mb-8">More Articles</h3>
+            <h3 className="text-2xl font-bold mb-8 border-l-4 border-yellow-400 pl-4">More Articles</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {otherItems.map((item, index) => (
                 <Link key={index} to={`/blog/${item.slug}`}>
                   <article className="group cursor-pointer">
-                    <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 hover:transform">
+                    <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/40 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/30 hover:border-yellow-400/40 transition-all duration-500 hover:transform">
                       <div className="relative overflow-hidden">
                         <img src={item.bgImage} alt={item.title} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

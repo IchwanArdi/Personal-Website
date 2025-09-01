@@ -93,7 +93,7 @@ function BlogDetailPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-2 border-yellow-400 border-t-transparent mx-auto mb-4"></div>
           <p className="text-gray-300">Memuat artikel...</p>
@@ -105,7 +105,7 @@ function BlogDetailPage() {
   // If no data found
   if (!blogDetailData) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Artikel tidak ditemukan</h2>
           <p className="text-gray-400 mb-6">Artikel yang Anda cari mungkin telah dipindahkan atau dihapus.</p>
@@ -119,27 +119,21 @@ function BlogDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      {/* Floating background effects */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-yellow-400/3 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-1/2 -left-40 w-80 h-80 bg-blue-400/3 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute -bottom-40 right-1/3 w-80 h-80 bg-purple-400/3 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
-      </div>
-
-      <div className="relative z-10">
-        {/* Header dengan back button */}
-        <header className="max-w-4xl mx-auto px-4 sm:px-6 pt-8 pb-4">
-          <Link to="/blogs" className="inline-flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-all duration-300 mb-8 group">
-            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-            <span className="font-medium">Kembali ke Blog</span>
+    <div className="min-h-screen bg-black text-white">
+      {/* Header dengan back button */}
+      <div className="sticky top-5 z-50 mb-6 bg-black/80 backdrop-blur-sm ">
+        <div className="max-w-5xl mx-auto px-6 py-4">
+          <Link to="/blogs" className="flex font-semibold items-center gap-2 text-yellow-500 hover:text-yellow-400 transition-colors group">
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Blogs
           </Link>
-        </header>
-
+        </div>
+      </div>
+      <div className="relative z-10">
         {/* Main content */}
-        <main className="max-w-4xl mx-auto px-4 sm:px-6">
+        <main className="max-w-5xl mx-auto px-4 sm:px-6">
           {/* Category badge - floating style */}
-          <div className="mb-6">
+          <div className="">
             <span className="inline-flex items-center gap-2 bg-yellow-400/10 text-yellow-400 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border border-yellow-400/20">
               <Tag className="w-3 h-3" />
               {blogDetailData.category}
