@@ -208,7 +208,7 @@ function ProjectsPage() {
               {otherProjects.map((project, index) => (
                 <Link key={index} to={`/project/${project.id}`}>
                   <article className="group cursor-pointer">
-                    <div className=" bg-gray-900/50 md:bg-gray-900/40  backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/30 hover:border-yellow-400/40 transition-all duration-500 hover:transform">
+                    <div className="bg-gray-900/70 md:bg-gray-900/40  backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/30 hover:border-yellow-400/40 transition-all duration-500 hover:transform">
                       <div className="relative overflow-hidden">
                         <img
                           src={project.image}

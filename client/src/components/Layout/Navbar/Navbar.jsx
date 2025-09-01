@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { useApp } from '../../../contexts/AppContext';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import { NAVIGATION_LINKS } from '../../../utils/constants';
+import { Link } from 'react-router-dom';
 import SettingsDropdown from './SettingsDropdown';
 import MobileMenu from './MobileMenu';
 
@@ -50,9 +51,9 @@ const Navbar = () => {
 
             {/* Mobile Logo */}
             <div className="lg:hidden">
-              <a href="/home" className="text-white text-xl font-bold hover:text-blue-400 transition-all duration-300 transform hover:scale-105">
+              <Link to="/" className="text-white text-xl font-bold hover:text-blue-400 transition-all duration-300 transform hover:scale-105">
                 <img src={logo} alt="Logo" className="w-20 mix-blend-screen" />
-              </a>
+              </Link>
             </div>
 
             {/* Right Side */}

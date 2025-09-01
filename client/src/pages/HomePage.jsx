@@ -3,6 +3,7 @@ import { Calendar, ExternalLink } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useApp } from '../contexts/AppContext';
 import { HOME } from '../utils/constants';
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
@@ -47,6 +48,7 @@ const HomePage = () => {
               title: project.title,
               link: project.link || '#',
               type: 'project',
+              isExternal: true, // External link
             });
           }
 
@@ -59,8 +61,9 @@ const HomePage = () => {
               tag: 'latestBlogs',
               date: formatDate(blog.tanggal),
               title: blog.judul,
-              link: `/blog/${encodeURIComponent(blog.judul)}`, // Assuming you have blog detail route
+              link: `/blog/${encodeURIComponent(blog.judul)}`,
               type: 'blog',
+              isExternal: false, // Internal link
             });
           }
 
@@ -79,8 +82,9 @@ const HomePage = () => {
                 })
                 .replace(/\//g, '/'),
               title: 'Tentang Saya',
-              link: '/about', // Assuming you have about page
+              link: '/about',
               type: 'update',
+              isExternal: false, // Internal link
             });
           }
 
@@ -97,6 +101,25 @@ const HomePage = () => {
     };
     fetchHome();
   }, [language, t]);
+
+  // Function to render link based on type
+  const renderLinkWrapper = (section, children) => {
+    const linkClasses = 'block relative overflow-hidden rounded-lg sm:rounded-xl shadow-2xl transform transition-all duration-500 hover:scale-105';
+
+    if (section.isExternal) {
+      return (
+        <a href={section.link} className={linkClasses} target="_blank" rel="noopener noreferrer">
+          {children}
+        </a>
+      );
+    } else {
+      return (
+        <Link to={section.link} className={linkClasses}>
+          {children}
+        </Link>
+      );
+    }
+  };
 
   if (loading) {
     return (
@@ -146,35 +169,33 @@ const HomePage = () => {
             {/* Image Section - Lebih lebar */}
             <div className="w-full lg:w-3/5 flex justify-center order-1 lg:order-none">
               <div className="relative group/image w-full max-w-lg lg:max-w-none">
-                <a
-                  href={section.link}
-                  className="block relative overflow-hidden rounded-lg sm:rounded-xl shadow-2xl transform transition-all duration-500 hover:scale-105"
-                  target={section.link.startsWith('http') ? '_self' : ''}
-                  rel={section.link.startsWith('http') ? 'noopener noreferrer' : ''}
-                >
-                  <img
-                    src={section.mainImage}
-                    alt={section.title}
-                    className="w-full h-56 sm:h-64 md:h-80 lg:h-96 xl:h-[20rem] object-cover transition-transform duration-700 group-hover/image:scale-110"
-                    onError={(e) => {
-                      // Fallback to a default image if the API image fails to load
-                      e.target.src = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop';
-                    }}
-                  />
+                {renderLinkWrapper(
+                  section,
+                  <>
+                    <img
+                      src={section.mainImage}
+                      alt={section.title}
+                      className="w-full h-56 sm:h-64 md:h-80 lg:h-96 xl:h-[20rem] object-cover transition-transform duration-700 group-hover/image:scale-110"
+                      onError={(e) => {
+                        // Fallback to a default image if the API image fails to load
+                        e.target.src = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop';
+                      }}
+                    />
 
-                  {/* Image overlay on hover */}
-                  <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/20 transition-colors duration-300" />
+                    {/* Image overlay on hover */}
+                    <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/20 transition-colors duration-300" />
 
-                  {/* Hover icon */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-all duration-300">
-                    <div className="p-3 sm:p-4 bg-white/20 backdrop-blur-sm rounded-full">
-                      <ExternalLink className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    {/* Hover icon */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-all duration-300">
+                      <div className="p-3 sm:p-4 bg-white/20 backdrop-blur-sm rounded-full">
+                        <ExternalLink className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Subtle border glow on hover */}
-                  <div className="absolute inset-0 rounded-lg sm:rounded-xl ring-0 group-hover/image:ring-2 group-hover/image:ring-white/30 transition-all duration-300" />
-                </a>
+                    {/* Subtle border glow on hover */}
+                    <div className="absolute inset-0 rounded-lg sm:rounded-xl ring-0 group-hover/image:ring-2 group-hover/image:ring-white/30 transition-all duration-300" />
+                  </>
+                )}
               </div>
             </div>
 

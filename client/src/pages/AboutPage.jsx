@@ -1,9 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Coffee, Code, Music, Heart, Lightbulb, Target, Rocket, Star, MapPin, Calendar, Zap, BookOpen, Users, Github } from 'lucide-react';
+import { Code, Heart, Lightbulb, Target, Rocket, Star, MapPin, Calendar, Zap, BookOpen, Users, Github } from 'lucide-react';
+import CVFile from '../assets/cv/Ichwan_Ardianto_Resume.pdf';
 
 function AboutPage() {
   const [currentFact, setCurrentFact] = useState(0);
   const [isVisible, setIsVisible] = useState({});
+
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = CVFile;
+    link.download = 'Ichwan_Ardianto_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const funFacts = [
     '🚀 Sudah coding 10+ project web dalam 1+ tahun',
@@ -230,7 +240,7 @@ function AboutPage() {
                   {/* Content */}
                   <div className={`flex-1 ${!isLeft && 'lg:text-right'}`}>
                     <div
-                      className={`bg-gray-800/20 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 ${
+                      className={`bg-gray-900/70 md:bg-gray-800/20 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 ${
                         isVisible[`journey-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                       }`}
                     >
@@ -274,7 +284,7 @@ function AboutPage() {
             return (
               <div
                 key={index}
-                className={`group bg-gray-800/20 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 hover:scale-105 ${
+                className={`group bg-gray-900/70 md:bg-gray-800/20 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 hover:scale-105 ${
                   isVisible.personality ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
@@ -294,7 +304,7 @@ function AboutPage() {
 
       {/* Current Focus Section */}
       <div className="max-w-4xl mx-auto px-6 mb-20" data-animate id="focus">
-        <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30 backdrop-blur-sm rounded-3xl p-8 lg:p-12 border border-gray-700/20">
+        <div className="bg-gray-900/70 md:bg-gray-800/20 backdrop-blur-sm rounded-3xl p-8 lg:p-12 border border-gray-700/20">
           <h2 className="text-3xl font-bold text-center mb-8">
             Currently <span className="text-yellow-400">Focusing</span> On
           </h2>
@@ -336,7 +346,7 @@ function AboutPage() {
             { number: '∞', label: 'Cups of Coffee', icon: '☕' },
             { number: '24/7', label: 'Learning Mode', icon: '🧠' },
           ].map((stat, index) => (
-            <div key={index} className="bg-gray-800/20 backdrop-blur-sm rounded-2xl p-6 text-center border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-300">
+            <div key={index} className="bg-gray-900/70 md:bg-gray-800/20 backdrop-blur-sm rounded-2xl p-6 text-center border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-300">
               <div className="text-2xl mb-2">{stat.icon}</div>
               <div className="text-2xl font-bold text-yellow-400 mb-1">{stat.number}</div>
               <div className="text-sm text-gray-400">{stat.label}</div>
@@ -367,7 +377,7 @@ function AboutPage() {
               <Github className="w-5 h-5" />
               Check My Work
             </a>
-            <button className="flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 text-white border border-gray-600 hover:border-gray-500 px-8 py-4 rounded-xl font-medium transition-all duration-300 hover:scale-105">
+            <button onClick={handleDownload} className="flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-4 rounded-xl font-medium transition-all duration-300 hover:scale-105">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
