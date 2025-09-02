@@ -16,6 +16,16 @@ const HomePage = () => {
 
   const [hoveredSection, setHoveredSection] = useState(null);
 
+  // Helper function to create slug from title
+  const createSlug = (title) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-') // Replace multiple hyphens with single
+      .trim('-'); // Remove leading/trailing hyphens
+  };
+
   // Helper function to format date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -62,9 +72,10 @@ const HomePage = () => {
               tag: 'latestBlogs',
               date: formatDate(blog.tanggal),
               title: blog.judul,
-              link: `/blog/${encodeURIComponent(blog.judul)}`,
               type: 'blog',
               isExternal: false, // Internal link
+              slug: blog.slug || createSlug(blog.judul), // Generate slug if not exists
+              link: `/blog/${blog.slug || createSlug(blog.judul)}`,
             });
           }
 

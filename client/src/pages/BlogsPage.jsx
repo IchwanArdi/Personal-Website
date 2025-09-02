@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { Search, Calendar, ArrowRight, Tag } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 function BlogsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
-  const [loading, setLoading] = useState(false); // Fixed: was string 'false', should be boolean
-  const [blogData, setBlogData] = useState([]); // Initialize as empty array
+  const [loading, setLoading] = useState(false);
+  const [blogData, setBlogData] = useState([]);
 
   // Helper function to create slug from title
   const createSlug = (title) => {
@@ -40,9 +41,6 @@ function BlogsPage() {
     // Remove extra whitespace and newlines
     const cleanText = textOnly.replace(/\s+/g, ' ').trim();
 
-    // Remove emoji or special characters if needed (optional)
-    // const noEmoji = cleanText.replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '');
-
     if (cleanText.length <= maxLength) return cleanText;
 
     // Truncate and add ellipsis
@@ -51,7 +49,6 @@ function BlogsPage() {
 
   useEffect(() => {
     const fetchBlog = async () => {
-      // Fixed typo: fecthBlog -> fetchBlog
       setLoading(true);
       try {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blog`, {
@@ -80,13 +77,13 @@ function BlogsPage() {
             const transformedBlogs = result.Blogs.map((blog) => ({
               bgImage: blog.gambar,
               title: blog.judul,
-              content: blog.konten, // Fixed typo: contect -> content
+              content: blog.konten,
               date: formatDate(blog.tanggal),
               category: blog.kategori,
-              readTime: getReadTime(blog.konten), // baru
-              excerpt: createExcerpt(blog.konten, 150), // Use helper function to create clean excerpt
-              featured: false, // You can add logic to determine featured posts
-              slug: blog.slug || createSlug(blog.judul), // Generate slug if not exists
+              readTime: getReadTime(blog.konten),
+              excerpt: createExcerpt(blog.konten, 150),
+              featured: false,
+              slug: blog.slug || createSlug(blog.judul),
             }));
 
             // Mark first post as featured if exists
@@ -132,20 +129,83 @@ function BlogsPage() {
   const featuredItem = filteredContent.find((item) => item.featured) || filteredContent[0];
   const otherItems = filteredContent.filter((item) => item !== featuredItem);
 
+  // Generate dynamic meta for SEO
+  const generateBlogsMeta = () => {
+    let dynamicDescription = 'Artikel dan tulisan terbaru dari Ichwan tentang teknologi, web development, tips programming, dan pengalaman sebagai developer.';
+    let dynamicKeywords = 'Blog, Artikel, Web Development, Programming Tips, JavaScript, React, Tutorial';
+    let dynamicImage = '/og-image.jpg'; // default image
+
+    // Customize based on search/filter state
+    if (searchTerm) {
+      dynamicDescription = `Pencarian blog untuk "${searchTerm}" - ${dynamicDescription}`;
+      dynamicKeywords = `${searchTerm}, ${dynamicKeywords}`;
+    }
+
+    if (selectedCategory && selectedCategory !== 'ALL') {
+      dynamicDescription = `Artikel kategori ${selectedCategory} - ${dynamicDescription}`;
+      dynamicKeywords = `${selectedCategory}, ${dynamicKeywords}`;
+    }
+
+    // Use featured article image if available
+    if (featuredItem?.bgImage) {
+      dynamicImage = featuredItem.bgImage;
+    }
+
+    return {
+      title: searchTerm ? `Pencarian: ${searchTerm} - Blog` : selectedCategory && selectedCategory !== 'ALL' ? `${selectedCategory} - Blog` : 'Blog',
+      description: dynamicDescription,
+      keywords: dynamicKeywords,
+      image: dynamicImage,
+      url: '/blogs',
+    };
+  };
+
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading blogs...</p>
+      <>
+        <SEO pageKey="blogs" />
+        <div className="min-h-screen bg-black text-white flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+            <p className="text-gray-400">Loading blogs...</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
     <div className="min-h-screen bg-black text-white">
+      <SEO customMeta={generateBlogsMeta()}>
+        {/* Structured Data untuk Blog List */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Blog',
+            name: 'Ichwan Blog',
+            description: 'Blog pribadi Ichwan tentang web development, programming, dan teknologi',
+            url: typeof window !== 'undefined' ? `${window.location.origin}/blogs` : '',
+            author: {
+              '@type': 'Person',
+              name: 'Ichwan',
+            },
+            blogPost: filteredContent.slice(0, 5).map((blog) => ({
+              '@type': 'BlogPosting',
+              headline: blog.title,
+              description: blog.excerpt,
+              image: blog.bgImage,
+              datePublished: blog.date,
+              author: {
+                '@type': 'Person',
+                name: 'Ichwan',
+              },
+              url: typeof window !== 'undefined' ? `${window.location.origin}/blog/${blog.slug}` : '',
+            })),
+          })}
+        </script>
+      </SEO>
+
       {/* Search Bar */}
       <div className="w-full flex justify-center pt-8 pb-4">
         <div className="relative w-full max-w-2xl mx-4">
@@ -220,8 +280,7 @@ function BlogsPage() {
                     </button>
                   </div>
                 </div>
-              </div>{' '}
-              {/* ← ini div yang hilang di kode kamu */}
+              </div>
             </Link>
           </div>
         )}
