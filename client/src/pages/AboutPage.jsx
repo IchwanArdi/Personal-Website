@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Code, Heart, Lightbulb, Target, Rocket, Star, MapPin, Calendar, Zap, BookOpen, Users, Github } from 'lucide-react';
+import SEO from '../components/SEO';
 import CVFile from '../assets/cv/Ichwan_Ardianto_Resume.pdf';
 
 function AboutPage() {
@@ -108,7 +109,7 @@ function AboutPage() {
       setCurrentFact((prev) => (prev + 1) % funFacts.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [funFacts.length]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -132,6 +133,7 @@ function AboutPage() {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
+      <SEO pageKey="about" />
       {/* Hero Section - More Personal */}
       <div className="relative pt-20 pb-16">
         <div className="max-w-6xl mx-auto px-6">
