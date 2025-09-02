@@ -196,7 +196,7 @@ function ProjectsPage() {
 
                     <h2 className="text-3xl lg:text-4xl font-bold mb-4 leading-tight group-hover:text-yellow-200 transition-colors duration-300">{featuredProject.title}</h2>
 
-                    <p className="text-gray-300 text-lg mb-6 leading-relaxed line-clamp-5">{featuredProject.description}</p>
+                    <p className="text-gray-300 text-lg mb-6 leading-relaxed line-clamp-3">{featuredProject.description}</p>
 
                     {/* Technologies */}
                     {featuredProject.technologies && featuredProject.technologies.length > 0 && (
