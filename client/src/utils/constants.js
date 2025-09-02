@@ -16,17 +16,17 @@ export const NAVIGATION_LINKS = {
 export const SOCIAL_LINKS = [
   {
     icon: 'Instagram',
-    href: 'https://www.instagram.com/ichwan_ardi22/',
+    href: 'https://www.instagram.com/ichwan_ardi22',
     label: 'Instagram',
   },
   {
     icon: 'X',
-    href: 'https://twitter.com/your-profile',
+    href: 'https://x.com/IchwanArdi22',
     label: 'X',
   },
   {
     icon: 'Github',
-    href: 'https://github.com/your-profile',
+    href: 'https://github.com/IchwanArdi',
     label: 'GitHub',
   },
 ];

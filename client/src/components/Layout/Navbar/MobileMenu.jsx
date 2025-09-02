@@ -82,9 +82,9 @@ const MobileMenu = ({ isOpen, onClose }) => {
             <p className="text-gray-400 text-sm font-medium">{t.connectWithMe}</p>
             <div className="flex space-x-4">
               {[
-                { icon: Instagram, href: 'https://www.instagram.com/ichwan_ardi22/', delay: '600ms' },
-                { icon: X, href: '#', delay: '700ms' },
-                { icon: Github, href: '#', delay: '800ms' },
+                { icon: Instagram, href: 'https://www.instagram.com/ichwan_ardi22', delay: '600ms' },
+                { icon: X, href: 'https://x.com/IchwanArdi22', delay: '700ms' },
+                { icon: Github, href: 'https://github.com/IchwanArdi', delay: '800ms' },
               ].map((social, index) => (
                 <div key={index} className={`transform transition-all duration-500 ${isOpen ? 'scale-100 rotate-0 opacity-100' : 'scale-0 rotate-180 opacity-0'}`} style={{ transitionDelay: social.delay }}>
                   <a
