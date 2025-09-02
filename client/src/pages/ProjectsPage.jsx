@@ -111,7 +111,7 @@ function ProjectsPage() {
   if (loading) {
     return (
       <>
-        <SEO meta={generateProjectsMeta()} />
+        <SEO customMeta={generateProjectsMeta()} />
         <div className="min-h-screen bg-black text-white flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
@@ -124,7 +124,7 @@ function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <SEO meta={generateProjectsMeta()} />
+      <SEO customMeta={generateProjectsMeta()} />
       {/* Search Bar */}
       <div className="w-full flex justify-center pt-8 pb-4">
         <div className="relative w-full max-w-2xl mx-4">
