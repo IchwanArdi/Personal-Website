@@ -82,13 +82,6 @@ export const PAGE_METAS = {
     keywords: 'Blog, Artikel, Web Development, Programming Tips, JavaScript, React, Tutorial',
     url: '/blogs',
   },
-
-  contact: {
-    title: 'Kontak',
-    description: 'Hubungi Ichwan untuk kolaborasi project, konsultasi web development, atau sekadar diskusi tentang teknologi.',
-    keywords: 'Kontak, Contact, Hire, Freelance, Web Developer, Konsultasi',
-    url: '/contact',
-  },
 };
 
 // Function untuk blog detail

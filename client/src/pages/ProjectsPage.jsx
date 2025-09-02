@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Search, Github, ExternalLink, Code, Calendar, Tag } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 function ProjectsPage() {
   const [dataProjects, setDataProjects] = useState([]);
@@ -76,19 +77,54 @@ function ProjectsPage() {
   const featuredProject = filteredProjects.find((project) => project.featured) || filteredProjects[0];
   const otherProjects = filteredProjects.filter((project) => project !== featuredProject);
 
+  // Generate dynamic meta for SEO
+  const generateProjectsMeta = () => {
+    let dynamicDescription = 'Kumpulan project dan karya terbaik Ichwan dalam bidang web development, mulai dari aplikasi web hingga sistem kompleks.';
+    let dynamicKeywords = 'Projects, Portfolio, Web Development, JavaScript, React, Node.js';
+    let dynamicImage = '/og-image.jpg'; // default image
+
+    // Customize based on search/filter state
+    if (searchTerm) {
+      dynamicDescription = `Pencarian blog untuk "${searchTerm}" - ${dynamicDescription}`;
+      dynamicKeywords = `${searchTerm}, ${dynamicKeywords}`;
+    }
+
+    if (selectedCategory && selectedCategory !== 'ALL') {
+      dynamicDescription = `Artikel kategori ${selectedCategory} - ${dynamicDescription}`;
+      dynamicKeywords = `${selectedCategory}, ${dynamicKeywords}`;
+    }
+
+    // Use featured project image if available
+    if (featuredProject?.bgImage) {
+      dynamicImage = featuredProject.bgImage;
+    }
+
+    return {
+      title: searchTerm ? `Pencarian: ${searchTerm} - Projects` : selectedCategory && selectedCategory !== 'ALL' ? `${selectedCategory} - Projects` : 'Projects',
+      description: dynamicDescription,
+      keywords: dynamicKeywords,
+      image: dynamicImage,
+      url: '/projects',
+    };
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading projects...</p>
+      <>
+        <SEO meta={generateProjectsMeta()} />
+        <div className="min-h-screen bg-black text-white flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+            <p className="text-gray-400">Loading projects...</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
     <div className="min-h-screen bg-black text-white">
+      <SEO meta={generateProjectsMeta()} />
       {/* Search Bar */}
       <div className="w-full flex justify-center pt-8 pb-4">
         <div className="relative w-full max-w-2xl mx-4">
