@@ -1,5 +1,4 @@
-// components/SEO.jsx
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from 'react-helmet';
 import { generatePageMeta, PAGE_METAS } from '../utils/metaHelpers';
 
 const SEO = ({ pageKey, customMeta = {}, children }) => {
