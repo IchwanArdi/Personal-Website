@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Calendar, Clock, Tag, ArrowLeft, Share2, User } from 'lucide-react';
-import { Helmet } from 'react-helmet';
+import SEO from '../components/SEO';
 
 function BlogDetailPage() {
   const { slug } = useParams();
@@ -77,6 +77,12 @@ function BlogDetailPage() {
               author: 'Ichwan',
               excerpt: createExcerpt(result.mainBlog.konten),
               slug: slug,
+              // Data untuk meta helpers
+              judul: result.mainBlog.judul,
+              kategori: result.mainBlog.kategori,
+              tanggal: result.mainBlog.tanggal,
+              gambar: result.mainBlog.gambar,
+              description: createExcerpt(result.mainBlog.konten),
             };
             setBlogDetailData(transformedBlog);
           } else {
@@ -102,90 +108,77 @@ function BlogDetailPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-2 border-yellow-400 border-t-transparent mx-auto mb-4"></div>
-          <p className="text-gray-300">Memuat artikel...</p>
+      <>
+        <SEO pageKey="blogs" />
+        <div className="min-h-screen bg-black text-white flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-2 border-yellow-400 border-t-transparent mx-auto mb-4"></div>
+            <p className="text-gray-300">Memuat artikel...</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   // If no data found
   if (!blogDetailData) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Artikel tidak ditemukan</h2>
-          <p className="text-gray-400 mb-6">Artikel yang Anda cari mungkin telah dipindahkan atau dihapus.</p>
-          <Link to="/blogs" className="inline-flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Kembali ke Blog
-          </Link>
+      <>
+        <SEO pageKey="blogs" />
+        <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-4">Artikel tidak ditemukan</h2>
+            <p className="text-gray-400 mb-6">Artikel yang Anda cari mungkin telah dipindahkan atau dihapus.</p>
+            <Link to="/blogs" className="inline-flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors">
+              <ArrowLeft className="w-4 h-4" />
+              Kembali ke Blog
+            </Link>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
-  const currentUrl = `${window.location.origin}/blog/${slug}`;
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: blogDetailData.title,
+  // Generate blog meta langsung seperti di HomePage
+  const dynamicMeta = {
+    title: blogDetailData.title,
     description: blogDetailData.excerpt,
     image: blogDetailData.bgImage,
-    author: {
-      '@type': 'Person',
-      name: blogDetailData.author,
-    },
-    publisher: {
-      '@type': 'Person',
-      name: 'Ichwan',
-      url: window.location.origin,
-    },
-    datePublished: blogDetailData.rawDate,
-    dateModified: blogDetailData.rawDate,
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': currentUrl,
-    },
+    url: `/blog/${slug}`,
+    type: 'article',
+    keywords: `${blogDetailData.category}, blog, artikel, ${blogDetailData.title}`,
+    publishedTime: blogDetailData.rawDate,
   };
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <Helmet>
-        {/* Basic Meta Tags */}
-        <title>{blogDetailData.title} - Ichwan Blog</title>
-        <meta name="description" content={blogDetailData.excerpt} />
-        <meta name="keywords" content={`${blogDetailData.category}, blog, artikel, ${blogDetailData.title.split(' ').slice(0, 5).join(', ')}`} />
-        <meta name="author" content={blogDetailData.author} />
-        <link rel="canonical" href={currentUrl} />
-
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={blogDetailData.title} />
-        <meta property="og:description" content={blogDetailData.excerpt} />
-        <meta property="og:image" content={blogDetailData.bgImage} />
-        <meta property="og:url" content={currentUrl} />
-        <meta property="og:site_name" content="Ichwan Blog" />
-        <meta property="article:author" content={blogDetailData.author} />
-        <meta property="article:published_time" content={blogDetailData.rawDate} />
-        <meta property="article:section" content={blogDetailData.category} />
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={blogDetailData.title} />
-        <meta name="twitter:description" content={blogDetailData.excerpt} />
-        <meta name="twitter:image" content={blogDetailData.bgImage} />
-        <meta name="twitter:creator" content="@ichwan" />
-
-        {/* Additional Meta Tags */}
-        <meta name="robots" content="index, follow" />
-        <meta name="googlebot" content="index, follow" />
-
-        {/* Structured Data */}
-        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
-      </Helmet>
+      <SEO customMeta={dynamicMeta}>
+        {/* Structured Data for Blog Post */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: blogDetailData.title,
+            description: blogDetailData.excerpt,
+            image: blogDetailData.bgImage,
+            author: {
+              '@type': 'Person',
+              name: blogDetailData.author,
+            },
+            publisher: {
+              '@type': 'Person',
+              name: 'Ichwan',
+              url: typeof window !== 'undefined' ? window.location.origin : '',
+            },
+            datePublished: blogDetailData.rawDate,
+            dateModified: blogDetailData.rawDate,
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': typeof window !== 'undefined' ? `${window.location.origin}/blog/${slug}` : '',
+            },
+          })}
+        </script>
+      </SEO>
 
       {/* Header dengan back button */}
       <div className="sticky top-5 z-50 mb-6 bg-black/80 backdrop-blur-sm ">
