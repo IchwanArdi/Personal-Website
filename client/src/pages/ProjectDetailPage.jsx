@@ -93,7 +93,7 @@ function ProjectDetailPage() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Back Button */}
-      <div className="sticky top-5 z-50 bg-black backdrop-blur-sm ">
+      <div className="sticky top-5 z-30 bg-black backdrop-blur-sm ">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <button onClick={goBack} className="flex font-semibold items-center gap-2 text-yellow-500 hover:text-yellow-400 transition-colors group">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />

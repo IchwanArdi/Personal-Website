@@ -181,7 +181,7 @@ function BlogDetailPage() {
       </SEO>
 
       {/* Header dengan back button */}
-      <div className="sticky top-5 z-50 mb-6 bg-black/80 backdrop-blur-sm ">
+      <div className="sticky top-5 z-30 mb-6 bg-black/80 backdrop-blur-sm ">
         <div className="max-w-5xl mx-auto px-6 py-4">
           <Link to="/blogs" className="flex font-semibold items-center gap-2 text-yellow-500 hover:text-yellow-400 transition-colors group">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />

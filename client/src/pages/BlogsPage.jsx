@@ -241,7 +241,7 @@ function BlogsPage() {
         {featuredItem && (
           <div className="mb-16">
             <Link to={`/blog/${featuredItem.slug}`}>
-              <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900/20 to-gray-900/40 backdrop-blur-sm border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-500 cursor-pointer">
+              <div className="group relative overflow-hidden rounded-3xl bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-500 cursor-pointer">
                 <div className="lg:flex">
                   {/* Left Side Image */}
                   <div className="lg:w-3/5 relative">
@@ -255,7 +255,7 @@ function BlogsPage() {
                   </div>
 
                   {/* Right Side Content */}
-                  <div className="lg:w-2/5 p-8 lg:p-12 flex flex-col justify-center">
+                  <div className="lg:w-2/5 py-8 px-4 lg:p-12 flex flex-col justify-center">
                     <div className="flex items-center gap-4 mb-4">
                       <span className="flex items-center gap-2 text-yellow-400 text-sm font-medium">
                         <Calendar className="w-4 h-4" />
@@ -293,7 +293,7 @@ function BlogsPage() {
               {otherItems.map((item, index) => (
                 <Link key={index} to={`/blog/${item.slug}`}>
                   <article className="group cursor-pointer">
-                    <div className=" bg-gray-900/70 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/30 hover:border-yellow-400/40 transition-all duration-500 hover:transform">
+                    <div className=" bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/30 hover:border-yellow-400/40 transition-all duration-500 hover:transform">
                       <div className="relative overflow-hidden">
                         <img src={item.bgImage} alt={item.title} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

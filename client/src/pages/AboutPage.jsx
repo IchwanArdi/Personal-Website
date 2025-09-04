@@ -54,28 +54,28 @@ function AboutPage() {
     {
       year: '2022',
       title: 'Started My Journey',
-      desc: 'Mulai kuliah di Universitas Amikom Purwokerto. First time touching React - it was love at first component! 💕',
+      desc: '📘 Mulai kuliah di Universitas Amikom Purwokerto. Belum terlalu fokus ke coding, masih adaptasi dunia kampus dan teori dasar.',
       icon: BookOpen,
       color: 'from-blue-500 to-cyan-500',
     },
     {
       year: '2023',
-      title: 'Deep Dive into Full Stack',
-      desc: "Belajar MERN Stack secara intensif. Bikin project pertama yang 'wow, gue bisa bikin ini!' moment 🤯",
+      title: 'Exploration Phase',
+      desc: '🧩 Belajar dasar-dasar pemrograman dan konsep web development. Coba-coba beberapa teknologi tapi belum intens fokus.',
       icon: Code,
       color: 'from-green-500 to-emerald-500',
     },
     {
       year: '2024',
-      title: 'Real Projects Era',
-      desc: 'Mulai handle project real seperti e-commerce, chat app dengan enkripsi, sampai layanan desa digital 🔥',
+      title: 'Real Coding Journey',
+      desc: '🔥 Mulai serius fokus di coding. Belajar MERN Stack, React, sampai bikin project nyata seperti e-commerce, chat app, dan layanan desa digital.',
       icon: Rocket,
       color: 'from-purple-500 to-pink-500',
     },
     {
       year: '2025',
       title: 'Next Level Goals',
-      desc: 'Fokus ke advanced concepts, performance optimization, dan exploring new frameworks! 🎯',
+      desc: '🎯 Fokus mendalami advanced concepts, performance optimization, serta eksplorasi framework dan teknologi terbaru.',
       icon: Target,
       color: 'from-yellow-500 to-orange-500',
     },
@@ -135,7 +135,7 @@ function AboutPage() {
     <div className="min-h-screen bg-black text-white overflow-hidden">
       <SEO pageKey="about" />
       {/* Hero Section - More Personal */}
-      <div className="relative pt-20 pb-16">
+      <div className="relative pt-10 ">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
             <h1 className="text-4xl lg:text-6xl font-bold mb-4">
@@ -149,7 +149,7 @@ function AboutPage() {
             </p>
 
             {/* Fun Facts Rotator */}
-            <div className="bg-gray-800/20 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 max-w-2xl mx-auto mb-8">
+            <div className="bg-gray-700/20 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 max-w-2xl mx-auto mb-8">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Zap className="w-5 h-5 text-yellow-400" />
                 <span className="text-yellow-400 font-semibold">Fun Fact</span>

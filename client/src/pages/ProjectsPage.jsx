@@ -163,7 +163,7 @@ function ProjectsPage() {
         {featuredProject && (
           <div className="mb-16">
             <Link to={`/project/${featuredProject.id}`}>
-              <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900/20 to-gray-900/40 backdrop-blur-sm border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-500">
+              <div className="group relative overflow-hidden rounded-3xl bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-500">
                 <div className="lg:flex">
                   <div className="lg:w-3/5 relative">
                     <div className="relative overflow-hidden h-80 lg:h-96">
@@ -181,7 +181,7 @@ function ProjectsPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="lg:w-2/5 p-8 lg:p-12 flex flex-col justify-center">
+                  <div className="lg:w-2/5 py-8 px-4 lg:p-12 flex flex-col justify-center">
                     <div className="flex items-center gap-4 mb-4">
                       <span className="flex items-center gap-2 text-yellow-400 text-sm font-medium">
                         <Calendar className="w-4 h-4" />
