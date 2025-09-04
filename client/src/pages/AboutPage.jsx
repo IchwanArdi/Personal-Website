@@ -149,7 +149,7 @@ function AboutPage() {
             </p>
 
             {/* Fun Facts Rotator */}
-            <div className="bg-gray-700/20 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 max-w-2xl mx-auto mb-8">
+            <div className="bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 max-w-2xl mx-auto mb-8">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Zap className="w-5 h-5 text-yellow-400" />
                 <span className="text-yellow-400 font-semibold">Fun Fact</span>
@@ -242,7 +242,7 @@ function AboutPage() {
                   {/* Content */}
                   <div className={`flex-1 ${!isLeft && 'lg:text-right'}`}>
                     <div
-                      className={`bg-gray-900/70 md:bg-gray-800/20 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 ${
+                      className={`bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 ${
                         isVisible[`journey-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                       }`}
                     >
@@ -286,7 +286,7 @@ function AboutPage() {
             return (
               <div
                 key={index}
-                className={`group bg-gray-900/70 md:bg-gray-800/20 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 hover:scale-105 ${
+                className={`group bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 hover:scale-105 ${
                   isVisible.personality ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
@@ -306,7 +306,7 @@ function AboutPage() {
 
       {/* Current Focus Section */}
       <div className="max-w-4xl mx-auto px-6 mb-20" data-animate id="focus">
-        <div className="bg-gray-900/70 md:bg-gray-800/20 backdrop-blur-sm rounded-3xl p-8 lg:p-12 border border-gray-700/20">
+        <div className="bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm rounded-3xl p-8 lg:p-12 border border-gray-700/20">
           <h2 className="text-3xl font-bold text-center mb-8">
             Currently <span className="text-yellow-400">Focusing</span> On
           </h2>
@@ -348,7 +348,7 @@ function AboutPage() {
             { number: '∞', label: 'Cups of Coffee', icon: '☕' },
             { number: '24/7', label: 'Learning Mode', icon: '🧠' },
           ].map((stat, index) => (
-            <div key={index} className="bg-gray-900/70 md:bg-gray-800/20 backdrop-blur-sm rounded-2xl p-6 text-center border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-300">
+            <div key={index} className="bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm rounded-2xl p-6 text-center border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-300">
               <div className="text-2xl mb-2">{stat.icon}</div>
               <div className="text-2xl font-bold text-yellow-400 mb-1">{stat.number}</div>
               <div className="text-sm text-gray-400">{stat.label}</div>
