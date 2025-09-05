@@ -128,3 +128,262 @@ export const BLOGS = {
     readArticle: 'Baca Artikel',
   },
 };
+
+export const ABOUT = {
+  en: {
+    // Hero Section
+    heroTitle: "Hi, I'm",
+    heroName: 'Ichwan!',
+    heroDescription: "IT student who's",
+    heroPassionate: 'passionate',
+    heroAbout: 'about',
+    heroFullStack: 'full stack development',
+    heroLikes: ". I love building web applications that don't just work, but are also",
+    heroEnjoyable: 'enjoyable to use',
+
+    // Fun Facts
+    funFactTitle: 'Fun Fact',
+    funFacts: ['🚀 Built 10+ web projects in 1+ year', "☕ Can't live without coffee while coding", '🌙 Night owl - most productive after 10 PM', '🎯 2025 Goal: Mastering Next.js & TypeScript', '💡 Always excited about new tech!'],
+
+    // Location
+    location: 'Purwokerto, Central Java',
+    availability: 'Available for remote work',
+
+    // Tech Stack
+    techStackTitle: 'My',
+    techStackArsenal: 'Tech',
+    techStackSubtitle: 'Arsenal',
+    techStackDescription: 'Technologies I work with daily to build amazing web applications',
+
+    // Tech Categories
+    frontend: 'frontend',
+    backend: 'backend',
+    database: 'database',
+    tools: 'tools',
+
+    // Journey Section
+    journeyTitle: 'My',
+    journeyHighlight: 'Journey',
+    journeySoFar: 'So Far',
+    journeyDescription: "From knowing only basic HTML-CSS to building full stack apps. Here's the story! 📖",
+
+    // Journey Items
+    journeyItems: [
+      {
+        year: '2022',
+        title: 'Started My Journey',
+        desc: '📘 Started college at Amikom University Purwokerto. Not too focused on coding yet, still adapting to campus life and basic theory.',
+      },
+      {
+        year: '2023',
+        title: 'Exploration Phase',
+        desc: '🧩 Learning programming basics and web development concepts. Tried several technologies but not intensely focused yet.',
+      },
+      {
+        year: '2024',
+        title: 'Real Coding Journey',
+        desc: '🔥 Started seriously focusing on coding. Learning MERN Stack, React, building real projects like e-commerce, chat apps, and digital village services.',
+      },
+      {
+        year: '2025',
+        title: 'Next Level Goals',
+        desc: '🎯 Focusing on mastering advanced concepts, performance optimization, and exploring latest frameworks and technologies.',
+      },
+    ],
+
+    // Personality Section
+    personalityTitle: 'What Makes Me',
+    personalityTick: 'Tick',
+    personalityDescription: 'More than just coding skills, this is what makes me passionate about development 🔥',
+
+    // Personality Traits
+    personalityTraits: [
+      {
+        trait: 'Problem Solver',
+        desc: 'Love coding challenges that make me think hard. Debugging until 3 AM? No problem! 🕐',
+      },
+      {
+        trait: 'Team Player',
+        desc: 'Working with teams is fun! Sharing knowledge and learning from others is my passion 🤝',
+      },
+      {
+        trait: 'Always Learning',
+        desc: 'Tech evolves so fast, so I always stay updated with the latest trends. FOMO about new tech! 📚',
+      },
+      {
+        trait: 'Detail Oriented',
+        desc: 'Pixel perfect UI and clean code are my obsession. If something is "kinda off" it really bothers me 😅',
+      },
+    ],
+
+    // Current Focus
+    currentFocusTitle: 'Currently',
+    currentFocusFocusing: 'Focusing',
+    currentFocusOn: 'On',
+
+    focusItems: [
+      {
+        title: 'Advanced React',
+        desc: 'Next.js, TypeScript, performance optimization',
+      },
+      {
+        title: 'System Design',
+        desc: 'Scalable architecture, microservices',
+      },
+      {
+        title: 'User Experience',
+        desc: 'Clean design, smooth interactions',
+      },
+    ],
+
+    // Fun Stats
+    funStats: [
+      { number: '10+', label: 'Projects Built', icon: '🚀' },
+      { number: '1+', label: 'Years Coding', icon: '⏰' },
+      { number: '∞', label: 'Cups of Coffee', icon: '☕' },
+      { number: '24/7', label: 'Learning Mode', icon: '🧠' },
+    ],
+
+    // CTA Section
+    ctaTitle: "Let's Build Something",
+    ctaAmazing: 'Amazing',
+    ctaTogether: 'Together!',
+    ctaDescription: "Got a cool project idea? Or just want to chat about tech? I'm always excited to connect with fellow developers and collaborate on cool stuff! 🤝",
+
+    // CTA Buttons
+    ctaLetsTalk: "Let's Talk!",
+    ctaCheckWork: 'Check My Work',
+    ctaDownloadCV: 'Download CV',
+  },
+  id: {
+    // Hero Section
+    heroTitle: 'Hai, saya',
+    heroName: 'Ichwan!',
+    heroDescription: 'Mahasiswa IT yang',
+    heroPassionate: 'passionate',
+    heroAbout: 'banget sama',
+    heroFullStack: 'full stack development',
+    heroLikes: '. Suka banget bikin aplikasi web yang tidak cuma berfungsi, tapi juga',
+    heroEnjoyable: 'enak dipake',
+
+    // Fun Facts
+    funFactTitle: 'Fun Fact',
+    funFacts: [
+      '🚀 Sudah coding 10+ project web dalam 1+ tahun',
+      '☕ Tidak bisa hidup tanpa kopi saat coding',
+      '🌙 Night owl - most productive jam 10 malam ke atas',
+      '🎯 Goal 2025: Mastering Next.js & TypeScript',
+      '💡 Always excited tentang tech baru!',
+    ],
+
+    // Location
+    location: 'Purwokerto, Jawa Tengah',
+    availability: 'Tersedia untuk remote work',
+
+    // Tech Stack
+    techStackTitle: 'My',
+    techStackArsenal: 'Tech',
+    techStackSubtitle: 'Arsenal',
+    techStackDescription: 'Teknologi yang saya gunakan setiap hari untuk membangun aplikasi web yang menakjubkan',
+
+    // Tech Categories
+    frontend: 'frontend',
+    backend: 'backend',
+    database: 'database',
+    tools: 'tools',
+
+    // Journey Section
+    journeyTitle: 'My',
+    journeyHighlight: 'Journey',
+    journeySoFar: 'So Far',
+    journeyDescription: "Dari yang awalnya cuma tau HTML-CSS basic, sekarang udah bisa bikin full stack app. Here's the story! 📖",
+
+    // Journey Items
+    journeyItems: [
+      {
+        year: '2022',
+        title: 'Started My Journey',
+        desc: '📘 Mulai kuliah di Universitas Amikom Purwokerto. Belum terlalu fokus ke coding, masih adaptasi dunia kampus dan teori dasar.',
+      },
+      {
+        year: '2023',
+        title: 'Exploration Phase',
+        desc: '🧩 Belajar dasar-dasar pemrograman dan konsep web development. Coba-coba beberapa teknologi tapi belum intens fokus.',
+      },
+      {
+        year: '2024',
+        title: 'Real Coding Journey',
+        desc: '🔥 Mulai serius fokus di coding. Belajar MERN Stack, React, sampai bikin project nyata seperti e-commerce, chat app, dan layanan desa digital.',
+      },
+      {
+        year: '2025',
+        title: 'Next Level Goals',
+        desc: '🎯 Fokus mendalami advanced concepts, performance optimization, serta eksplorasi framework dan teknologi terbaru.',
+      },
+    ],
+
+    // Personality Section
+    personalityTitle: 'What Makes Me',
+    personalityTick: 'Tick',
+    personalityDescription: 'Lebih dari sekedar coding skill, ini yang bikin gue passionate sama development 🔥',
+
+    // Personality Traits
+    personalityTraits: [
+      {
+        trait: 'Problem Solver',
+        desc: 'Love banget sama challenge coding yang bikin mikir keras. Debugging sampe jam 3 pagi? No problem! 🕐',
+      },
+      {
+        trait: 'Team Player',
+        desc: 'Kerja bareng tim itu seru! Sharing knowledge dan belajar dari orang lain adalah passion gue 🤝',
+      },
+      {
+        trait: 'Always Learning',
+        desc: 'Tech berkembang cepet banget, makanya gue selalu update dengan trend terbaru. FOMO sama tech baru! 📚',
+      },
+      {
+        trait: 'Detail Oriented',
+        desc: "Pixel perfect UI dan clean code adalah obsesi. Kalau ada yang 'agak-agak' pasti ganggu banget 😅",
+      },
+    ],
+
+    // Current Focus
+    currentFocusTitle: 'Currently',
+    currentFocusFocusing: 'Focusing',
+    currentFocusOn: 'On',
+
+    focusItems: [
+      {
+        title: 'Advanced React',
+        desc: 'Next.js, TypeScript, performance optimization',
+      },
+      {
+        title: 'System Design',
+        desc: 'Scalable architecture, microservices',
+      },
+      {
+        title: 'User Experience',
+        desc: 'Clean design, smooth interactions',
+      },
+    ],
+
+    // Fun Stats
+    funStats: [
+      { number: '10+', label: 'Projects Built', icon: '🚀' },
+      { number: '1+', label: 'Years Coding', icon: '⏰' },
+      { number: '∞', label: 'Cups of Coffee', icon: '☕' },
+      { number: '24/7', label: 'Learning Mode', icon: '🧠' },
+    ],
+
+    // CTA Section
+    ctaTitle: "Let's Build Something",
+    ctaAmazing: 'Amazing',
+    ctaTogether: 'Together!',
+    ctaDescription: "Punya ide project yang keren? Or just want to chat about tech? I'm always excited to connect with fellow developers and collaborate on cool stuff! 🤝",
+
+    // CTA Buttons
+    ctaLetsTalk: "Let's Talk!",
+    ctaCheckWork: 'Check My Work',
+    ctaDownloadCV: 'Download CV',
+  },
+};
