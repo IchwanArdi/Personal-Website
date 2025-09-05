@@ -113,6 +113,13 @@ function ProjectsPage() {
     };
   };
 
+  // Handle button clicks to prevent event bubbling
+  const handleButtonClick = (e, url) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   if (loading) {
     return (
       <>
@@ -217,21 +224,19 @@ function ProjectsPage() {
                     {/* Action Buttons */}
                     <div className="flex gap-4">
                       {newProject.githubUrl && newProject.githubUrl !== '#' && (
-                        <a href={newProject.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-2 py-3 rounded-lg font-medium transition-colors">
+                        <button onClick={(e) => handleButtonClick(e, newProject.githubUrl)} className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-2 py-3 rounded-lg font-medium transition-colors">
                           <Github className="w-4 h-4" />
                           {t.viewCode}
-                        </a>
+                        </button>
                       )}
                       {newProject.liveUrl && (
-                        <a
-                          href={newProject.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <button
+                          onClick={(e) => handleButtonClick(e, newProject.liveUrl)}
                           className="flex items-center gap-2 border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black px-2 py-3 rounded-lg font-medium transition-colors"
                         >
                           <ExternalLink className="w-4 h-4" />
                           {t.liveDemo}
-                        </a>
+                        </button>
                       )}
                     </div>
                   </div>
@@ -292,17 +297,17 @@ function ProjectsPage() {
                         {/* Action Buttons */}
                         <div className="flex gap-2">
                           {project.githubUrl && project.githubUrl !== '#' && (
-                            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-yellow-400 text-sm font-medium hover:text-yellow-300 transition-colors">
+                            <button onClick={(e) => handleButtonClick(e, project.githubUrl)} className="flex items-center gap-1 text-yellow-400 text-sm font-medium hover:text-yellow-300 transition-colors">
                               <Github className="w-3 h-3" />
                               {t.code}
-                            </a>
+                            </button>
                           )}
                           {project.liveUrl && project.githubUrl && project.githubUrl !== '#' && <span className="text-gray-500 text-sm">•</span>}
                           {project.liveUrl && (
-                            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-yellow-400 text-sm font-medium hover:text-yellow-300 transition-colors">
+                            <button onClick={(e) => handleButtonClick(e, project.liveUrl)} className="flex items-center gap-1 text-yellow-400 text-sm font-medium hover:text-yellow-300 transition-colors">
                               <ExternalLink className="w-3 h-3" />
                               {t.live}
-                            </a>
+                            </button>
                           )}
                         </div>
                       </div>
