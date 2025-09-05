@@ -184,6 +184,31 @@ export const BLOGS = {
   },
 };
 
+export const DETAILBLOG = {
+  en: {
+    loadingBlog: 'Loading article...',
+    noBlog: 'Article not found',
+    noBlogInfo: 'The article you are looking for does not exist or has been removed.',
+    backToBlogs: 'Back to Blogs',
+    share: 'Share',
+    thankForReading: 'Thank you for reading!',
+    shareArticle: 'Share this Article',
+    publicationDate: 'Publication Date',
+    viewAllBlogs: 'View All Blogs',
+  },
+  id: {
+    loadingBlog: 'Memuat artikel...',
+    noBlog: 'Artikel tidak ditemukan',
+    noBlogInfo: 'Artikel yang Anda cari tidak ada atau telah dihapus.',
+    backToBlogs: 'Kembali ke Blog',
+    share: 'Bagikan',
+    thankForReading: 'Terima kasih telah membaca!',
+    shareArticle: 'Bagikan Artikel ini',
+    publicationDate: 'Tanggal Publikasi',
+    viewAllBlogs: 'Lihat Semua Blog',
+  },
+};
+
 export const ABOUT = {
   en: {
     // Hero Section

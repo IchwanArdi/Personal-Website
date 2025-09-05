@@ -63,7 +63,7 @@ export const PAGE_METAS = {
   },
 
   about: {
-    title: 'Tentang Saya',
+    title: 'About Me',
     description: 'Kenali lebih dekat Ichwan, seorang Full Stack Developer dengan passion dalam menciptakan solusi web yang inovatif dan user-friendly.',
     keywords: 'Tentang Ichwan, About, Full Stack Developer, Profil, CV, Resume',
     url: '/about',

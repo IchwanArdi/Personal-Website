@@ -3,12 +3,17 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Calendar, Clock, Tag, ArrowLeft, Share2, User } from 'lucide-react';
 import SEO from '../components/SEO';
+import { useApp } from '../contexts/AppContext';
+import { DETAILBLOG } from '../utils/constants';
 
 function BlogDetailPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [blogDetailData, setBlogDetailData] = useState(null);
+
+  const { language } = useApp();
+  const t = DETAILBLOG[language];
 
   // Helper function to format date
   const formatDate = (dateString) => {
@@ -103,7 +108,7 @@ function BlogDetailPage() {
     };
 
     fetchDetailBlog();
-  }, [slug, navigate]);
+  }, [slug, navigate, language, t]);
 
   // Loading state
   if (loading) {
@@ -113,7 +118,7 @@ function BlogDetailPage() {
         <div className="min-h-screen bg-black text-white flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-2 border-yellow-400 border-t-transparent mx-auto mb-4"></div>
-            <p className="text-gray-300">Memuat artikel...</p>
+            <p className="text-gray-300"></p>
           </div>
         </div>
       </>
@@ -127,11 +132,11 @@ function BlogDetailPage() {
         <SEO pageKey="blogs" />
         <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
           <div className="text-center">
-            <h2 className="text-2xl font-bold mb-4">Artikel tidak ditemukan</h2>
-            <p className="text-gray-400 mb-6">Artikel yang Anda cari mungkin telah dipindahkan atau dihapus.</p>
+            <h2 className="text-2xl font-bold mb-4">{t.noBlog}</h2>
+            <p className="text-gray-400 mb-6">{t.noBlogInfo}</p>
             <Link to="/blogs" className="inline-flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors">
               <ArrowLeft className="w-4 h-4" />
-              Kembali ke Blog
+              {t.backToBlogs}
             </Link>
           </div>
         </div>
@@ -185,7 +190,7 @@ function BlogDetailPage() {
         <div className="max-w-5xl mx-auto px-6 py-4">
           <Link to="/blogs" className="flex font-semibold items-center gap-2 text-yellow-500 hover:text-yellow-400 transition-colors group">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Blogs
+            {t.backToBlogs}
           </Link>
         </div>
       </div>
@@ -222,10 +227,10 @@ function BlogDetailPage() {
                 navigator.clipboard.writeText(window.location.href);
                 toast.success('Link berhasil disalin!');
               }}
-              className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors ml-auto transform duration-200"
+              className="hidden md:flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors ml-auto transform duration-200"
             >
               <Share2 className="w-4 h-4" />
-              <span className="hidden sm:inline">Bagikan</span>
+              <span className="hidden sm:inline">{t.share}</span>
             </button>
           </div>
 
@@ -263,9 +268,9 @@ function BlogDetailPage() {
           <footer className="border-t border-gray-800 pt-12 pb-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div>
-                <p className="text-lg text-gray-300 mb-2">Terima kasih telah membaca! 🙏</p>
+                <p className="text-lg text-gray-300 mb-2">{t.thankForReading} 🙏</p>
                 <p className="text-gray-500">
-                  Dipublikasikan {blogDetailData.date} • {blogDetailData.readTime}
+                  {t.publicationDate} {blogDetailData.date} • {blogDetailData.readTime}
                 </p>
               </div>
               <button
@@ -273,23 +278,23 @@ function BlogDetailPage() {
                   navigator.clipboard.writeText(window.location.href);
                   toast.success('Link berhasil disalin!');
                 }}
-                className="flex items-center gap-2 bg-yellow-400/10 text-yellow-400 px-6 py-3 rounded-xl hover:bg-yellow-400/20 transition-all duration-300 border border-yellow-400/20 hover:border-yellow-400/40 font-medium"
+                className="flex items-center gap-2 text-yellow-400 px-6 py-3 rounded-xl hover:bg-yellow-400/20 transition-all duration-300 border border-yellow-400/20 hover:border-yellow-400/40 font-medium"
               >
                 <Share2 className="w-4 h-4" />
-                Bagikan Artikel
+                {t.shareArticle}
               </button>
             </div>
           </footer>
 
-          {/* More articles section - card style but softer */}
-          <section className="bg-gray-900/30 rounded-3xl p-8 border border-gray-800/50">
-            <h3 className="text-2xl font-bold mb-3 text-white">Artikel Lainnya</h3>
-            <p className="text-gray-400 mb-6">Jelajahi lebih banyak artikel menarik di blog kami</p>
-            <Link to="/blogs" className="inline-flex items-center gap-2 bg-yellow-400 text-black px-6 py-3 rounded-xl font-medium hover:bg-yellow-300 transition-all duration-300hover:shadow-lg hover:shadow-yellow-400/25">
-              Lihat Semua Artikel
-              <ArrowLeft className="w-4 h-4 rotate-180" />
-            </Link>
-          </section>
+          {/* Navigation to other projects */}
+          <div className="mx-16 pt-8 border-t border-gray-800/50">
+            <div className="text-center">
+              <Link to="/blogs" className="inline-flex items-center gap-2 bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white px-6 py-3 rounded-lg transition-all">
+                <ArrowLeft className="w-4 h-4" />
+                {t.viewAllBlogs}
+              </Link>
+            </div>
+          </div>
         </main>
         <br />
       </div>
