@@ -319,8 +319,8 @@ function ProjectsPage() {
             <div className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
               <Code className="w-12 h-12 text-gray-600" />
             </div>
-            <h3 className="text-2xl font-bold mb-2">No projects found</h3>
-            <p className="text-gray-400">Try adjusting your search or filter criteria</p>
+            <h3 className="text-2xl font-bold mb-2">{t.noResults}</h3>
+            <p className="text-gray-400">{t.information}</p>
           </div>
         )}
 
@@ -330,8 +330,8 @@ function ProjectsPage() {
             <div className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
               <Code className="w-12 h-12 text-gray-600" />
             </div>
-            <h3 className="text-2xl font-bold mb-2">No projects available</h3>
-            <p className="text-gray-400">Projects will appear here once they are added to the database</p>
+            <h3 className="text-2xl font-bold mb-2">{t.noData}</h3>
+            <p className="text-gray-400">{t.noDataInfo}</p>
           </div>
         )}
       </div>

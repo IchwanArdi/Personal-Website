@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Github, ExternalLink, Calendar, Tag, Star, Users, Clock, CheckCircle, Play, FileImage, Code2 } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { useApp } from '../contexts/AppContext';
+import { DETAILPROJECT } from '../utils/constants';
 
 function ProjectDetailPage() {
   const { id } = useParams();
@@ -10,6 +12,9 @@ function ProjectDetailPage() {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showAllFeatures, setShowAllFeatures] = useState(false);
+
+  const { language } = useApp();
+  const t = DETAILPROJECT[language];
 
   useEffect(() => {
     const fetchProjectDetail = async () => {
@@ -59,7 +64,7 @@ function ProjectDetailPage() {
     if (id) {
       fetchProjectDetail();
     }
-  }, [id, navigate]);
+  }, [id, navigate, language, t]);
 
   const goBack = () => {
     navigate('/projects');
@@ -70,7 +75,7 @@ function ProjectDetailPage() {
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading project details...</p>
+          <p className="text-gray-400">{t.loadingProject}</p>
         </div>
       </div>
     );
@@ -80,10 +85,10 @@ function ProjectDetailPage() {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Project Not Found</h2>
-          <p className="text-gray-400 mb-4">The project you're looking for doesn't exist.</p>
+          <h2 className="text-2xl font-bold mb-2">{t.noProject}</h2>
+          <p className="text-gray-400 mb-4">{t.noProjectInfo}</p>
           <button onClick={goBack} className="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-2 rounded-lg font-medium transition-colors">
-            Back to Projects
+            {t.backToProjects}
           </button>
         </div>
       </div>
@@ -97,7 +102,7 @@ function ProjectDetailPage() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <button onClick={goBack} className="flex font-semibold items-center gap-2 text-yellow-500 hover:text-yellow-400 transition-colors group">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Projects
+            {t.backToProjects}
           </button>
         </div>
       </div>
@@ -114,12 +119,6 @@ function ProjectDetailPage() {
               <Tag className="w-4 h-4" />
               {projectDetail.category}
             </span>
-            {projectDetail.featured && (
-              <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-                <Star className="w-3 h-3" />
-                FEATURED
-              </span>
-            )}
           </div>
 
           <h1 className="text-4xl lg:text-5xl md:py-2 font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">{projectDetail.title}</h1>
@@ -131,7 +130,7 @@ function ProjectDetailPage() {
             {projectDetail.githubUrl && projectDetail.githubUrl !== '#' && (
               <a href={projectDetail.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-lg font-medium transition-all">
                 <Github className="w-5 h-5" />
-                View Code
+                {t.viewCode}
               </a>
             )}
             {projectDetail.liveUrl && (
@@ -142,7 +141,7 @@ function ProjectDetailPage() {
                 className="flex items-center gap-2 border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black px-6 py-3 rounded-lg font-medium transition-all"
               >
                 <ExternalLink className="w-5 h-5" />
-                Live Demo
+                {t.liveDemo}
               </a>
             )}
           </div>
@@ -194,7 +193,7 @@ function ProjectDetailPage() {
             <section>
               <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
                 <FileImage className="w-6 h-6 text-yellow-400" />
-                About This Project
+                {t.aboutThisProject}
               </h2>
               <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30  backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
                 <p className="text-gray-300 leading-relaxed text-lg">{projectDetail.description}</p>
@@ -206,7 +205,7 @@ function ProjectDetailPage() {
               <section>
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-yellow-400" />
-                  Key Features
+                  {t.keyFeatures}
                 </h2>
                 <div className="bg-gradient-to-br mb-5 from-gray-900/20 to-gray-900/30  backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -220,32 +219,9 @@ function ProjectDetailPage() {
 
                   {projectDetail.features.length > 6 && (
                     <button onClick={() => setShowAllFeatures(!showAllFeatures)} className="mt-4 text-yellow-400 hover:text-yellow-300 text-sm font-medium transition-colors">
-                      {showAllFeatures ? 'Show Less' : `Show ${projectDetail.features.length - 6} More Features`}
+                      {showAllFeatures ? t.showLess : `${t.show} ${projectDetail.features.length - 6} ${t.moreFeatures}`}
                     </button>
                   )}
-                </div>
-              </section>
-            )}
-
-            {/* Challenges & Solutions - Only show if challenges exist */}
-            {projectDetail.challenges && projectDetail.challenges.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Code2 className="w-6 h-6 text-yellow-400" />
-                  Challenges & Solutions
-                </h2>
-                <div className="space-y-4">
-                  {projectDetail.challenges.map((challenge, index) => (
-                    <div key={index} className="bg-gradient-to-br from-gray-900/20 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
-                      <h3 className="text-lg font-semibold mb-2 text-yellow-200">{challenge.title}</h3>
-                      <p className="text-gray-400 mb-3">{challenge.description}</p>
-                      <div className="bg-gray-800/50 rounded-lg p-3 border-l-4 border-yellow-400">
-                        <p className="text-gray-300 text-sm">
-                          <strong className="text-yellow-400">Solution:</strong> {challenge.solution}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </section>
             )}
@@ -255,26 +231,26 @@ function ProjectDetailPage() {
           <div className="lg:col-span-1 space-y-8">
             {/* Project Info */}
             <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
-              <h3 className="text-xl font-bold mb-4">Project Info</h3>
+              <h3 className="text-xl font-bold mb-4">{t.projectInfo}</h3>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Clock className="w-4 h-4 text-yellow-400" />
                   <div>
-                    <p className="text-sm text-gray-400">Duration</p>
+                    <p className="text-sm text-gray-400">{t.duration}</p>
                     <p className="text-gray-200">{projectDetail.duration}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Users className="w-4 h-4 text-yellow-400" />
                   <div>
-                    <p className="text-sm text-gray-400">Team Size</p>
+                    <p className="text-sm text-gray-400">{t.teamSize}</p>
                     <p className="text-gray-200">{projectDetail.teamSize}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <CheckCircle className="w-4 h-4 text-yellow-400" />
                   <div>
-                    <p className="text-sm text-gray-400">Status</p>
+                    <p className="text-sm text-gray-400">{t.status}</p>
                     <p className="text-gray-200">{projectDetail.status}</p>
                   </div>
                 </div>
@@ -284,7 +260,7 @@ function ProjectDetailPage() {
             {/* Technologies */}
             {projectDetail.technologies && projectDetail.technologies.length > 0 && (
               <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
-                <h3 className="text-xl font-bold mb-4">Technologies Used</h3>
+                <h3 className="text-xl font-bold mb-4">{t.technologiesUsed}</h3>
                 <div className="flex flex-wrap gap-2">
                   {projectDetail.technologies.map((tech, index) => (
                     <span key={index} className="bg-gray-800/50 hover:bg-yellow-400/10 text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 cursor-default">
@@ -297,7 +273,7 @@ function ProjectDetailPage() {
 
             {/* Quick Actions */}
             <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
-              <h3 className="text-xl font-bold mb-4">Quick Actions</h3>
+              <h3 className="text-xl font-bold mb-4">{t.quickActions}</h3>
               <div className="space-y-3">
                 {projectDetail.githubUrl && projectDetail.githubUrl !== '#' && (
                   <a
@@ -307,7 +283,7 @@ function ProjectDetailPage() {
                     className="flex items-center gap-3 w-full bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white px-4 py-3 rounded-lg transition-all group"
                   >
                     <Github className="w-4 h-4 group-hover:text-yellow-400" />
-                    <span>View Source Code</span>
+                    <span>{t.viewSourceCode}</span>
                     <ExternalLink className="w-3 h-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
                   </a>
                 )}
@@ -320,7 +296,7 @@ function ProjectDetailPage() {
                     className="flex items-center gap-3 w-full bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 hover:text-yellow-300 px-4 py-3 rounded-lg transition-all group border border-yellow-400/20"
                   >
                     <Play className="w-4 h-4" />
-                    <span>Live Demo</span>
+                    <span>{t.liveDemo}</span>
                     <ExternalLink className="w-3 h-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
                   </a>
                 )}
@@ -334,7 +310,7 @@ function ProjectDetailPage() {
           <div className="text-center">
             <button onClick={goBack} className="inline-flex items-center gap-2 bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white px-6 py-3 rounded-lg transition-all">
               <ArrowLeft className="w-4 h-4" />
-              View All Projects
+              {t.viewAllProjects}
             </button>
           </div>
         </div>
