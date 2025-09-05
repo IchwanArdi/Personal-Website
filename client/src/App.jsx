@@ -3,19 +3,27 @@ import { AppProvider } from './contexts/AppContext';
 import ScrollToTop from './components/ScrollToTop';
 import Navbar from './components/Layout/Navbar/Navbar';
 import Footer from './components/Layout/Footer/Footer';
+import { useApp } from './contexts/AppContext';
 
 function App() {
   return (
     <AppProvider>
-      <ScrollToTop /> {/* 🔥 taruh di sini */}
-      <div className="bg-black">
-        <Navbar />
-        <main className="bg-black">
-          <Outlet /> {/* 👉 halaman anak tampil di sini */}
-        </main>
-        <Footer />
-      </div>
+      <ScrollToTop />
+      <AppContent />
     </AppProvider>
+  );
+}
+
+function AppContent() {
+  const { isDarkMode } = useApp();
+  return (
+    <div className={` ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+      <Navbar />
+      <main className={` ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
   );
 }
 

@@ -6,7 +6,7 @@ import { ABOUT } from '../utils/constants';
 import { useApp } from '../contexts/AppContext';
 
 function AboutPage() {
-  const { language } = useApp();
+  const { language, isDarkMode } = useApp();
   const t = ABOUT[language];
 
   const [currentFact, setCurrentFact] = useState(0);
@@ -25,14 +25,14 @@ function AboutPage() {
   const techCategories = {
     [t.frontend]: [
       { name: 'React', color: '#61DAFB', bgColor: 'bg-cyan-400' },
-      { name: 'Next.js', color: '#000000', bgColor: 'bg-gray-900' },
+      { name: 'Next.js', color: '#000000', bgColor: isDarkMode ? 'bg-gray-900' : 'bg-gray-800' },
       { name: 'TypeScript', color: '#3178C6', bgColor: 'bg-blue-600' },
       { name: 'Tailwind', color: '#06B6D4', bgColor: 'bg-cyan-500' },
       { name: 'JavaScript', color: '#F7DF1E', bgColor: 'bg-yellow-400' },
     ],
     [t.backend]: [
       { name: 'Node.js', color: '#339933', bgColor: 'bg-green-500' },
-      { name: 'Express', color: '#000000', bgColor: 'bg-gray-800' },
+      { name: 'Express', color: '#000000', bgColor: isDarkMode ? 'bg-gray-800' : 'bg-gray-700' },
       { name: 'Socket.io', color: '#010101', bgColor: 'bg-gray-700' },
     ],
     [t.database]: [
@@ -75,7 +75,7 @@ function AboutPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
+    <div className={`min-h-screen overflow-hidden ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
       <SEO pageKey="about" />
       {/* Hero Section - More Personal */}
       <div className="relative pt-10 ">
@@ -85,23 +85,23 @@ function AboutPage() {
               {t.heroTitle} <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">{t.heroName}</span>
             </h1>
 
-            <p className="text-xl lg:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              {t.heroDescription} <span className="text-yellow-400 font-semibold">{t.heroPassionate}</span> {t.heroAbout}
-              <span className="text-yellow-400 font-semibold"> {t.heroFullStack}</span>
+            <p className={`text-xl lg:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              {t.heroDescription} <span className="text-yellow-500 font-semibold">{t.heroPassionate}</span> {t.heroAbout}
+              <span className="text-yellow-500 font-semibold"> {t.heroFullStack}</span>
               {t.heroLikes}
-              <span className="text-yellow-400 font-semibold"> {t.heroEnjoyable}</span>! ✨
+              <span className="text-yellow-500 font-semibold"> {t.heroEnjoyable}</span>! ✨
             </p>
 
             {/* Fun Facts Rotator */}
-            <div className="bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 max-w-2xl mx-auto mb-8">
+            <div className={`backdrop-blur-sm rounded-2xl p-6 border max-w-2xl mx-auto mb-8 ${isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/50 border-gray-300/30'}`}>
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Zap className="w-5 h-5 text-yellow-400" />
-                <span className="text-yellow-400 font-semibold">{t.funFactTitle}</span>
+                <Zap className="w-5 h-5 text-yellow-500" />
+                <span className="text-yellow-500 font-semibold">{t.funFactTitle}</span>
               </div>
               <p className="text-lg font-medium transition-all duration-500">{t.funFacts[currentFact]}</p>
             </div>
 
-            <div className="flex items-center justify-center gap-2 text-gray-400">
+            <div className={`flex items-center justify-center gap-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               <MapPin className="w-6 h-6 md:w-4 md:h-4" />
               <span>{t.location}</span>
               <span className="mx-2">•</span>
@@ -116,16 +116,16 @@ function AboutPage() {
       <div className="relative py-16 max-w-7xl mx-auto">
         <div className="mb-12 px-6">
           <h2 className="text-3xl lg:text-4xl font-bold text-center mb-4">
-            {t.techStackTitle} <span className="text-yellow-400">{t.techStackArsenal}</span> {t.techStackSubtitle}
+            {t.techStackTitle} <span className="text-yellow-500">{t.techStackArsenal}</span> {t.techStackSubtitle}
           </h2>
-          <p className="text-center text-gray-400 max-w-2xl mx-auto">{t.techStackDescription}</p>
+          <p className={`text-center max-w-2xl mx-auto ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{t.techStackDescription}</p>
         </div>
 
         <div className="space-y-8">
           {Object.entries(techCategories).map(([category, techs], categoryIndex) => (
             <div key={category} className="relative overflow-hidden">
               <div className="mb-4 px-6">
-                <h3 className="text-lg font-semibold text-gray-300 capitalize flex items-center gap-2">
+                <h3 className={`text-lg font-semibold capitalize flex items-center gap-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                   {category === t.frontend && <Code className="w-5 h-5 text-cyan-400" />}
                   {category === t.backend && <Rocket className="w-5 h-5 text-green-400" />}
                   {category === t.database && <BookOpen className="w-5 h-5 text-blue-400" />}
@@ -137,8 +137,8 @@ function AboutPage() {
               {/* Smooth sliding animation */}
               <div className="relative h-16 overflow-hidden">
                 {/* Gradient overlays */}
-                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent z-10"></div>
-                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-slate-950 via-slate-950/80 to-transparent z-10"></div>
+                <div className={`absolute inset-y-0 left-0 w-32 z-10 ${isDarkMode ? 'bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent' : 'bg-gradient-to-r from-gray-50 via-gray-50/80 to-transparent'}`}></div>
+                <div className={`absolute inset-y-0 right-0 w-32 z-10 ${isDarkMode ? 'bg-gradient-to-l from-slate-950 via-slate-950/80 to-transparent' : 'bg-gradient-to-l from-gray-50 via-gray-50/80 to-transparent'}`}></div>
 
                 <div
                   className="flex animate-pulse"
@@ -151,10 +151,12 @@ function AboutPage() {
                     techs.map((tech, techIndex) => (
                       <div
                         key={`${repeatIndex}-${techIndex}`}
-                        className="flex-shrink-0 mx-3 flex items-center gap-3 bg-gray-800/60 backdrop-blur-sm rounded-xl px-6 py-3 border border-gray-600/30 hover:border-gray-500/50 transition-all duration-300 shadow-lg"
+                        className={`flex-shrink-0 mx-3 flex items-center gap-3 backdrop-blur-sm rounded-xl px-6 py-3 border transition-all duration-300 shadow-lg ${
+                          isDarkMode ? 'bg-gray-800/60 border-gray-600/30 hover:border-gray-500/50' : 'bg-white/80 border-gray-300/40 hover:border-gray-400/60'
+                        }`}
                       >
                         <div className={`w-3 h-3 rounded-full ${tech.bgColor} shadow-md`}></div>
-                        <span className="text-white font-medium whitespace-nowrap">{tech.name}</span>
+                        <span className={`font-medium whitespace-nowrap ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{tech.name}</span>
                       </div>
                     ))
                   )}
@@ -168,9 +170,9 @@ function AboutPage() {
       {/* My Story Section */}
       <div className="max-w-6xl mx-auto px-6 mb-20" data-animate id="story">
         <h2 className="text-3xl lg:text-4xl font-bold text-center mb-4">
-          {t.journeyTitle} <span className="text-yellow-400">{t.journeyHighlight}</span> {t.journeySoFar}
+          {t.journeyTitle} <span className="text-yellow-500">{t.journeyHighlight}</span> {t.journeySoFar}
         </h2>
-        <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">{t.journeyDescription}</p>
+        <p className={`text-center mb-12 max-w-2xl mx-auto ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{t.journeyDescription}</p>
 
         <div className="relative">
           {/* Timeline Line */}
@@ -188,9 +190,9 @@ function AboutPage() {
                   {/* Content */}
                   <div className={`flex-1 ${!isLeft && 'lg:text-right'}`}>
                     <div
-                      className={`bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 ${
-                        isVisible[`journey-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                      }`}
+                      className={`backdrop-blur-sm rounded-2xl p-6 border transition-all duration-500 hover:border-yellow-400/30 ${
+                        isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/50 border-gray-300/30 hover:border-yellow-500/40'
+                      } ${isVisible[`journey-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                     >
                       <div className="flex items-center gap-3 mb-3">
                         <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${colors[index]} flex items-center justify-center`}>
@@ -198,16 +200,16 @@ function AboutPage() {
                         </div>
                         <div>
                           <span className="text-2xl font-bold">{item.year}</span>
-                          <h3 className="text-lg font-semibold text-yellow-400">{item.title}</h3>
+                          <h3 className="text-lg font-semibold text-yellow-500">{item.title}</h3>
                         </div>
                       </div>
-                      <p className="text-gray-300 leading-relaxed">{item.desc}</p>
+                      <p className={`leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{item.desc}</p>
                     </div>
                   </div>
 
                   {/* Timeline Dot */}
                   <div className="hidden lg:block relative">
-                    <div className="w-4 h-4 bg-yellow-400 rounded-full border-4 border-black"></div>
+                    <div className={`w-4 h-4 bg-yellow-400 rounded-full border-4 ${isDarkMode ? 'border-black' : 'border-gray-50'}`}></div>
                   </div>
 
                   {/* Spacer */}
@@ -222,9 +224,9 @@ function AboutPage() {
       {/* Personality Section */}
       <div className="max-w-6xl mx-auto px-6 mb-20" data-animate id="personality">
         <h2 className="text-3xl lg:text-4xl font-bold text-center mb-4">
-          {t.personalityTitle} <span className="text-yellow-400">{t.personalityTick}</span>
+          {t.personalityTitle} <span className="text-yellow-500">{t.personalityTick}</span>
         </h2>
-        <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">{t.personalityDescription}</p>
+        <p className={`text-center mb-12 max-w-2xl mx-auto ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{t.personalityDescription}</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {t.personalityTraits.map((item, index) => {
@@ -233,18 +235,18 @@ function AboutPage() {
             return (
               <div
                 key={index}
-                className={`group bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-500 hover:scale-105 ${
-                  isVisible.personality ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
+                className={`group backdrop-blur-sm rounded-2xl p-8 border transition-all duration-500 hover:scale-105 hover:border-yellow-400/30 ${
+                  isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/50 border-gray-300/30 hover:border-yellow-500/40'
+                } ${isVisible.personality ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-xl flex items-center justify-center">
                     <Icon className="w-6 h-6 text-black" />
                   </div>
-                  <h3 className="text-xl font-bold group-hover:text-yellow-400 transition-colors">{item.trait}</h3>
+                  <h3 className="text-xl font-bold group-hover:text-yellow-500 transition-colors">{item.trait}</h3>
                 </div>
-                <p className="text-gray-300 leading-relaxed">{item.desc}</p>
+                <p className={`leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{item.desc}</p>
               </div>
             );
           })}
@@ -253,9 +255,9 @@ function AboutPage() {
 
       {/* Current Focus Section */}
       <div className="max-w-4xl mx-auto px-6 mb-20" data-animate id="focus">
-        <div className="bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm rounded-3xl p-8 lg:p-12 border border-gray-700/20">
+        <div className={`backdrop-blur-sm rounded-3xl p-8 lg:p-12 border ${isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/50 border-gray-300/30'}`}>
           <h2 className="text-3xl font-bold text-center mb-8">
-            {t.currentFocusTitle} <span className="text-yellow-400">{t.currentFocusFocusing}</span> {t.currentFocusOn}
+            {t.currentFocusTitle} <span className="text-yellow-500">{t.currentFocusFocusing}</span> {t.currentFocusOn}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -270,7 +272,7 @@ function AboutPage() {
                     <Icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                  <p className="text-gray-400 text-sm">{item.desc}</p>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{item.desc}</p>
                 </div>
               );
             })}
@@ -282,10 +284,15 @@ function AboutPage() {
       <div className="max-w-6xl mx-auto px-6 mb-20">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {t.funStats.map((stat, index) => (
-            <div key={index} className="bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm rounded-2xl p-6 text-center border border-gray-700/20 hover:border-yellow-400/30 transition-all duration-300">
+            <div
+              key={index}
+              className={`backdrop-blur-sm rounded-2xl p-6 text-center border transition-all duration-300 hover:border-yellow-400/30 ${
+                isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/50 border-gray-300/30 hover:border-yellow-500/40'
+              }`}
+            >
               <div className="text-2xl mb-2">{stat.icon}</div>
-              <div className="text-2xl font-bold text-yellow-400 mb-1">{stat.number}</div>
-              <div className="text-sm text-gray-400">{stat.label}</div>
+              <div className="text-2xl font-bold text-yellow-500 mb-1">{stat.number}</div>
+              <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{stat.label}</div>
             </div>
           ))}
         </div>
@@ -293,11 +300,15 @@ function AboutPage() {
 
       {/* CTA Section */}
       <div className="max-w-4xl mx-auto px-6 pb-20 text-center">
-        <div className="bg-gradient-to-br from-yellow-400/10 to-orange-400/10 backdrop-blur-sm rounded-3xl p-8 lg:p-12 border border-yellow-400/20">
+        <div
+          className={`backdrop-blur-sm rounded-3xl p-8 lg:p-12 border ${
+            isDarkMode ? 'bg-gradient-to-br from-yellow-400/10 to-orange-400/10 border-yellow-400/20' : 'bg-gradient-to-br from-yellow-400/20 to-orange-400/20 border-yellow-500/30'
+          }`}
+        >
           <h2 className="text-3xl font-bold mb-4">
-            {t.ctaTitle} <span className="text-yellow-400">{t.ctaAmazing}</span> {t.ctaTogether}
+            {t.ctaTitle} <span className="text-yellow-500">{t.ctaAmazing}</span> {t.ctaTogether}
           </h2>
-          <p className="text-gray-300 mb-8 max-w-2xl mx-auto">{t.ctaDescription}</p>
+          <p className={`mb-8 max-w-2xl mx-auto ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{t.ctaDescription}</p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="mailto:ichwanpwt22@gmail.com" className="flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-4 rounded-xl font-medium transition-all duration-300 hover:scale-105">
@@ -308,7 +319,7 @@ function AboutPage() {
               href="https://github.com/IchwanArdi"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black px-8 py-4 rounded-xl font-medium transition-all duration-300 hover:scale-105"
+              className="flex items-center justify-center gap-2 border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black px-8 py-4 rounded-xl font-medium transition-all duration-300 hover:scale-105"
             >
               <Github className="w-5 h-5" />
               {t.ctaCheckWork}
