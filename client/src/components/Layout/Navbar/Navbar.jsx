@@ -1,10 +1,9 @@
 import { Settings } from 'lucide-react';
-import { useState, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useRef, useMemo, useCallback } from 'react';
+import { NavLink, Link } from 'react-router-dom';
 import { useApp } from '../../../contexts/AppContext';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import { NAVIGATION_LINKS } from '../../../utils/constants';
-import { Link } from 'react-router-dom';
 import SettingsDropdown from './SettingsDropdown';
 import MobileMenu from './MobileMenu';
 
@@ -19,18 +18,28 @@ const Navbar = () => {
   const settingsRef = useRef();
   const mobileMenuRef = useRef();
 
+  // Memoize navigation links untuk mencegah re-computation
+  const navLinks = useMemo(() => NAVIGATION_LINKS[language], [language]);
+
+  // Memoize class names untuk header
+  const headerClasses = useMemo(() => `w-full fixed top-0 z-20 backdrop-blur-md border-b transition-all duration-300 ${isDarkMode ? 'bg-black border-slate-800/50' : 'bg-white border-slate-200 shadow-md'}`, [isDarkMode]);
+
+  // Memoize class names untuk mobile logo
+  const logoClasses = useMemo(() => `text-xl font-bold transition-all duration-300 transform hover:scale-105 ${isDarkMode ? 'text-white hover:text-yellow-400' : 'text-slate-800 hover:text-yellow-600'}`, [isDarkMode]);
+
+  // Optimized event handlers dengan useCallback
+  const closeMenu = useCallback(() => setIsMenuOpen(false), []);
+  const closeSettings = useCallback(() => setIsSettingsOpen(false), []);
+  const toggleMenu = useCallback(() => setIsMenuOpen(!isMenuOpen), [isMenuOpen]);
+  const toggleSettings = useCallback(() => setIsSettingsOpen(!isSettingsOpen), [isSettingsOpen]);
+
   // Close menus when clicking outside
-  useClickOutside(settingsRef, () => setIsSettingsOpen(false), isSettingsOpen);
-  useClickOutside(mobileMenuRef, () => setIsMenuOpen(false), isMenuOpen);
-
-  const navLinks = NAVIGATION_LINKS[language];
-
-  const closeMenu = () => setIsMenuOpen(false);
-  const closeSettings = () => setIsSettingsOpen(false);
+  useClickOutside(settingsRef, closeSettings, isSettingsOpen);
+  useClickOutside(mobileMenuRef, closeMenu, isMenuOpen);
 
   return (
     <>
-      <header className={`w-full fixed top-0 z-20 backdrop-blur-md border-b transition-all duration-300 ${isDarkMode ? 'bg-black border-slate-800/50' : 'bg-white border-slate-200 shadow-md '}`}>
+      <header className={headerClasses}>
         <div className="max-w-7xl mx-auto px-6 md:px-0">
           <div className="flex items-center justify-between h-20">
             {/* Desktop Navigation */}
@@ -46,12 +55,8 @@ const Navbar = () => {
                     }
                   >
                     {link.name}
-                    {/* Animated underline */}
-                    <span
-                      className={`absolute bottom-0 left-1/2 w-0 h-0.5 rounded-full transition-all duration-300 transform -translate-x-1/2 group-hover:w-full ${
-                        isDarkMode ? 'bg-gradient-to-r from-yellow-400 to-yellow-600' : 'bg-gradient-to-r from-yellow-400 to-yellow-600'
-                      }`}
-                    />
+                    {/* Animated underline - Optimized */}
+                    <span className="absolute bottom-0 left-1/2 w-0 h-0.5 rounded-full transition-all duration-300 transform -translate-x-1/2 group-hover:w-full bg-gradient-to-r from-yellow-400 to-yellow-600" />
                   </NavLink>
                 </div>
               ))}
@@ -59,7 +64,7 @@ const Navbar = () => {
 
             {/* Mobile Logo */}
             <div className="lg:hidden">
-              <Link to="/" className={`text-xl font-bold transition-all duration-300 transform hover:scale-105 ${isDarkMode ? 'text-white hover:text-yellow-400' : 'text-slate-800 hover:text-yellow-600'}`}>
+              <Link to="/" className={logoClasses}>
                 <img src={logo} alt="Logo" className={`w-20 transition-all ${!isDarkMode ? 'invert' : ''}`} />
               </Link>
             </div>
@@ -70,15 +75,17 @@ const Navbar = () => {
               <div className="relative" ref={settingsRef}>
                 <button
                   className={`settings-toggle relative p-3 group rounded-lg transition-all duration-300 hover:scale-110 ${isDarkMode ? 'hover:bg-slate-800/50' : 'hover:bg-slate-200'}`}
-                  onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                  onClick={toggleSettings}
+                  type="button"
+                  aria-label="Settings"
                 >
-                  {/* Background pulse effect */}
+                  {/* Background pulse effect - Simplified */}
                   <div className={`absolute inset-0 rounded-lg transition-all duration-300 ${isSettingsOpen ? (isDarkMode ? 'bg-slate-700/30 scale-100 opacity-100' : 'bg-yellow-100 scale-100 opacity-100') : 'scale-0 opacity-0'}`} />
 
-                  {/* Rotating background */}
+                  {/* Rotating background - Optimized */}
                   <div
-                    className={`absolute inset-0 rounded-lg transition-all duration-300 ${
-                      isDarkMode ? 'bg-gradient-to-br from-slate-700/30 to-slate-800/30 opacity-0 group-hover:opacity-100' : 'bg-gradient-to-br from-yellow-100 to-yellow-200 opacity-0 group-hover:opacity-100'
+                    className={`absolute inset-0 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 ${
+                      isDarkMode ? 'bg-gradient-to-br from-slate-700/30 to-slate-800/30' : 'bg-gradient-to-br from-yellow-100 to-yellow-200'
                     }`}
                   />
 
@@ -100,7 +107,12 @@ const Navbar = () => {
               </div>
 
               {/* Mobile Menu Toggle */}
-              <button className={`menu-toggle lg:hidden relative p-3 group rounded-lg transition-all duration-300 hover:scale-110 ${isDarkMode ? 'hover:bg-slate-800/50' : 'hover:bg-slate-200'}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              <button
+                className={`menu-toggle lg:hidden relative p-3 group rounded-lg transition-all duration-300 hover:scale-110 ${isDarkMode ? 'hover:bg-slate-800/50' : 'hover:bg-slate-200'}`}
+                onClick={toggleMenu}
+                type="button"
+                aria-label="Menu"
+              >
                 {/* Background effect */}
                 <div className={`absolute inset-0 rounded-lg transition-all duration-300 ${isMenuOpen ? (isDarkMode ? 'bg-slate-700/30 scale-100 opacity-100' : 'bg-yellow-100 scale-100 opacity-100') : 'scale-0 opacity-0'}`} />
 
@@ -141,7 +153,8 @@ const Navbar = () => {
                     }`}
                   />
                 </div>
-                {/* Ripple effect on click */}
+
+                {/* Ripple effect - Simplified */}
                 <div className={`absolute inset-0 rounded-lg transition-all duration-500 ${isMenuOpen ? (isDarkMode ? 'bg-white/10 scale-150 opacity-0' : 'bg-yellow-100 scale-150 opacity-0') : 'scale-0 opacity-100'}`} />
               </button>
             </div>
