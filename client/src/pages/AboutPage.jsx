@@ -93,7 +93,7 @@ function AboutPage() {
             </p>
 
             {/* Fun Facts Rotator */}
-            <div className={`backdrop-blur-sm rounded-2xl p-6 border max-w-2xl mx-auto mb-8 ${isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/50 border-gray-300/30'}`}>
+            <div className={`backdrop-blur-sm rounded-2xl p-6 border max-w-2xl mx-auto mb-8 ${isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/10 border-gray-600/30 '}`}>
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Zap className="w-5 h-5 text-yellow-500" />
                 <span className="text-yellow-500 font-semibold">{t.funFactTitle}</span>
@@ -191,7 +191,7 @@ function AboutPage() {
                   <div className={`flex-1 ${!isLeft && 'lg:text-right'}`}>
                     <div
                       className={`backdrop-blur-sm rounded-2xl p-6 border transition-all duration-500 hover:border-yellow-400/30 ${
-                        isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/50 border-gray-300/30 hover:border-yellow-500/40'
+                        isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/10 border-gray-600/30 hover:border-yellow-500/40'
                       } ${isVisible[`journey-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                     >
                       <div className="flex items-center gap-3 mb-3">
@@ -236,7 +236,7 @@ function AboutPage() {
               <div
                 key={index}
                 className={`group backdrop-blur-sm rounded-2xl p-8 border transition-all duration-500 hover:scale-105 hover:border-yellow-400/30 ${
-                  isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/50 border-gray-300/30 hover:border-yellow-500/40'
+                  isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/10 border-gray-600/30 hover:border-yellow-500/40'
                 } ${isVisible.personality ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -255,7 +255,7 @@ function AboutPage() {
 
       {/* Current Focus Section */}
       <div className="max-w-4xl mx-auto px-6 mb-20" data-animate id="focus">
-        <div className={`backdrop-blur-sm rounded-3xl p-8 lg:p-12 border ${isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/50 border-gray-300/30'}`}>
+        <div className={`backdrop-blur-sm rounded-3xl p-8 lg:p-12 border ${isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/10 border-gray-600/30'}`}>
           <h2 className="text-3xl font-bold text-center mb-8">
             {t.currentFocusTitle} <span className="text-yellow-500">{t.currentFocusFocusing}</span> {t.currentFocusOn}
           </h2>
@@ -287,7 +287,7 @@ function AboutPage() {
             <div
               key={index}
               className={`backdrop-blur-sm rounded-2xl p-6 text-center border transition-all duration-300 hover:border-yellow-400/30 ${
-                isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/50 border-gray-300/30 hover:border-yellow-500/40'
+                isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/20' : 'bg-white/70 md:bg-white/10 border-gray-600/30 hover:border-yellow-500/40'
               }`}
             >
               <div className="text-2xl mb-2">{stat.icon}</div>

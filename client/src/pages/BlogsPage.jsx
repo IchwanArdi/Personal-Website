@@ -12,7 +12,7 @@ function BlogsPage() {
   const [loading, setLoading] = useState(false);
   const [blogData, setBlogData] = useState([]);
 
-  const { language } = useApp();
+  const { language, isDarkMode } = useApp();
   const t = BLOGS[language];
 
   // Helper function to create slug from title
@@ -170,10 +170,10 @@ function BlogsPage() {
     return (
       <>
         <SEO pageKey="blogs" />
-        <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
-            <p className="text-gray-400">Loading blogs...</p>
+            <p className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Loading blogs...</p>
           </div>
         </div>
       </>
@@ -181,7 +181,7 @@ function BlogsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
       <SEO customMeta={generateBlogsMeta()}>
         {/* Structured Data untuk Blog List */}
         <script type="application/ld+json">
@@ -214,13 +214,15 @@ function BlogsPage() {
       {/* Search Bar */}
       <div className="w-full flex justify-center pt-8 pb-4">
         <div className="relative w-full max-w-2xl mx-4">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`} />
           <input
             type="text"
             placeholder={t.searchPlaceholder}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-transparent border border-gray-600 rounded-lg py-3 pl-12 pr-4 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500 transition-colors"
+            className={`w-full border rounded-lg py-3 pl-12 pr-4 transition-colors focus:outline-none focus:border-yellow-500 ${
+              isDarkMode ? 'bg-transparent border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+            }`}
           />
         </div>
       </div>
@@ -232,7 +234,9 @@ function BlogsPage() {
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 text-sm font-semibold transition-colors ${selectedCategory === category ? 'text-yellow-400 border-b-2 border-yellow-400' : 'text-gray-400 hover:text-white'}`}
+              className={`px-4 py-2 text-sm font-semibold transition-colors ${
+                selectedCategory === category ? 'text-yellow-500 border-b-2 border-yellow-500' : isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+              }`}
             >
               {category}
             </button>
@@ -246,7 +250,11 @@ function BlogsPage() {
         {featuredItem && (
           <div className="mb-16">
             <Link to={`/blog/${featuredItem.slug}`}>
-              <div className="group relative overflow-hidden rounded-3xl bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-500 cursor-pointer">
+              <div
+                className={`group relative overflow-hidden rounded-3xl backdrop-blur-sm border transition-all duration-500 cursor-pointer ${
+                  isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/30 hover:border-yellow-400/30' : 'bg-white/70 md:bg-white/10 shadow-md border-gray-600/30 hover:border-yellow-500/40'
+                }`}
+              >
                 <div className="lg:flex">
                   {/* Left Side Image */}
                   <div className="lg:w-3/5 relative">
@@ -262,24 +270,28 @@ function BlogsPage() {
                   {/* Right Side Content */}
                   <div className="lg:w-2/5 py-8 px-4 lg:p-12 flex flex-col justify-center">
                     <div className="flex items-center gap-4 mb-4">
-                      <span className="flex items-center gap-2 text-yellow-400 text-sm font-medium">
+                      <span className="flex items-center gap-2 text-yellow-500 text-sm font-medium">
                         <Calendar className="w-4 h-4" />
                         {featuredItem.date}
                       </span>
-                      <span className="text-gray-400 text-sm">•</span>
-                      <span className="text-gray-400 text-sm">{featuredItem.readTime}</span>
+                      <span className={isDarkMode ? 'text-gray-400' : 'text-gray-500'} text-sm>
+                        •
+                      </span>
+                      <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{featuredItem.readTime}</span>
                     </div>
 
-                    <span className="inline-flex items-center gap-2 text-yellow-400 text-sm font-medium mb-3">
+                    <span className="inline-flex items-center gap-2 text-yellow-500 text-sm font-medium mb-3">
                       <Tag className="w-4 h-4" />
                       {featuredItem.category}
                     </span>
 
-                    <h2 className="text-3xl lg:text-4xl font-bold mb-4 leading-tight group-hover:text-yellow-200 transition-colors duration-300">{featuredItem.title}</h2>
+                    <h2 className={`text-3xl lg:text-4xl font-bold mb-4 leading-tight group-hover:text-yellow-500 transition-colors duration-300 ${isDarkMode ? 'group-hover:text-yellow-200' : 'group-hover:text-yellow-600'}`}>
+                      {featuredItem.title}
+                    </h2>
 
-                    <p className="text-gray-300 text-lg mb-6 leading-relaxed">{featuredItem.excerpt}</p>
+                    <p className={`text-lg mb-6 leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{featuredItem.excerpt}</p>
 
-                    <button className="flex items-center gap-2 text-yellow-400 font-medium hover:text-yellow-300 transition-colors group/btn">
+                    <button className="flex items-center gap-2 text-yellow-500 font-medium hover:text-yellow-400 transition-colors group/btn">
                       {t.readMore}
                       <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
                     </button>
@@ -293,12 +305,16 @@ function BlogsPage() {
         {/* Other Articles Grid */}
         {otherItems.length > 0 && (
           <div>
-            <h3 className="text-2xl font-bold mb-8 border-l-4 border-yellow-400 pl-4">{t.moreArticles}</h3>
+            <h3 className="text-2xl font-bold mb-8 border-l-4 border-yellow-500 pl-4">{t.moreArticles}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {otherItems.map((item, index) => (
                 <Link key={index} to={`/blog/${item.slug}`}>
                   <article className="group cursor-pointer">
-                    <div className=" bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/30 hover:border-yellow-400/40 transition-all duration-500 hover:transform">
+                    <div
+                      className={`backdrop-blur-sm rounded-2xl overflow-hidden border transition-all duration-500 hover:transform ${
+                        isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/30 hover:border-yellow-400/40' : 'bg-white/70 md:bg-white/10 border-gray-600/30 hover:border-yellow-500/50'
+                      }`}
+                    >
                       <div className="relative overflow-hidden">
                         <img src={item.bgImage} alt={item.title} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -309,19 +325,21 @@ function BlogsPage() {
 
                       <div className="p-6">
                         <div className="flex items-center gap-3 mb-3">
-                          <span className="flex items-center gap-1 text-gray-400 text-sm">
+                          <span className={`flex items-center gap-1 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                             <Calendar className="w-3 h-3" />
                             {item.date}
                           </span>
-                          <span className="text-gray-500">•</span>
-                          <span className="text-gray-400 text-sm">{item.readTime}</span>
+                          <span className={isDarkMode ? 'text-gray-500' : 'text-gray-400'}>•</span>
+                          <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{item.readTime}</span>
                         </div>
 
-                        <h3 className="text-xl font-bold mb-3 leading-tight group-hover:text-yellow-200 transition-colors duration-300 line-clamp-2">{item.title}</h3>
+                        <h3 className={`text-xl font-bold mb-3 leading-tight group-hover:text-yellow-500 transition-colors duration-300 line-clamp-2 ${isDarkMode ? 'group-hover:text-yellow-200' : 'group-hover:text-yellow-600'}`}>
+                          {item.title}
+                        </h3>
 
-                        <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">{item.excerpt}</p>
+                        <p className={`text-sm leading-relaxed mb-4 line-clamp-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{item.excerpt}</p>
 
-                        <button className="flex items-center gap-2 text-yellow-400 text-sm font-medium hover:text-yellow-300 transition-colors group/btn">
+                        <button className="flex items-center gap-2 text-yellow-500 text-sm font-medium hover:text-yellow-400 transition-colors group/btn">
                           {t.readArticle}
                           <ArrowRight className="w-3 h-3 transition-transform group-hover/btn:translate-x-1" />
                         </button>
@@ -337,11 +355,11 @@ function BlogsPage() {
         {/* No Results */}
         {filteredContent.length === 0 && !loading && (
           <div className="text-center py-16">
-            <div className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Search className="w-12 h-12 text-gray-600" />
+            <div className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 ${isDarkMode ? 'bg-gray-800' : 'bg-gray-200'}`}>
+              <Search className={`w-12 h-12 ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`} />
             </div>
             <h3 className="text-2xl font-bold mb-2">{t.noResults}</h3>
-            <p className="text-gray-400">{blogData.length === 0 ? t.information : t.information}</p>
+            <p className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>{blogData.length === 0 ? t.information : t.information}</p>
           </div>
         )}
       </div>
