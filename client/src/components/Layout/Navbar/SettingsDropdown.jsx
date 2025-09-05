@@ -9,7 +9,7 @@ const SettingsDropdown = ({ isOpen }) => {
 
   return (
     <div
-      className={`settings-menu absolute top-full right-0 mt-2 w-64 ${isDarkMode ? 'bg-slate-900' : 'bg-slate-100'} backdrop-blur-md rounded-lg shadow-xl border ${
+      className={`settings-menu absolute top-full right-0  mt-2 w-64 ${isDarkMode ? 'bg-slate-900' : 'bg-slate-100'} backdrop-blur-md rounded-lg shadow-xl border ${
         isDarkMode ? 'border-slate-700/50' : 'border-slate-300/50'
       } overflow-hidden transition-all duration-300 ${isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95 pointer-events-none'}`}
     >

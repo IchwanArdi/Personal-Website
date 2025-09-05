@@ -12,7 +12,7 @@ function ProjectsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
 
-  const { language } = useApp();
+  const { language, isDarkMode } = useApp();
   const t = PROJECTS[language];
 
   useEffect(() => {
@@ -124,10 +124,10 @@ function ProjectsPage() {
     return (
       <>
         <SEO customMeta={generateProjectsMeta()} />
-        <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
-            <p className="text-gray-400">Loading projects...</p>
+            <p className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Loading projects...</p>
           </div>
         </div>
       </>
@@ -135,18 +135,20 @@ function ProjectsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
       <SEO customMeta={generateProjectsMeta()} />
       {/* Search Bar */}
       <div className="w-full flex justify-center pt-8 pb-4">
         <div className="relative w-full max-w-2xl mx-4">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`} />
           <input
             type="text"
             placeholder={t.searchPlaceholder}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-transparent border border-gray-600 rounded-lg py-3 pl-12 pr-4 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500 transition-colors"
+            className={`w-full border rounded-lg py-3 pl-12 pr-4 transition-colors focus:outline-none focus:border-yellow-500 ${
+              isDarkMode ? 'bg-transparent border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+            }`}
           />
         </div>
       </div>
@@ -160,7 +162,9 @@ function ProjectsPage() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 text-sm font-semibold transition-colors ${selectedCategory === category ? 'text-yellow-400 border-b-2 border-yellow-400' : 'text-gray-400 hover:text-white'}`}
+                className={`px-4 py-2 text-sm font-semibold transition-colors ${
+                  selectedCategory === category ? 'text-yellow-500 border-b-2 border-yellow-500' : isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                }`}
               >
                 {category}
               </button>
@@ -171,11 +175,15 @@ function ProjectsPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6">
-        {/* new Project */}
+        {/* New Project */}
         {newProject && (
           <div className="mb-16">
             <Link to={`/project/${newProject.id}`}>
-              <div className="group relative overflow-hidden rounded-3xl bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-500">
+              <div
+                className={`group relative overflow-hidden rounded-3xl backdrop-blur-sm border transition-all duration-500 ${
+                  isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/30 hover:border-yellow-400/30' : 'bg-white/70 md:bg-white/10 shadow-md border-gray-600/30 hover:border-yellow-500/40'
+                }`}
+              >
                 <div className="lg:flex">
                   <div className="lg:w-3/5 relative">
                     <div className="relative overflow-hidden h-80 lg:h-96">
@@ -195,26 +203,28 @@ function ProjectsPage() {
                   </div>
                   <div className="lg:w-2/5 py-8 px-4 lg:p-12 flex flex-col justify-center">
                     <div className="flex items-center gap-4 mb-4">
-                      <span className="flex items-center gap-2 text-yellow-400 text-sm font-medium">
+                      <span className="flex items-center gap-2 text-yellow-500 text-sm font-medium">
                         <Calendar className="w-4 h-4" />
                         {newProject.date}
                       </span>
                     </div>
 
-                    <span className="inline-flex items-center gap-2 text-yellow-400 text-sm font-medium mb-3">
+                    <span className="inline-flex items-center gap-2 text-yellow-500 text-sm font-medium mb-3">
                       <Tag className="w-4 h-4" />
                       {newProject.category}
                     </span>
 
-                    <h2 className="text-3xl lg:text-4xl font-bold mb-4 leading-tight group-hover:text-yellow-200 transition-colors duration-300">{newProject.title}</h2>
+                    <h2 className={`text-3xl lg:text-4xl font-bold mb-4 leading-tight group-hover:text-yellow-400 transition-colors duration-300 ${isDarkMode ? 'group-hover:text-yellow-200' : 'group-hover:text-yellow-600'}`}>
+                      {newProject.title}
+                    </h2>
 
-                    <p className="text-gray-300 text-lg mb-6 leading-relaxed line-clamp-3">{newProject.description}</p>
+                    <p className={`text-lg mb-6 leading-relaxed line-clamp-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{newProject.description}</p>
 
                     {/* Technologies */}
                     {newProject.technologies && newProject.technologies.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-6">
                         {newProject.technologies.map((tech, index) => (
-                          <span key={index} className="bg-gray-800/50 text-gray-300 px-3 py-1 rounded-full text-sm">
+                          <span key={index} className={`px-3 py-1 rounded-full text-sm ${isDarkMode ? 'bg-gray-800/50 text-gray-300' : 'bg-gray-200 text-gray-700'}`}>
                             {tech}
                           </span>
                         ))}
@@ -232,7 +242,7 @@ function ProjectsPage() {
                       {newProject.liveUrl && (
                         <button
                           onClick={(e) => handleButtonClick(e, newProject.liveUrl)}
-                          className="flex items-center gap-2 border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black px-2 py-3 rounded-lg font-medium transition-colors"
+                          className="flex items-center gap-2 border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black px-2 py-3 rounded-lg font-medium transition-colors"
                         >
                           <ExternalLink className="w-4 h-4" />
                           {t.liveDemo}
@@ -249,12 +259,16 @@ function ProjectsPage() {
         {/* Other Projects Grid */}
         {otherProjects.length > 0 && (
           <div className="">
-            <h3 className="text-2xl font-bold mb-8 border-l-4 border-yellow-400 pl-4">{t.otherProjects}</h3>
+            <h3 className="text-2xl font-bold mb-8 border-l-4 border-yellow-500 pl-4">{t.otherProjects}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {otherProjects.map((project, index) => (
                 <Link key={index} to={`/project/${project.id}`}>
                   <article className="group cursor-pointer">
-                    <div className="bg-gray-900/70 md:bg-gray-900/40  backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/30 hover:border-yellow-400/40 transition-all duration-500 hover:transform">
+                    <div
+                      className={`backdrop-blur-sm rounded-2xl overflow-hidden border transition-all duration-500 hover:transform ${
+                        isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/40 border-gray-700/30 hover:border-yellow-400/40' : 'bg-white/70 md:bg-white/10 border-gray-600/30 hover:border-yellow-500/50'
+                      }`}
+                    >
                       <div className="relative overflow-hidden">
                         <img
                           src={project.image}
@@ -272,39 +286,41 @@ function ProjectsPage() {
 
                       <div className="p-6">
                         <div className="flex items-center gap-3 mb-3">
-                          <span className="flex items-center gap-1 text-gray-400 text-sm">
+                          <span className={`flex items-center gap-1 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                             <Calendar className="w-3 h-3" />
                             {project.date}
                           </span>
                         </div>
 
-                        <h3 className="text-xl font-bold mb-3 leading-tight group-hover:text-yellow-200 transition-colors duration-300 line-clamp-2">{project.title}</h3>
+                        <h3 className={`text-xl font-bold mb-3 leading-tight group-hover:text-yellow-500 transition-colors duration-300 line-clamp-2 ${isDarkMode ? 'group-hover:text-yellow-200' : 'group-hover:text-yellow-600'}`}>
+                          {project.title}
+                        </h3>
 
-                        <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">{project.description}</p>
+                        <p className={`text-sm leading-relaxed mb-4 line-clamp-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{project.description}</p>
 
                         {/* Technologies */}
                         {project.technologies && project.technologies.length > 0 && (
                           <div className="flex flex-wrap gap-1 mb-4">
                             {project.technologies.slice(0, 3).map((tech, index) => (
-                              <span key={index} className="bg-gray-800/50 text-gray-400 px-2 py-1 rounded text-xs">
+                              <span key={index} className={`px-2 py-1 rounded text-xs ${isDarkMode ? 'bg-gray-800/50 text-gray-400' : 'bg-gray-200 text-gray-600'}`}>
                                 {tech}
                               </span>
                             ))}
-                            {project.technologies.length > 3 && <span className="text-gray-500 text-xs px-2 py-1">+{project.technologies.length - 3}</span>}
+                            {project.technologies.length > 3 && <span className={`text-xs px-2 py-1 ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>+{project.technologies.length - 3}</span>}
                           </div>
                         )}
 
                         {/* Action Buttons */}
                         <div className="flex gap-2">
                           {project.githubUrl && project.githubUrl !== '#' && (
-                            <button onClick={(e) => handleButtonClick(e, project.githubUrl)} className="flex items-center gap-1 text-yellow-400 text-sm font-medium hover:text-yellow-300 transition-colors">
+                            <button onClick={(e) => handleButtonClick(e, project.githubUrl)} className="flex items-center gap-1 text-yellow-500 text-sm font-medium hover:text-yellow-400 transition-colors">
                               <Github className="w-3 h-3" />
                               {t.code}
                             </button>
                           )}
                           {project.liveUrl && project.githubUrl && project.githubUrl !== '#' && <span className="text-gray-500 text-sm">•</span>}
                           {project.liveUrl && (
-                            <button onClick={(e) => handleButtonClick(e, project.liveUrl)} className="flex items-center gap-1 text-yellow-400 text-sm font-medium hover:text-yellow-300 transition-colors">
+                            <button onClick={(e) => handleButtonClick(e, project.liveUrl)} className="flex items-center gap-1 text-yellow-500 text-sm font-medium hover:text-yellow-400 transition-colors">
                               <ExternalLink className="w-3 h-3" />
                               {t.live}
                             </button>
@@ -321,22 +337,22 @@ function ProjectsPage() {
         {/* No Results */}
         {filteredProjects.length === 0 && !loading && (
           <div className="text-center py-16">
-            <div className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Code className="w-12 h-12 text-gray-600" />
+            <div className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 ${isDarkMode ? 'bg-gray-800' : 'bg-gray-200'}`}>
+              <Code className={`w-12 h-12 ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`} />
             </div>
             <h3 className="text-2xl font-bold mb-2">{t.noResults}</h3>
-            <p className="text-gray-400">{t.information}</p>
+            <p className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>{t.information}</p>
           </div>
         )}
 
         {/* No Data */}
         {dataProjects.length === 0 && !loading && (
           <div className="text-center py-16">
-            <div className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Code className="w-12 h-12 text-gray-600" />
+            <div className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 ${isDarkMode ? 'bg-gray-800' : 'bg-gray-200'}`}>
+              <Code className={`w-12 h-12 ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`} />
             </div>
             <h3 className="text-2xl font-bold mb-2">{t.noData}</h3>
-            <p className="text-gray-400">{t.noDataInfo}</p>
+            <p className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>{t.noDataInfo}</p>
           </div>
         )}
       </div>

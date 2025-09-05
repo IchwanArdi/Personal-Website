@@ -30,7 +30,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={`w-full sticky top-0 z-20 backdrop-blur-md border-b transition-all duration-300 ${isDarkMode ? 'bg-black border-slate-800/50' : 'bg-white border-slate-200 shadow-md'}`}>
+      <header className={`w-full fixed top-0 z-20 backdrop-blur-md border-b transition-all duration-300 ${isDarkMode ? 'bg-black border-slate-800/50' : 'bg-white border-slate-200 shadow-md '}`}>
         <div className="max-w-7xl mx-auto px-6 md:px-0">
           <div className="flex items-center justify-between h-20">
             {/* Desktop Navigation */}
@@ -148,7 +148,6 @@ const Navbar = () => {
           </div>
         </div>
       </header>
-      ;
       <MobileMenu isOpen={isMenuOpen} onClose={closeMenu} />
     </>
   );

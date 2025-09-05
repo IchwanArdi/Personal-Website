@@ -17,9 +17,9 @@ function App() {
 function AppContent() {
   const { isDarkMode } = useApp();
   return (
-    <div className={` ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+    <div className={`${isDarkMode ? 'bg-black' : 'bg-white'}`}>
       <Navbar />
-      <main className={` ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+      <main className={`pt-20 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
         <Outlet />
       </main>
       <Footer />
