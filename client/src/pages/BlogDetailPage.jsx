@@ -12,7 +12,7 @@ function BlogDetailPage() {
   const [loading, setLoading] = useState(false);
   const [blogDetailData, setBlogDetailData] = useState(null);
 
-  const { language } = useApp();
+  const { language, isDarkMode } = useApp();
   const t = DETAILBLOG[language];
 
   // Helper function to format date
@@ -115,10 +115,10 @@ function BlogDetailPage() {
     return (
       <>
         <SEO pageKey="blogs" />
-        <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-2 border-yellow-400 border-t-transparent mx-auto mb-4"></div>
-            <p className="text-gray-300"></p>
+            <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}></p>
           </div>
         </div>
       </>
@@ -130,11 +130,11 @@ function BlogDetailPage() {
     return (
       <>
         <SEO pageKey="blogs" />
-        <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
+        <div className={`min-h-screen flex items-center justify-center p-4 ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-4">{t.noBlog}</h2>
-            <p className="text-gray-400 mb-6">{t.noBlogInfo}</p>
-            <Link to="/blogs" className="inline-flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors">
+            <p className={`mb-6 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{t.noBlogInfo}</p>
+            <Link to="/blogs" className="inline-flex items-center gap-2 text-yellow-500 hover:text-yellow-400 transition-colors">
               <ArrowLeft className="w-4 h-4" />
               {t.backToBlogs}
             </Link>
@@ -156,7 +156,7 @@ function BlogDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
       <SEO customMeta={dynamicMeta}>
         {/* Structured Data for Blog Post */}
         <script type="application/ld+json">
@@ -186,7 +186,7 @@ function BlogDetailPage() {
       </SEO>
 
       {/* Header dengan back button */}
-      <div className="sticky top-5 z-30 mb-6 bg-black/80 backdrop-blur-sm ">
+      <div className={`sticky top-5 z-30 mb-6 backdrop-blur-sm ${isDarkMode ? 'bg-black/80' : 'bg-white/80'}`}>
         <div className="max-w-5xl mx-auto px-6 py-4">
           <Link to="/blogs" className="flex font-semibold items-center gap-2 text-yellow-500 hover:text-yellow-400 transition-colors group">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -199,27 +199,27 @@ function BlogDetailPage() {
         <main className="max-w-5xl mx-auto px-4 sm:px-6">
           {/* Category badge - floating style */}
           <div className="">
-            <span className="inline-flex items-center gap-2 bg-yellow-400/10 text-yellow-400 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border border-yellow-400/20">
+            <span className="inline-flex items-center gap-2 bg-yellow-400/10 text-yellow-500 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border border-yellow-400/20">
               <Tag className="w-3 h-3" />
               {blogDetailData.category}
             </span>
           </div>
 
           {/* Title - more natural spacing */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 leading-relaxed text-white">{blogDetailData.title}</h1>
+          <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-8 leading-relaxed ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{blogDetailData.title}</h1>
 
           {/* Meta info - cleaner, less boxed */}
-          <div className="flex flex-wrap items-center gap-6 mb-12 text-gray-400">
+          <div className={`flex flex-wrap items-center gap-6 mb-12 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-yellow-400" />
+              <Calendar className="w-4 h-4 text-yellow-500" />
               <span>{blogDetailData.date}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-yellow-400" />
+              <Clock className="w-4 h-4 text-yellow-500" />
               <span>{blogDetailData.readTime}</span>
             </div>
             <div className="flex items-center gap-2">
-              <User className="w-4 h-4 text-yellow-400" />
+              <User className="w-4 h-4 text-yellow-500" />
               <span>{blogDetailData.author}</span>
             </div>
             <button
@@ -227,7 +227,7 @@ function BlogDetailPage() {
                 navigator.clipboard.writeText(window.location.href);
                 toast.success('Link berhasil disalin!');
               }}
-              className="hidden md:flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors ml-auto transform duration-200"
+              className="hidden md:flex items-center gap-2 text-yellow-500 hover:text-yellow-400 transition-colors ml-auto transform duration-200"
             >
               <Share2 className="w-4 h-4" />
               <span className="hidden sm:inline">{t.share}</span>
@@ -254,22 +254,22 @@ function BlogDetailPage() {
           {/* Article content - clean and readable */}
           <article className="mb-16">
             <div
-              className="prose prose-invert prose-lg max-w-none blog-content"
+              className={`prose prose-lg max-w-none blog-content ${isDarkMode ? 'prose-invert' : 'prose-gray'}`}
               style={{
                 fontSize: '18px',
                 lineHeight: '1.8',
-                color: '#e2e8f0',
+                color: isDarkMode ? '#e2e8f0' : '#374151',
               }}
               dangerouslySetInnerHTML={createMarkup(blogDetailData.content)}
             />
           </article>
 
           {/* Article footer - subtle separator */}
-          <footer className="border-t border-gray-800 pt-12 pb-8">
+          <footer className={`border-t pt-12 pb-8 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div>
-                <p className="text-lg text-gray-300 mb-2">{t.thankForReading} 🙏</p>
-                <p className="text-gray-500">
+                <p className={`text-lg mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{t.thankForReading} 🙏</p>
+                <p className={isDarkMode ? 'text-gray-500' : 'text-gray-600'}>
                   {t.publicationDate} {blogDetailData.date} • {blogDetailData.readTime}
                 </p>
               </div>
@@ -278,7 +278,9 @@ function BlogDetailPage() {
                   navigator.clipboard.writeText(window.location.href);
                   toast.success('Link berhasil disalin!');
                 }}
-                className="flex items-center gap-2 text-yellow-400 px-6 py-3 rounded-xl hover:bg-yellow-400/20 transition-all duration-300 border border-yellow-400/20 hover:border-yellow-400/40 font-medium"
+                className={`flex items-center gap-2 text-yellow-500 px-6 py-3 rounded-xl transition-all duration-300 border border-yellow-400/20 hover:border-yellow-400/40 font-medium ${
+                  isDarkMode ? 'hover:bg-yellow-400/20' : 'hover:bg-yellow-400/10'
+                }`}
               >
                 <Share2 className="w-4 h-4" />
                 {t.shareArticle}
@@ -287,9 +289,14 @@ function BlogDetailPage() {
           </footer>
 
           {/* Navigation to other projects */}
-          <div className="mx-16 pt-8 border-t border-gray-800/50">
+          <div className={`mx-16 pt-8 border-t ${isDarkMode ? 'border-gray-800/50' : 'border-gray-200/50'}`}>
             <div className="text-center">
-              <Link to="/blogs" className="inline-flex items-center gap-2 bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white px-6 py-3 rounded-lg transition-all">
+              <Link
+                to="/blogs"
+                className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg transition-all ${
+                  isDarkMode ? 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900'
+                }`}
+              >
                 <ArrowLeft className="w-4 h-4" />
                 {t.viewAllBlogs}
               </Link>

@@ -13,7 +13,7 @@ function ProjectDetailPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showAllFeatures, setShowAllFeatures] = useState(false);
 
-  const { language } = useApp();
+  const { language, isDarkMode } = useApp();
   const t = DETAILPROJECT[language];
 
   useEffect(() => {
@@ -72,10 +72,10 @@ function ProjectDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
-          <p className="text-gray-400">{t.loadingProject}</p>
+          <p className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>{t.loadingProject}</p>
         </div>
       </div>
     );
@@ -83,10 +83,10 @@ function ProjectDetailPage() {
 
   if (!projectDetail) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">{t.noProject}</h2>
-          <p className="text-gray-400 mb-4">{t.noProjectInfo}</p>
+          <p className={`mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{t.noProjectInfo}</p>
           <button onClick={goBack} className="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-2 rounded-lg font-medium transition-colors">
             {t.backToProjects}
           </button>
@@ -96,9 +96,9 @@ function ProjectDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
       {/* Back Button */}
-      <div className="sticky top-5 z-30 bg-black backdrop-blur-sm ">
+      <div className={`sticky top-5 z-30 backdrop-blur-sm ${isDarkMode ? 'bg-black' : 'bg-white/80'}`}>
         <div className="max-w-7xl mx-auto px-6 py-4">
           <button onClick={goBack} className="flex font-semibold items-center gap-2 text-yellow-500 hover:text-yellow-400 transition-colors group">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -111,19 +111,21 @@ function ProjectDetailPage() {
         {/* Header Section */}
         <div className="mb-12">
           <div className="flex flex-wrap items-center gap-4 mb-4">
-            <span className="flex items-center gap-2 text-yellow-400 text-sm font-medium">
+            <span className="flex items-center gap-2 text-yellow-500 text-sm font-medium">
               <Calendar className="w-4 h-4" />
               {projectDetail.date}
             </span>
-            <span className="flex items-center gap-2 text-yellow-400 text-sm font-medium">
+            <span className="flex items-center gap-2 text-yellow-500 text-sm font-medium">
               <Tag className="w-4 h-4" />
               {projectDetail.category}
             </span>
           </div>
 
-          <h1 className="text-4xl lg:text-5xl md:py-2 font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">{projectDetail.title}</h1>
+          <h1 className={`text-4xl lg:text-5xl md:py-2 font-bold mb-4 ${isDarkMode ? 'bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent' : 'bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent'}`}>
+            {projectDetail.title}
+          </h1>
 
-          <p className="text-md md:text-xl text-gray-300 mb-6 leading-relaxed max-w-4xl">{projectDetail.shortDescription}</p>
+          <p className={`text-md md:text-xl mb-6 leading-relaxed max-w-4xl ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{projectDetail.shortDescription}</p>
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-4">
@@ -138,7 +140,7 @@ function ProjectDetailPage() {
                 href={projectDetail.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black px-6 py-3 rounded-lg font-medium transition-all"
+                className="flex items-center gap-2 border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black px-6 py-3 rounded-lg font-medium transition-all"
               >
                 <ExternalLink className="w-5 h-5" />
                 {t.liveDemo}
@@ -153,7 +155,7 @@ function ProjectDetailPage() {
             {/* Image Gallery */}
             <section>
               <div className="relative">
-                <div className="relative overflow-hidden rounded-2xl bg-gray-900 group">
+                <div className={`relative overflow-hidden rounded-2xl group ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
                   <img
                     src={projectDetail.images[currentImageIndex]}
                     alt={`${projectDetail.title} screenshot ${currentImageIndex + 1}`}
@@ -172,7 +174,7 @@ function ProjectDetailPage() {
                       <button
                         key={index}
                         onClick={() => setCurrentImageIndex(index)}
-                        className={`relative flex-shrink-0 w-20 h-16 m-1 rounded-lg overflow-hidden transition-all ${currentImageIndex === index ? 'ring-2 ring-yellow-400 opacity-100' : 'opacity-60 hover:opacity-80'}`}
+                        className={`relative flex-shrink-0 w-20 h-16 m-1 rounded-lg overflow-hidden transition-all ${currentImageIndex === index ? 'ring-2 ring-yellow-500 opacity-100' : 'opacity-60 hover:opacity-80'}`}
                       >
                         <img
                           src={image}
@@ -192,11 +194,11 @@ function ProjectDetailPage() {
             {/* Description */}
             <section>
               <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <FileImage className="w-6 h-6 text-yellow-400" />
+                <FileImage className="w-6 h-6 text-yellow-500" />
                 {t.aboutThisProject}
               </h2>
-              <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30  backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
-                <p className="text-gray-300 leading-relaxed text-lg">{projectDetail.description}</p>
+              <div className={`backdrop-blur-sm rounded-2xl p-6 border ${isDarkMode ? 'bg-gradient-to-br from-gray-900/20 to-gray-900/30 border-gray-700/20' : 'bg-gradient-to-br from-white/70 to-gray-50/30 border-gray-300/30'}`}>
+                <p className={`leading-relaxed text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{projectDetail.description}</p>
               </div>
             </section>
 
@@ -204,21 +206,21 @@ function ProjectDetailPage() {
             {projectDetail.features && projectDetail.features.length > 0 && (
               <section>
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <CheckCircle className="w-6 h-6 text-yellow-400" />
+                  <CheckCircle className="w-6 h-6 text-yellow-500" />
                   {t.keyFeatures}
                 </h2>
-                <div className="bg-gradient-to-br mb-5 from-gray-900/20 to-gray-900/30  backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+                <div className={`backdrop-blur-sm rounded-2xl p-6 border mb-5 ${isDarkMode ? 'bg-gradient-to-br from-gray-900/20 to-gray-900/30 border-gray-700/20' : 'bg-gradient-to-br from-white/70 to-gray-50/30 border-gray-300/30'}`}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {(showAllFeatures ? projectDetail.features : projectDetail.features.slice(0, 6)).map((feature, index) => (
                       <div key={index} className="flex items-center gap-3">
-                        <CheckCircle className="w-4 h-4 text-yellow-400 flex-shrink-0" />
-                        <span className="text-gray-300">{feature}</span>
+                        <CheckCircle className="w-4 h-4 text-yellow-500 flex-shrink-0" />
+                        <span className={isDarkMode ? 'text-gray-300' : 'text-gray-700'}>{feature}</span>
                       </div>
                     ))}
                   </div>
 
                   {projectDetail.features.length > 6 && (
-                    <button onClick={() => setShowAllFeatures(!showAllFeatures)} className="mt-4 text-yellow-400 hover:text-yellow-300 text-sm font-medium transition-colors">
+                    <button onClick={() => setShowAllFeatures(!showAllFeatures)} className="mt-4 text-yellow-500 hover:text-yellow-400 text-sm font-medium transition-colors">
                       {showAllFeatures ? t.showLess : `${t.show} ${projectDetail.features.length - 6} ${t.moreFeatures}`}
                     </button>
                   )}
@@ -230,28 +232,28 @@ function ProjectDetailPage() {
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-8">
             {/* Project Info */}
-            <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+            <div className={`backdrop-blur-sm rounded-2xl p-6 border ${isDarkMode ? 'bg-gradient-to-br from-gray-900/20 to-gray-900/30 border-gray-700/20' : 'bg-gradient-to-br from-white/70 to-gray-50/30 border-gray-300/30'}`}>
               <h3 className="text-xl font-bold mb-4">{t.projectInfo}</h3>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <Clock className="w-4 h-4 text-yellow-400" />
+                  <Clock className="w-4 h-4 text-yellow-500" />
                   <div>
-                    <p className="text-sm text-gray-400">{t.duration}</p>
-                    <p className="text-gray-200">{projectDetail.duration}</p>
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{t.duration}</p>
+                    <p className={isDarkMode ? 'text-gray-200' : 'text-gray-800'}>{projectDetail.duration}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Users className="w-4 h-4 text-yellow-400" />
+                  <Users className="w-4 h-4 text-yellow-500" />
                   <div>
-                    <p className="text-sm text-gray-400">{t.teamSize}</p>
-                    <p className="text-gray-200">{projectDetail.teamSize}</p>
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{t.teamSize}</p>
+                    <p className={isDarkMode ? 'text-gray-200' : 'text-gray-800'}>{projectDetail.teamSize}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <CheckCircle className="w-4 h-4 text-yellow-400" />
+                  <CheckCircle className="w-4 h-4 text-yellow-500" />
                   <div>
-                    <p className="text-sm text-gray-400">{t.status}</p>
-                    <p className="text-gray-200">{projectDetail.status}</p>
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{t.status}</p>
+                    <p className={isDarkMode ? 'text-gray-200' : 'text-gray-800'}>{projectDetail.status}</p>
                   </div>
                 </div>
               </div>
@@ -259,11 +261,16 @@ function ProjectDetailPage() {
 
             {/* Technologies */}
             {projectDetail.technologies && projectDetail.technologies.length > 0 && (
-              <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+              <div className={`backdrop-blur-sm rounded-2xl p-6 border ${isDarkMode ? 'bg-gradient-to-br from-gray-900/20 to-gray-900/30 border-gray-700/20' : 'bg-gradient-to-br from-white/70 to-gray-50/30 border-gray-300/30'}`}>
                 <h3 className="text-xl font-bold mb-4">{t.technologiesUsed}</h3>
                 <div className="flex flex-wrap gap-2">
                   {projectDetail.technologies.map((tech, index) => (
-                    <span key={index} className="bg-gray-800/50 hover:bg-yellow-400/10 text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 cursor-default">
+                    <span
+                      key={index}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 cursor-default ${
+                        isDarkMode ? 'bg-gray-800/50 hover:bg-yellow-400/10 text-gray-300 hover:text-yellow-400' : 'bg-gray-200 hover:bg-yellow-400/20 text-gray-700 hover:text-yellow-600'
+                      }`}
+                    >
                       {tech}
                     </span>
                   ))}
@@ -272,7 +279,7 @@ function ProjectDetailPage() {
             )}
 
             {/* Quick Actions */}
-            <div className="bg-gradient-to-br from-gray-900/20 to-gray-900/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/20">
+            <div className={`backdrop-blur-sm rounded-2xl p-6 border ${isDarkMode ? 'bg-gradient-to-br from-gray-900/20 to-gray-900/30 border-gray-700/20' : 'bg-gradient-to-br from-white/70 to-gray-50/30 border-gray-300/30'}`}>
               <h3 className="text-xl font-bold mb-4">{t.quickActions}</h3>
               <div className="space-y-3">
                 {projectDetail.githubUrl && projectDetail.githubUrl !== '#' && (
@@ -280,9 +287,11 @@ function ProjectDetailPage() {
                     href={projectDetail.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 w-full bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white px-4 py-3 rounded-lg transition-all group"
+                    className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-all group ${
+                      isDarkMode ? 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900'
+                    }`}
                   >
-                    <Github className="w-4 h-4 group-hover:text-yellow-400" />
+                    <Github className="w-4 h-4 group-hover:text-yellow-500" />
                     <span>{t.viewSourceCode}</span>
                     <ExternalLink className="w-3 h-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
                   </a>
@@ -293,7 +302,7 @@ function ProjectDetailPage() {
                     href={projectDetail.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 w-full bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 hover:text-yellow-300 px-4 py-3 rounded-lg transition-all group border border-yellow-400/20"
+                    className="flex items-center gap-3 w-full bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-500 hover:text-yellow-400 px-4 py-3 rounded-lg transition-all group border border-yellow-400/20"
                   >
                     <Play className="w-4 h-4" />
                     <span>{t.liveDemo}</span>
@@ -306,9 +315,14 @@ function ProjectDetailPage() {
         </div>
 
         {/* Navigation to other projects */}
-        <div className="mx-16 pt-8 border-t border-gray-800/50">
+        <div className={`mx-16 pt-8 border-t ${isDarkMode ? 'border-gray-800/50' : 'border-gray-200/50'}`}>
           <div className="text-center">
-            <button onClick={goBack} className="inline-flex items-center gap-2 bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white px-6 py-3 rounded-lg transition-all">
+            <button
+              onClick={goBack}
+              className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg transition-all ${
+                isDarkMode ? 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900'
+              }`}
+            >
               <ArrowLeft className="w-4 h-4" />
               {t.viewAllProjects}
             </button>
