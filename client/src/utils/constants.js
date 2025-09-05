@@ -82,3 +82,26 @@ export const HOME = {
     latestUpdate: 'Pembaruan Terbaru',
   },
 };
+
+export const PROJECTS = {
+  en: {
+    pageTitle: 'Projects',
+    searchPlaceholder: 'Search fullstack, backend, frontend',
+    newProject: 'NEW PROJECT',
+    viewCode: 'View Code',
+    liveDemo: 'Live Demo',
+    otherProjects: 'Other Projects',
+    code: 'Code',
+    live: 'Live',
+  },
+  id: {
+    pageTitle: 'Proyek',
+    searchPlaceholder: 'Cari fullstack, backend, frontend',
+    newProject: 'PROYEK BARU',
+    viewCode: 'Lihat Kode',
+    liveDemo: 'Demo Langsung',
+    otherProjects: 'Proyek Lainnya',
+    code: 'Kode',
+    live: 'Demo',
+  },
+};

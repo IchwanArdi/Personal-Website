@@ -3,12 +3,17 @@ import { Search, Github, ExternalLink, Code, Calendar, Tag } from 'lucide-react'
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { useApp } from '../contexts/AppContext';
+import { PROJECTS } from '../utils/constants';
 
 function ProjectsPage() {
   const [dataProjects, setDataProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
+
+  const { language } = useApp();
+  const t = PROJECTS[language];
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -30,7 +35,7 @@ function ProjectsPage() {
           date: project.date,
           githubUrl: project.githubUrl || '#',
           liveUrl: project.liveUrl || project.link || null,
-          featured: project.featured || false,
+          new: project.new || false,
         }));
 
         setDataProjects(transformedProjects);
@@ -43,7 +48,7 @@ function ProjectsPage() {
       }
     };
     fetchProjects();
-  }, []);
+  }, [language, t]);
 
   // Get unique categories from the data
   const getCategories = () => {
@@ -74,8 +79,8 @@ function ProjectsPage() {
       })
     : [];
 
-  const featuredProject = filteredProjects.find((project) => project.featured) || filteredProjects[0];
-  const otherProjects = filteredProjects.filter((project) => project !== featuredProject);
+  const newProject = filteredProjects.find((project) => project.new) || filteredProjects[0];
+  const otherProjects = filteredProjects.filter((project) => project !== newProject);
 
   // Generate dynamic meta for SEO
   const generateProjectsMeta = () => {
@@ -94,9 +99,9 @@ function ProjectsPage() {
       dynamicKeywords = `${selectedCategory}, ${dynamicKeywords}`;
     }
 
-    // Use featured project image if available
-    if (featuredProject?.bgImage) {
-      dynamicImage = featuredProject.bgImage;
+    // Use new project image if available
+    if (newProject?.bgImage) {
+      dynamicImage = newProject.bgImage;
     }
 
     return {
@@ -131,7 +136,7 @@ function ProjectsPage() {
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <input
             type="text"
-            placeholder="Search projects, technologies..."
+            placeholder={t.searchPlaceholder}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full bg-transparent border border-gray-600 rounded-lg py-3 pl-12 pr-4 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500 transition-colors"
@@ -159,17 +164,17 @@ function ProjectsPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6">
-        {/* Featured Project */}
-        {featuredProject && (
+        {/* new Project */}
+        {newProject && (
           <div className="mb-16">
-            <Link to={`/project/${featuredProject.id}`}>
+            <Link to={`/project/${newProject.id}`}>
               <div className="group relative overflow-hidden rounded-3xl bg-gray-900/70 md:bg-gray-900/30 backdrop-blur-sm border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-500">
                 <div className="lg:flex">
                   <div className="lg:w-3/5 relative">
                     <div className="relative overflow-hidden h-80 lg:h-96">
                       <img
-                        src={featuredProject.image}
-                        alt={featuredProject.title}
+                        src={newProject.image}
+                        alt={newProject.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         onError={(e) => {
                           e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop';
@@ -177,7 +182,7 @@ function ProjectsPage() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-black/60" />
                       <div className="absolute top-6 left-6">
-                        <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-4 py-2 rounded-full text-sm font-bold">FEATURED</span>
+                        <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-4 py-2 rounded-full text-sm font-bold">{t.newProject}</span>
                       </div>
                     </div>
                   </div>
@@ -185,23 +190,23 @@ function ProjectsPage() {
                     <div className="flex items-center gap-4 mb-4">
                       <span className="flex items-center gap-2 text-yellow-400 text-sm font-medium">
                         <Calendar className="w-4 h-4" />
-                        {featuredProject.date}
+                        {newProject.date}
                       </span>
                     </div>
 
                     <span className="inline-flex items-center gap-2 text-yellow-400 text-sm font-medium mb-3">
                       <Tag className="w-4 h-4" />
-                      {featuredProject.category}
+                      {newProject.category}
                     </span>
 
-                    <h2 className="text-3xl lg:text-4xl font-bold mb-4 leading-tight group-hover:text-yellow-200 transition-colors duration-300">{featuredProject.title}</h2>
+                    <h2 className="text-3xl lg:text-4xl font-bold mb-4 leading-tight group-hover:text-yellow-200 transition-colors duration-300">{newProject.title}</h2>
 
-                    <p className="text-gray-300 text-lg mb-6 leading-relaxed line-clamp-3">{featuredProject.description}</p>
+                    <p className="text-gray-300 text-lg mb-6 leading-relaxed line-clamp-3">{newProject.description}</p>
 
                     {/* Technologies */}
-                    {featuredProject.technologies && featuredProject.technologies.length > 0 && (
+                    {newProject.technologies && newProject.technologies.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-6">
-                        {featuredProject.technologies.map((tech, index) => (
+                        {newProject.technologies.map((tech, index) => (
                           <span key={index} className="bg-gray-800/50 text-gray-300 px-3 py-1 rounded-full text-sm">
                             {tech}
                           </span>
@@ -211,21 +216,21 @@ function ProjectsPage() {
 
                     {/* Action Buttons */}
                     <div className="flex gap-4">
-                      {featuredProject.githubUrl && featuredProject.githubUrl !== '#' && (
-                        <a href={featuredProject.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-2 py-3 rounded-lg font-medium transition-colors">
+                      {newProject.githubUrl && newProject.githubUrl !== '#' && (
+                        <a href={newProject.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-2 py-3 rounded-lg font-medium transition-colors">
                           <Github className="w-4 h-4" />
-                          View Code
+                          {t.viewCode}
                         </a>
                       )}
-                      {featuredProject.liveUrl && (
+                      {newProject.liveUrl && (
                         <a
-                          href={featuredProject.liveUrl}
+                          href={newProject.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center gap-2 border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black px-2 py-3 rounded-lg font-medium transition-colors"
                         >
                           <ExternalLink className="w-4 h-4" />
-                          Live Demo
+                          {t.liveDemo}
                         </a>
                       )}
                     </div>
@@ -239,7 +244,7 @@ function ProjectsPage() {
         {/* Other Projects Grid */}
         {otherProjects.length > 0 && (
           <div className="">
-            <h3 className="text-2xl font-bold mb-8 border-l-4 border-yellow-400 pl-4">Other Projects</h3>
+            <h3 className="text-2xl font-bold mb-8 border-l-4 border-yellow-400 pl-4">{t.otherProjects}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {otherProjects.map((project, index) => (
                 <Link key={index} to={`/project/${project.id}`}>
@@ -289,14 +294,14 @@ function ProjectsPage() {
                           {project.githubUrl && project.githubUrl !== '#' && (
                             <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-yellow-400 text-sm font-medium hover:text-yellow-300 transition-colors">
                               <Github className="w-3 h-3" />
-                              Code
+                              {t.code}
                             </a>
                           )}
                           {project.liveUrl && project.githubUrl && project.githubUrl !== '#' && <span className="text-gray-500 text-sm">•</span>}
                           {project.liveUrl && (
                             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-yellow-400 text-sm font-medium hover:text-yellow-300 transition-colors">
                               <ExternalLink className="w-3 h-3" />
-                              Live
+                              {t.live}
                             </a>
                           )}
                         </div>
