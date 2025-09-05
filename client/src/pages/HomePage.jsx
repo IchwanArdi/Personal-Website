@@ -41,9 +41,8 @@ const HomePage = () => {
         });
 
         const result = await response.json();
-        console.log(result);
+
         if (response.ok) {
-          console.log('result');
           setHomeData(result);
 
           // Process the API data into content sections

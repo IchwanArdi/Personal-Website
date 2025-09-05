@@ -105,3 +105,26 @@ export const PROJECTS = {
     live: 'Demo',
   },
 };
+
+export const BLOGS = {
+  en: {
+    pageTitle: 'Blog',
+    searchPlaceholder: 'Search blogs',
+    noResults: 'No blogs found',
+    information: 'Try adjusting your search or filter criteria',
+    newPost: 'NEW POST',
+    readMore: 'Read More',
+    moreArticles: 'More Articles',
+    readArticle: 'Read Article',
+  },
+  id: {
+    pageTitle: 'Blog',
+    searchPlaceholder: 'Cari blog',
+    noResults: 'Tidak ada blog ditemukan',
+    information: 'Coba sesuaikan pencarian atau kriteria filter Anda',
+    newPost: 'POSTING BARU',
+    readMore: 'Baca Selengkapnya',
+    moreArticles: 'Artikel Lainnya',
+    readArticle: 'Baca Artikel',
+  },
+};

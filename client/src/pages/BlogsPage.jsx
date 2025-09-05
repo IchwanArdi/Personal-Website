@@ -3,12 +3,17 @@ import { Search, Calendar, ArrowRight, Tag } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { BLOGS } from '../utils/constants';
+import { useApp } from '../contexts/AppContext';
 
 function BlogsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [loading, setLoading] = useState(false);
   const [blogData, setBlogData] = useState([]);
+
+  const { language } = useApp();
+  const t = BLOGS[language];
 
   // Helper function to create slug from title
   const createSlug = (title) => {
@@ -108,7 +113,7 @@ function BlogsPage() {
       }
     };
     fetchBlog();
-  }, []);
+  }, [language, t]);
 
   // Get unique categories from blog data
   const getCategories = () => {
@@ -212,7 +217,7 @@ function BlogsPage() {
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <input
             type="text"
-            placeholder="Search blogs..."
+            placeholder={t.searchPlaceholder}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full bg-transparent border border-gray-600 rounded-lg py-3 pl-12 pr-4 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500 transition-colors"
@@ -249,7 +254,7 @@ function BlogsPage() {
                       <img src={featuredItem.bgImage} alt="Featured content" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                       <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-black/60" />
                       <div className="absolute top-6 left-6">
-                        <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-4 py-2 rounded-full text-sm font-bold">FEATURED</span>
+                        <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-4 py-2 rounded-full text-sm font-bold">{t.newPost}</span>
                       </div>
                     </div>
                   </div>
@@ -275,7 +280,7 @@ function BlogsPage() {
                     <p className="text-gray-300 text-lg mb-6 leading-relaxed">{featuredItem.excerpt}</p>
 
                     <button className="flex items-center gap-2 text-yellow-400 font-medium hover:text-yellow-300 transition-colors group/btn">
-                      Read More
+                      {t.readMore}
                       <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
                     </button>
                   </div>
@@ -288,7 +293,7 @@ function BlogsPage() {
         {/* Other Articles Grid */}
         {otherItems.length > 0 && (
           <div>
-            <h3 className="text-2xl font-bold mb-8 border-l-4 border-yellow-400 pl-4">More Articles</h3>
+            <h3 className="text-2xl font-bold mb-8 border-l-4 border-yellow-400 pl-4">{t.moreArticles}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {otherItems.map((item, index) => (
                 <Link key={index} to={`/blog/${item.slug}`}>
@@ -317,7 +322,7 @@ function BlogsPage() {
                         <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">{item.excerpt}</p>
 
                         <button className="flex items-center gap-2 text-yellow-400 text-sm font-medium hover:text-yellow-300 transition-colors group/btn">
-                          Read Article
+                          {t.readArticle}
                           <ArrowRight className="w-3 h-3 transition-transform group-hover/btn:translate-x-1" />
                         </button>
                       </div>
@@ -335,8 +340,8 @@ function BlogsPage() {
             <div className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
               <Search className="w-12 h-12 text-gray-600" />
             </div>
-            <h3 className="text-2xl font-bold mb-2">No articles found</h3>
-            <p className="text-gray-400">{blogData.length === 0 ? 'No blog posts available at the moment' : 'Try adjusting your search or filter criteria'}</p>
+            <h3 className="text-2xl font-bold mb-2">{t.noResults}</h3>
+            <p className="text-gray-400">{blogData.length === 0 ? t.information : t.information}</p>
           </div>
         )}
       </div>
