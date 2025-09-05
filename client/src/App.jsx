@@ -8,9 +8,9 @@ function App() {
   return (
     <AppProvider>
       <ScrollToTop /> {/* 🔥 taruh di sini */}
-      <div className="min-h-screen bg-slate-950/90">
+      <div className="bg-black">
         <Navbar />
-        <main className="bg-slate-950/90">
+        <main className="bg-black">
           <Outlet /> {/* 👉 halaman anak tampil di sini */}
         </main>
         <Footer />

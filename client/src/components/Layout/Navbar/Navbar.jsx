@@ -13,7 +13,8 @@ import logo from '../../../assets/logo.webp';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const { language } = useApp();
+
+  const { isDarkMode, language } = useApp();
 
   const settingsRef = useRef();
   const mobileMenuRef = useRef();
@@ -29,21 +30,28 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="w-full sticky top-0 z-20 bg-black backdrop-blur-md border-b border-slate-800/50 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-24">
+      <header className={`w-full sticky top-0 z-20 backdrop-blur-md border-b transition-all duration-300 ${isDarkMode ? 'bg-black border-slate-800/50' : 'bg-white border-slate-200 shadow-md'}`}>
+        <div className="max-w-7xl mx-auto px-6 md:px-0">
+          <div className="flex items-center justify-between h-20">
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center">
               {navLinks.map((link, index) => (
                 <div key={link.name} className="relative group" style={{ animationDelay: `${index * 100}ms` }}>
                   <NavLink
                     to={link.href}
-                    className={({ isActive }) => `relative text-sm font-semibold transition-all duration-300 px-3 py-2 rounded-lg ${isActive ? 'text-yellow-400' : 'text-slate-200 hover:text-yellow-400 hover:bg-slate-800/30'}`}
+                    className={({ isActive }) =>
+                      `relative text-sm font-semibold transition-all duration-300 px-2 py-2 rounded-lg ${
+                        isDarkMode ? (isActive ? 'text-yellow-400' : 'text-slate-200 hover:text-yellow-400 hover:bg-slate-800/30') : isActive ? 'text-yellow-600' : 'text-black hover:text-yellow-600 hover:bg-slate-100'
+                      }`
+                    }
                   >
                     {link.name}
-
                     {/* Animated underline */}
-                    <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full transition-all duration-300 transform -translate-x-1/2 group-hover:w-full" />
+                    <span
+                      className={`absolute bottom-0 left-1/2 w-0 h-0.5 rounded-full transition-all duration-300 transform -translate-x-1/2 group-hover:w-full ${
+                        isDarkMode ? 'bg-gradient-to-r from-yellow-400 to-yellow-600' : 'bg-gradient-to-r from-yellow-400 to-yellow-600'
+                      }`}
+                    />
                   </NavLink>
                 </div>
               ))}
@@ -51,8 +59,8 @@ const Navbar = () => {
 
             {/* Mobile Logo */}
             <div className="lg:hidden">
-              <Link to="/" className="text-white text-xl font-bold hover:text-blue-400 transition-all duration-300 transform hover:scale-105">
-                <img src={logo} alt="Logo" className="w-20 mix-blend-screen" />
+              <Link to="/" className={`text-xl font-bold transition-all duration-300 transform hover:scale-105 ${isDarkMode ? 'text-white hover:text-yellow-400' : 'text-slate-800 hover:text-yellow-600'}`}>
+                <img src={logo} alt="Logo" className={`w-20 transition-all ${!isDarkMode ? 'invert' : ''}`} />
               </Link>
             </div>
 
@@ -60,58 +68,87 @@ const Navbar = () => {
             <div className="flex items-center space-x-3">
               {/* Settings Toggle */}
               <div className="relative" ref={settingsRef}>
-                <button className="settings-toggle relative p-3 group rounded-lg hover:bg-slate-800/50 transition-all duration-300 hover:scale-110" onClick={() => setIsSettingsOpen(!isSettingsOpen)}>
+                <button
+                  className={`settings-toggle relative p-3 group rounded-lg transition-all duration-300 hover:scale-110 ${isDarkMode ? 'hover:bg-slate-800/50' : 'hover:bg-slate-200'}`}
+                  onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                >
                   {/* Background pulse effect */}
-                  <div className={`absolute inset-0 rounded-lg bg-slate-700/30 transition-all duration-300 ${isSettingsOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`} />
+                  <div className={`absolute inset-0 rounded-lg transition-all duration-300 ${isSettingsOpen ? (isDarkMode ? 'bg-slate-700/30 scale-100 opacity-100' : 'bg-yellow-100 scale-100 opacity-100') : 'scale-0 opacity-0'}`} />
 
                   {/* Rotating background */}
-                  <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-slate-700/30 to-slate-800/30 opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                  <div
+                    className={`absolute inset-0 rounded-lg transition-all duration-300 ${
+                      isDarkMode ? 'bg-gradient-to-br from-slate-700/30 to-slate-800/30 opacity-0 group-hover:opacity-100' : 'bg-gradient-to-br from-yellow-100 to-yellow-200 opacity-0 group-hover:opacity-100'
+                    }`}
+                  />
 
                   <div className="relative w-5 h-5">
-                    <Settings className={`w-5 h-5 text-slate-300 transition-all duration-500 ease-out ${isSettingsOpen ? 'rotate-180 text-blue-400 scale-110' : 'group-hover:rotate-90 group-hover:text-slate-100 group-hover:scale-105'}`} />
+                    <Settings
+                      className={`w-5 h-5 transition-all duration-500 ease-out ${
+                        isSettingsOpen
+                          ? isDarkMode
+                            ? 'rotate-180 text-yellow-400 scale-110'
+                            : 'rotate-180 text-yellow-600 scale-110'
+                          : isDarkMode
+                          ? 'text-slate-300 group-hover:rotate-90 group-hover:text-slate-100 group-hover:scale-105'
+                          : 'text-slate-700 group-hover:rotate-90 group-hover:text-yellow-600 group-hover:scale-105'
+                      }`}
+                    />
                   </div>
                 </button>
-
                 <SettingsDropdown isOpen={isSettingsOpen} onClose={closeSettings} />
               </div>
 
               {/* Mobile Menu Toggle */}
-              <button className="menu-toggle lg:hidden relative p-3 group rounded-lg hover:bg-slate-800/50 transition-all duration-300 hover:scale-110" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              <button className={`menu-toggle lg:hidden relative p-3 group rounded-lg transition-all duration-300 hover:scale-110 ${isDarkMode ? 'hover:bg-slate-800/50' : 'hover:bg-slate-200'}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 {/* Background effect */}
-                <div className={`absolute inset-0 rounded-lg bg-slate-700/30 transition-all duration-300 ${isMenuOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`} />
+                <div className={`absolute inset-0 rounded-lg transition-all duration-300 ${isMenuOpen ? (isDarkMode ? 'bg-slate-700/30 scale-100 opacity-100' : 'bg-yellow-100 scale-100 opacity-100') : 'scale-0 opacity-0'}`} />
 
                 {/* Hamburger lines container */}
                 <div className="relative w-5 h-5 flex flex-col justify-center items-center">
                   {/* Top line */}
                   <span
-                    className={`absolute w-5 h-0.5 bg-slate-300 rounded-full transition-all duration-500 ease-out transform ${
-                      isMenuOpen ? 'rotate-45 translate-y-0 bg-blue-400 scale-110' : '-translate-y-1.5 group-hover:bg-slate-100 group-hover:w-4 group-hover:translate-x-0.5'
+                    className={`absolute w-5 h-0.5 rounded-full transition-all duration-500 ease-out transform ${
+                      isMenuOpen
+                        ? isDarkMode
+                          ? 'rotate-45 translate-y-0 bg-yellow-400 scale-110'
+                          : 'rotate-45 translate-y-0 bg-yellow-600 scale-110'
+                        : isDarkMode
+                        ? '-translate-y-1.5 bg-slate-300 group-hover:bg-slate-100 group-hover:w-4 group-hover:translate-x-0.5'
+                        : '-translate-y-1.5 bg-slate-700 group-hover:bg-yellow-600 group-hover:w-4 group-hover:translate-x-0.5'
                     }`}
                   />
-
                   {/* Middle line */}
                   <span
-                    className={`absolute w-3 h-0.5 bg-slate-300 rounded-full transition-all duration-300 ${
-                      isMenuOpen ? 'opacity-0 scale-x-0 rotate-180' : 'opacity-100 scale-x-100 group-hover:bg-slate-100 group-hover:w-3 group-hover:translate-x-1'
+                    className={`absolute w-3 h-0.5 rounded-full transition-all duration-300 ${
+                      isMenuOpen
+                        ? 'opacity-0 scale-x-0 rotate-180'
+                        : isDarkMode
+                        ? 'opacity-100 scale-x-100 bg-slate-300 group-hover:bg-slate-100 group-hover:w-3 group-hover:translate-x-1'
+                        : 'opacity-100 scale-x-100 bg-slate-700 group-hover:bg-yellow-600 group-hover:w-3 group-hover:translate-x-1'
                     }`}
                   />
-
                   {/* Bottom line */}
                   <span
-                    className={`absolute w-5 h-0.5 bg-slate-300 rounded-full transition-all duration-500 ease-out transform ${
-                      isMenuOpen ? '-rotate-45 translate-y-0 bg-blue-400 scale-110' : 'translate-y-1.5 group-hover:bg-slate-100 group-hover:w-4 group-hover:translate-x-0.5'
+                    className={`absolute w-5 h-0.5 rounded-full transition-all duration-500 ease-out transform ${
+                      isMenuOpen
+                        ? isDarkMode
+                          ? '-rotate-45 translate-y-0 bg-yellow-400 scale-110'
+                          : '-rotate-45 translate-y-0 bg-yellow-600 scale-110'
+                        : isDarkMode
+                        ? 'translate-y-1.5 bg-slate-300 group-hover:bg-slate-100 group-hover:w-4 group-hover:translate-x-0.5'
+                        : 'translate-y-1.5 bg-slate-700 group-hover:bg-yellow-600 group-hover:w-4 group-hover:translate-x-0.5'
                     }`}
                   />
                 </div>
-
                 {/* Ripple effect on click */}
-                <div className={`absolute inset-0 rounded-lg bg-white/10 transition-all duration-500 ${isMenuOpen ? 'scale-150 opacity-0' : 'scale-0 opacity-100'}`} />
+                <div className={`absolute inset-0 rounded-lg transition-all duration-500 ${isMenuOpen ? (isDarkMode ? 'bg-white/10 scale-150 opacity-0' : 'bg-yellow-100 scale-150 opacity-0') : 'scale-0 opacity-100'}`} />
               </button>
             </div>
           </div>
         </div>
       </header>
-
+      ;
       <MobileMenu isOpen={isMenuOpen} onClose={closeMenu} />
     </>
   );

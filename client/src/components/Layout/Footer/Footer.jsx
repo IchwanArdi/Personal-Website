@@ -4,7 +4,7 @@ import { SOCIAL_LINKS, TEXTS } from '../../../utils/constants';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const { language } = useApp();
+  const { language, isDarkMode } = useApp();
   const t = TEXTS[language];
 
   const iconComponents = {
@@ -14,21 +14,21 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative w-full mt-auto bg-black">
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent opacity-50" />
+    <footer className={`relative w-full mt-auto ${isDarkMode ? 'bg-black' : 'bg-gray-50'}`}>
+      <div className={`absolute top-0 left-0 w-full h-px opacity-50 ${isDarkMode ? 'bg-gradient-to-r from-transparent via-slate-700 to-transparent' : 'bg-gradient-to-r from-transparent via-gray-300 to-transparent'}`} />
 
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-start">
           {/* Left section */}
           <div className="lg:col-span-5 space-y-6">
             <div className="">
-              <h3 className="text-2xl font-light text-white tracking-wide mb-3">Ichwan Ardi</h3>
-              <p className="text-slate-400 text-sm leading-relaxed font-light max-w-md">{t.footerTagline}</p>
+              <h3 className={`text-2xl font-light tracking-wide mb-3 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Ichwan Ardi</h3>
+              <p className={`text-sm leading-relaxed font-light max-w-md ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}`}>{t.footerTagline}</p>
             </div>
 
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full">
+            <div className={`inline-flex items-center gap-2 px-4 py-2 backdrop-blur-sm border rounded-full ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white/70 border-gray-200/80'}`}>
               <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-              <span className="text-xs text-slate-300 font-medium">{t.openToOpportunities}</span>
+              <span className={`text-xs font-medium ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>{t.openToOpportunities}</span>
             </div>
           </div>
 
@@ -36,13 +36,13 @@ const Footer = () => {
 
           {/* Right section */}
           <div className="lg:col-span-5 space-y-6 ">
-            <div className="flex items-center gap-3 text-slate-400">
+            <div className={`flex items-center gap-3 ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}`}>
               <MapPin className="w-4 h-4" />
               <span className="text-sm font-light">{t.location}</span>
             </div>
 
             <div className="space-y-3 w-fit">
-              <p className="text-xs uppercase tracking-wider text-slate-500 font-medium mb-4">{t.connect}</p>
+              <p className={`text-xs uppercase tracking-wider font-medium mb-4 ${isDarkMode ? 'text-slate-500' : 'text-gray-500'}`}>{t.connect}</p>
               {SOCIAL_LINKS.map((social, index) => {
                 const IconComponent = iconComponents[social.icon];
                 return (
@@ -51,7 +51,7 @@ const Footer = () => {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-4 py-2 text-slate-400 hover:text-white transition-all duration-300"
+                    className={`group flex items-center gap-4 py-2 transition-all duration-300 ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
                     style={{ transitionDelay: `${index * 50}ms` }}
                   >
                     <IconComponent className="w-4 h-4 transition-transform group-hover:scale-110" />
@@ -64,12 +64,12 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-slate-800/50">
+        <div className={`mt-16 pt-8 border-t ${isDarkMode ? 'border-slate-800/50' : 'border-gray-300/60'}`}>
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-xs text-slate-500 font-light">
+            <p className={`text-xs font-light ${isDarkMode ? 'text-slate-500' : 'text-gray-500'}`}>
               © {currentYear} — {t.craftedWithIntention}
             </p>
-            <div className="flex items-center gap-2 text-slate-500">
+            <div className={`flex items-center gap-2 ${isDarkMode ? 'text-slate-500' : 'text-gray-500'}`}>
               <Coffee className="w-3 h-3" />
               <span className="text-xs font-light">{t.poweredByCuriosity}</span>
             </div>
