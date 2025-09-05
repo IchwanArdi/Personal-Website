@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Github, ExternalLink, Calendar, Tag, Star, Users, Clock, CheckCircle, Play, FileImage, Code2 } from 'lucide-react';
+import { ArrowLeft, Github, ExternalLink, Calendar, Tag, Users, Clock, CheckCircle, Play, FileImage } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useApp } from '../contexts/AppContext';
 import { DETAILPROJECT } from '../utils/constants';
@@ -14,75 +14,87 @@ function ProjectDetailPage() {
   const [showAllFeatures, setShowAllFeatures] = useState(false);
 
   const { language, isDarkMode } = useApp();
-  const t = DETAILPROJECT[language];
+
+  // Memoized translations untuk menghindari re-referencing
+  const t = useMemo(() => DETAILPROJECT[language], [language]);
+
+  // Callback untuk fetch data agar tidak dibuat ulang setiap render
+  const fetchProjectDetail = useCallback(async () => {
+    if (!id) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/project/detail/${id}`, {
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Project not found');
+      }
+
+      const result = await response.json();
+
+      // Transform API data dengan null safety yang lebih baik
+      const transformedProject = {
+        id: result.id || result._id,
+        title: result.title || 'Untitled Project',
+        shortDescription: result.description || result.deskripsi || 'No description available',
+        description: result.detailedDescription || result.displayDescription || result.description || result.deskripsi || 'No detailed description available',
+        // Lebih efisien dalam menangani images array
+        images: (() => {
+          if (result.images?.length > 0) return result.images;
+          if (result.allImages?.length > 0) return result.allImages;
+          if (result.image || result.gambar) return [result.image || result.gambar];
+          return ['https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop']; // fallback image
+        })(),
+        technologies: result.technologies || [],
+        category: result.category || result.kategori?.toUpperCase() || 'OTHER',
+        date: result.date || (result.tanggal ? new Date(result.tanggal).toLocaleDateString() : 'Not specified'),
+        githubUrl: result.githubUrl || null, // Menggunakan null daripada '#'
+        liveUrl: result.liveUrl || result.link || null,
+        featured: Boolean(result.featured),
+        duration: result.duration || 'Not specified',
+        teamSize: result.teamSize || 'Not specified',
+        status: result.status || 'Completed',
+        features: result.features || [],
+        challenges: result.challenges || [],
+      };
+
+      setProjectDetail(transformedProject);
+    } catch (error) {
+      console.error('Error fetching project details:', error);
+      toast.error('Error fetching project details');
+      navigate('/projects', { replace: true }); // Menggunakan replace untuk history yang lebih bersih
+    } finally {
+      setLoading(false);
+    }
+  }, [id, navigate]);
 
   useEffect(() => {
-    const fetchProjectDetail = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/project/detail/${id}`, {
-          credentials: 'include',
-        });
+    fetchProjectDetail();
+  }, [fetchProjectDetail]);
 
-        if (!response.ok) {
-          throw new Error('Project not found');
-        }
-
-        const result = await response.json();
-
-        // Transform the API data to match the component's expected structure
-        const transformedProject = {
-          id: result.id || result._id,
-          title: result.title,
-          shortDescription: result.description || result.deskripsi,
-          description: result.detailedDescription || result.displayDescription,
-          images: result.images && result.images.length > 0 ? result.images : result.allImages && result.allImages.length > 0 ? result.allImages : [result.image || result.gambar],
-          technologies: result.technologies || [],
-          category: result.category || result.kategori?.toUpperCase() || 'OTHER',
-          date: result.date || new Date(result.tanggal).toLocaleDateString() || 'Not specified',
-          githubUrl: result.githubUrl || '#',
-          liveUrl: result.liveUrl || result.link || null,
-          featured: result.featured || false,
-          duration: result.duration || 'Not specified',
-          teamSize: result.teamSize || 'Not specified',
-          status: result.status || 'Completed',
-          features: result.features || [],
-          challenges: result.challenges || [],
-        };
-
-        setProjectDetail(transformedProject);
-      } catch (error) {
-        console.error('Error fetching project details:', error);
-        toast.error('Error fetching project details');
-        // Redirect back to projects page if project not found
-        navigate('/projects');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchProjectDetail();
-    }
-  }, [id, navigate, language, t]);
-
-  const goBack = () => {
+  // Callback untuk navigasi kembali
+  const goBack = useCallback(() => {
     navigate('/projects');
-  };
+  }, [navigate]);
 
-  if (loading) {
-    return (
+  // Memoized loading component
+  const LoadingComponent = useMemo(
+    () => (
       <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
           <p className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>{t.loadingProject}</p>
         </div>
       </div>
-    );
-  }
+    ),
+    [isDarkMode, t.loadingProject]
+  );
 
-  if (!projectDetail) {
-    return (
+  // Memoized not found component
+  const NotFoundComponent = useMemo(
+    () => (
       <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">{t.noProject}</h2>
@@ -92,13 +104,32 @@ function ProjectDetailPage() {
           </button>
         </div>
       </div>
-    );
-  }
+    ),
+    [isDarkMode, t.noProject, t.noProjectInfo, t.backToProjects, goBack]
+  );
+
+  // Memoized class names untuk performa
+  const containerClass = useMemo(() => `min-h-screen ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`, [isDarkMode]);
+
+  const stickyHeaderClass = useMemo(() => `sticky top-5 z-30 backdrop-blur-sm ${isDarkMode ? 'bg-black' : 'bg-white/80'}`, [isDarkMode]);
+
+  const cardClass = useMemo(
+    () => `backdrop-blur-sm rounded-2xl p-6 border ${isDarkMode ? 'bg-gradient-to-br from-gray-900/20 to-gray-900/30 border-gray-700/20' : 'bg-gradient-to-br from-white/70 to-gray-50/30 border-gray-300/30'}`,
+    [isDarkMode]
+  );
+
+  // Handler untuk error gambar dengan useCallback
+  const handleImageError = useCallback((e) => {
+    e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop';
+  }, []);
+
+  if (loading) return LoadingComponent;
+  if (!projectDetail) return NotFoundComponent;
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
+    <div className={containerClass}>
       {/* Back Button */}
-      <div className={`sticky top-5 z-30 backdrop-blur-sm ${isDarkMode ? 'bg-black' : 'bg-white/80'}`}>
+      <div className={stickyHeaderClass}>
         <div className="max-w-7xl mx-auto px-6 py-4">
           <button onClick={goBack} className="flex font-semibold items-center gap-2 text-yellow-500 hover:text-yellow-400 transition-colors group">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -127,9 +158,9 @@ function ProjectDetailPage() {
 
           <p className={`text-md md:text-xl mb-6 leading-relaxed max-w-4xl ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{projectDetail.shortDescription}</p>
 
-          {/* Action Buttons */}
+          {/* Action Buttons - Hanya render jika URL tersedia */}
           <div className="flex flex-wrap gap-4">
-            {projectDetail.githubUrl && projectDetail.githubUrl !== '#' && (
+            {projectDetail.githubUrl && (
               <a href={projectDetail.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-lg font-medium transition-all">
                 <Github className="w-5 h-5" />
                 {t.viewCode}
@@ -160,14 +191,13 @@ function ProjectDetailPage() {
                     src={projectDetail.images[currentImageIndex]}
                     alt={`${projectDetail.title} screenshot ${currentImageIndex + 1}`}
                     className="w-full h-96 object-cover transition-transform duration-500 group-hover:scale-105"
-                    onError={(e) => {
-                      e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop';
-                    }}
+                    onError={handleImageError}
+                    loading="lazy" // Lazy loading untuk performa
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
                 </div>
 
-                {/* Thumbnail Navigation - Only show if multiple images */}
+                {/* Thumbnail Navigation - Hanya render jika ada multiple images */}
                 {projectDetail.images.length > 1 && (
                   <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
                     {projectDetail.images.map((image, index) => (
@@ -176,14 +206,7 @@ function ProjectDetailPage() {
                         onClick={() => setCurrentImageIndex(index)}
                         className={`relative flex-shrink-0 w-20 h-16 m-1 rounded-lg overflow-hidden transition-all ${currentImageIndex === index ? 'ring-2 ring-yellow-500 opacity-100' : 'opacity-60 hover:opacity-80'}`}
                       >
-                        <img
-                          src={image}
-                          alt={`Thumbnail ${index + 1}`}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop';
-                          }}
-                        />
+                        <img src={image} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" onError={handleImageError} loading="lazy" />
                       </button>
                     ))}
                   </div>
@@ -197,19 +220,19 @@ function ProjectDetailPage() {
                 <FileImage className="w-6 h-6 text-yellow-500" />
                 {t.aboutThisProject}
               </h2>
-              <div className={`backdrop-blur-sm rounded-2xl p-6 border ${isDarkMode ? 'bg-gradient-to-br from-gray-900/20 to-gray-900/30 border-gray-700/20' : 'bg-gradient-to-br from-white/70 to-gray-50/30 border-gray-300/30'}`}>
+              <div className={cardClass}>
                 <p className={`leading-relaxed text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{projectDetail.description}</p>
               </div>
             </section>
 
-            {/* Features - Only show if features exist */}
-            {projectDetail.features && projectDetail.features.length > 0 && (
+            {/* Features - Hanya render jika ada features */}
+            {projectDetail.features.length > 0 && (
               <section>
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-yellow-500" />
                   {t.keyFeatures}
                 </h2>
-                <div className={`backdrop-blur-sm rounded-2xl p-6 border mb-5 ${isDarkMode ? 'bg-gradient-to-br from-gray-900/20 to-gray-900/30 border-gray-700/20' : 'bg-gradient-to-br from-white/70 to-gray-50/30 border-gray-300/30'}`}>
+                <div className={`${cardClass} mb-5`}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {(showAllFeatures ? projectDetail.features : projectDetail.features.slice(0, 6)).map((feature, index) => (
                       <div key={index} className="flex items-center gap-3">
@@ -232,7 +255,7 @@ function ProjectDetailPage() {
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-8">
             {/* Project Info */}
-            <div className={`backdrop-blur-sm rounded-2xl p-6 border ${isDarkMode ? 'bg-gradient-to-br from-gray-900/20 to-gray-900/30 border-gray-700/20' : 'bg-gradient-to-br from-white/70 to-gray-50/30 border-gray-300/30'}`}>
+            <div className={cardClass}>
               <h3 className="text-xl font-bold mb-4">{t.projectInfo}</h3>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
@@ -259,9 +282,9 @@ function ProjectDetailPage() {
               </div>
             </div>
 
-            {/* Technologies */}
-            {projectDetail.technologies && projectDetail.technologies.length > 0 && (
-              <div className={`backdrop-blur-sm rounded-2xl p-6 border ${isDarkMode ? 'bg-gradient-to-br from-gray-900/20 to-gray-900/30 border-gray-700/20' : 'bg-gradient-to-br from-white/70 to-gray-50/30 border-gray-300/30'}`}>
+            {/* Technologies - Hanya render jika ada technologies */}
+            {projectDetail.technologies.length > 0 && (
+              <div className={cardClass}>
                 <h3 className="text-xl font-bold mb-4">{t.technologiesUsed}</h3>
                 <div className="flex flex-wrap gap-2">
                   {projectDetail.technologies.map((tech, index) => (
@@ -279,10 +302,10 @@ function ProjectDetailPage() {
             )}
 
             {/* Quick Actions */}
-            <div className={`backdrop-blur-sm rounded-2xl p-6 border ${isDarkMode ? 'bg-gradient-to-br from-gray-900/20 to-gray-900/30 border-gray-700/20' : 'bg-gradient-to-br from-white/70 to-gray-50/30 border-gray-300/30'}`}>
+            <div className={cardClass}>
               <h3 className="text-xl font-bold mb-4">{t.quickActions}</h3>
               <div className="space-y-3">
-                {projectDetail.githubUrl && projectDetail.githubUrl !== '#' && (
+                {projectDetail.githubUrl && (
                   <a
                     href={projectDetail.githubUrl}
                     target="_blank"

@@ -11,7 +11,7 @@ const HomePage = () => {
   const [homeData, setHomeData] = useState(null);
   const [hoveredSection, setHoveredSection] = useState(null);
 
-  const { language } = useApp();
+  const { isDarkMode, language } = useApp();
   const t = HOME[language];
 
   // Memoized helper functions - tidak perlu dibuat ulang setiap render
@@ -166,10 +166,10 @@ const HomePage = () => {
     return (
       <>
         <SEO pageKey="home" />
-        <div className="bg-black text-white flex items-center justify-center min-h-screen">
+        <div className={`${isDarkMode ? 'bg-black' : 'bg-white'} text-white flex items-center justify-center min-h-screen`}>
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
-            <p className="text-gray-400">Loading...</p>
+            <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</p>
           </div>
         </div>
       </>
