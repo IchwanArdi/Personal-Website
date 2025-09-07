@@ -22,7 +22,6 @@ const router = createBrowserRouter([
       { path: 'projects', element: <ProjectsPage /> },
       { path: 'blogs', element: <BlogsPage /> },
       { path: 'about', element: <AboutPage /> },
-      // Updated routing for blog details using slug parameter
       { path: 'blog/:slug', element: <BlogDetailPage /> },
       { path: 'project/:id', element: <ProjectDetailPage /> },
     ],

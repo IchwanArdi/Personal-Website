@@ -361,9 +361,9 @@ export const ABOUT = {
     availability: 'Tersedia untuk remote work',
 
     // Tech Stack
-    techStackTitle: 'My',
-    techStackArsenal: 'Tech',
-    techStackSubtitle: 'Arsenal',
+    techStackTitle: 'Kumpulan',
+    techStackArsenal: 'Teknologi',
+    techStackSubtitle: 'Saya',
     techStackDescription: 'Teknologi yang saya gunakan setiap hari untuk membangun aplikasi web yang menakjubkan',
 
     // Tech Categories
@@ -373,97 +373,97 @@ export const ABOUT = {
     tools: 'tools',
 
     // Journey Section
-    journeyTitle: 'My',
-    journeyHighlight: 'Journey',
-    journeySoFar: 'So Far',
+    journeyTitle: 'Perjalanan',
+    journeyHighlight: 'Saya',
+    journeySoFar: 'Sejauh Ini',
     journeyDescription: "Dari yang awalnya cuma tau HTML-CSS basic, sekarang udah bisa bikin full stack app. Here's the story! 📖",
 
     // Journey Items
     journeyItems: [
       {
         year: '2022',
-        title: 'Started My Journey',
+        title: 'Awal Perjalanan',
         desc: '📘 Mulai kuliah di Universitas Amikom Purwokerto. Belum terlalu fokus ke coding, masih adaptasi dunia kampus dan teori dasar.',
       },
       {
         year: '2023',
-        title: 'Exploration Phase',
-        desc: '🧩 Belajar dasar-dasar pemrograman dan konsep web development. Coba-coba beberapa teknologi tapi belum intens fokus.',
+        title: 'Masa Eksplorasi',
+        desc: '🧩 Belajar dasar-dasar pemrograman dan konsep web development. Coba beberapa teknologi tapi belum fokus mendalam.',
       },
       {
         year: '2024',
-        title: 'Real Coding Journey',
-        desc: '🔥 Mulai serius fokus di coding. Belajar MERN Stack, React, sampai bikin project nyata seperti e-commerce, chat app, dan layanan desa digital.',
+        title: 'Mulai Serius Ngoding',
+        desc: '🔥 Fokus belajar coding lebih dalam. Mendalami MERN Stack, React, dan bikin project nyata seperti e-commerce, chat app, dan layanan desa digital.',
       },
       {
         year: '2025',
-        title: 'Next Level Goals',
-        desc: '🎯 Fokus mendalami advanced concepts, performance optimization, serta eksplorasi framework dan teknologi terbaru.',
+        title: 'Tujuan Level Berikutnya',
+        desc: '🎯 Mendalami konsep advanced, optimasi performa, serta eksplorasi framework dan teknologi terbaru.',
       },
     ],
 
     // Personality Section
-    personalityTitle: 'What Makes Me',
-    personalityTick: 'Tick',
+    personalityTitle: 'Apa yang Membuat Saya',
+    personalityTick: 'Bersemangat',
     personalityDescription: 'Lebih dari sekedar coding skill, ini yang bikin gue passionate sama development 🔥',
 
     // Personality Traits
     personalityTraits: [
       {
-        trait: 'Problem Solver',
+        trait: 'Pemecah Masalah',
         desc: 'Love banget sama challenge coding yang bikin mikir keras. Debugging sampe jam 3 pagi? No problem! 🕐',
       },
       {
-        trait: 'Team Player',
+        trait: 'Pemain Tim',
         desc: 'Kerja bareng tim itu seru! Sharing knowledge dan belajar dari orang lain adalah passion gue 🤝',
       },
       {
-        trait: 'Always Learning',
+        trait: 'Selalu Belajar',
         desc: 'Tech berkembang cepet banget, makanya gue selalu update dengan trend terbaru. FOMO sama tech baru! 📚',
       },
       {
-        trait: 'Detail Oriented',
+        trait: 'Detail Banget',
         desc: "Pixel perfect UI dan clean code adalah obsesi. Kalau ada yang 'agak-agak' pasti ganggu banget 😅",
       },
     ],
 
     // Current Focus
-    currentFocusTitle: 'Currently',
-    currentFocusFocusing: 'Focusing',
-    currentFocusOn: 'On',
+    currentFocusTitle: 'Sedang',
+    currentFocusFocusing: 'Fokus',
+    currentFocusOn: 'Pada',
 
     focusItems: [
       {
-        title: 'Advanced React',
-        desc: 'Next.js, TypeScript, performance optimization',
+        title: 'React Lanjutan',
+        desc: 'Next.js, TypeScript, dan optimasi performa',
       },
       {
-        title: 'System Design',
-        desc: 'Scalable architecture, microservices',
+        title: 'Desain Sistem',
+        desc: 'Arsitektur yang scalable, microservices',
       },
       {
-        title: 'User Experience',
-        desc: 'Clean design, smooth interactions',
+        title: 'Pengalaman Pengguna',
+        desc: 'Desain yang bersih, interaksi yang mulus',
       },
     ],
 
     // Fun Stats
     funStats: [
-      { number: '10+', label: 'Projects Built', icon: '🚀' },
-      { number: '1+', label: 'Years Coding', icon: '⏰' },
-      { number: '∞', label: 'Cups of Coffee', icon: '☕' },
-      { number: '24/7', label: 'Learning Mode', icon: '🧠' },
+      { number: '10+', label: 'Proyek Dibangun', icon: '🚀' },
+      { number: '1+', label: 'Tahun Ngoding', icon: '⏰' },
+      { number: '∞', label: 'Cangkir Kopi', icon: '☕' },
+      { number: '24/7', label: 'Mode Belajar', icon: '🧠' },
     ],
 
     // CTA Section
-    ctaTitle: "Let's Build Something",
-    ctaAmazing: 'Amazing',
-    ctaTogether: 'Together!',
-    ctaDescription: "Punya ide project yang keren? Or just want to chat about tech? I'm always excited to connect with fellow developers and collaborate on cool stuff! 🤝",
+    ctaTitle: 'Yuk Bikin Sesuatu',
+    ctaAmazing: 'Keren',
+    ctaTogether: 'Bareng!',
+    ctaDescription: 'Punya ide project yang keren? Atau cuma pengen ngobrol soal tech? Gue selalu excited buat connect dengan sesama developer dan kolaborasi bikin hal-hal seru! 🤝',
 
     // CTA Buttons
-    ctaLetsTalk: "Let's Talk!",
-    ctaCheckWork: 'Check My Work',
-    ctaDownloadCV: 'Download CV',
+    ctaLetsTalk: 'Ngobrol Yuk!',
+    ctaCheckWork: 'Lihat Karyaku',
+    ctaDownloadCV: 'Unduh CV',
   },
 };
