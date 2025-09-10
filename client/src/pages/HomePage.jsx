@@ -107,7 +107,7 @@ const HomePage = () => {
     const fetchHome = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://server-personal-project.vercel.app/api/home`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/home`, {
           credentials: 'include',
         });
 
