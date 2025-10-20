@@ -28,16 +28,32 @@ app.use(
 // Compression
 app.use(compression());
 
-// CORS with env override
-const allowedOrigin = process.env.CORS_ORIGIN || ['http://localhost:5173', 'https://ichwanardi.vercel.app'];
-app.use(
-  cors({
-    origin: allowedOrigin,
-    credentials: true,
-    optionsSuccessStatus: 204,
-    maxAge: 86400,
-  })
-);
+// CORS with env override (support comma-separated list)
+const rawCorsOrigin = process.env.CORS_ORIGIN;
+const defaultOrigins = ['http://localhost:5173', 'https://ichwanardi.vercel.app'];
+const allowedOrigins = Array.isArray(rawCorsOrigin)
+  ? rawCorsOrigin
+  : typeof rawCorsOrigin === 'string'
+  ? rawCorsOrigin
+      .split(',')
+      .map((o) => o.trim())
+      .filter(Boolean)
+  : defaultOrigins;
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow non-browser requests or same-origin (no origin header)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error(`CORS not allowed for origin: ${origin}`));
+  },
+  credentials: true,
+  optionsSuccessStatus: 200,
+  maxAge: 86400,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Logging (skip in test)
 if (process.env.NODE_ENV !== 'test') {
