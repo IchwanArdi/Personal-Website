@@ -1,9 +1,30 @@
 const app = require('./app.js');
+const mongoose = require('mongoose');
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🌐 Local: http://localhost:${PORT}`);
 });
+
+const gracefulShutdown = (signal) => {
+  console.log(`\n${signal} received. Closing HTTP server...`);
+  server.close(() => {
+    console.log('HTTP server closed. Closing Mongo connection...');
+    mongoose.connection
+      .close(false)
+      .then(() => {
+        console.log('Mongo connection closed. Exiting.');
+        process.exit(0);
+      })
+      .catch((err) => {
+        console.error('Error closing Mongo connection:', err);
+        process.exit(1);
+      });
+  });
+};
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));

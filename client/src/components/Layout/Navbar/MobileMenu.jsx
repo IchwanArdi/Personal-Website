@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { Instagram, X, Github } from 'lucide-react';
 import { useApp } from '../../../contexts/AppContext';
 import { NAVIGATION_LINKS, TEXTS } from '../../../utils/constants';
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 
 const MobileMenu = ({ isOpen, onClose }) => {
   const { language, isDarkMode } = useApp();
@@ -156,4 +156,4 @@ const MobileMenu = ({ isOpen, onClose }) => {
   );
 };
 
-export default MobileMenu;
+export default memo(MobileMenu);

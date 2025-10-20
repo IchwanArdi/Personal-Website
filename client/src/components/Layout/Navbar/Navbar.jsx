@@ -1,5 +1,5 @@
 import { Settings } from 'lucide-react';
-import { useState, useRef, useMemo, useCallback } from 'react';
+import { useState, useRef, useMemo, useCallback, memo } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useApp } from '../../../contexts/AppContext';
 import { useClickOutside } from '../../../hooks/useClickOutside';
@@ -166,4 +166,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);

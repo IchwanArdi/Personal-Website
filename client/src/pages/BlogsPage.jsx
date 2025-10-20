@@ -67,11 +67,11 @@ function BlogsPage() {
     const transformed = blogData.map((blog) => ({
       bgImage: blog.gambar,
       title: blog.judul,
-      content: blog.konten,
+      content: blog.konten || blog.ringkasan,
       date: formatDate(blog.tanggal),
-      category: blog.kategori,
-      readTime: getReadTime(blog.konten),
-      excerpt: createExcerpt(blog.konten, 150),
+      category: blog.kategori || 'GENERAL',
+      readTime: getReadTime(blog.konten || blog.ringkasan),
+      excerpt: createExcerpt(blog.konten || blog.ringkasan, 150),
       featured: false,
       slug: blog.slug || createSlug(blog.judul),
     }));

@@ -7,10 +7,11 @@ const Blog = require('../../models/Blog');
 
 router.get('/home', async (req, res) => {
   try {
-    const latestProject = await Project.findOne().sort({ _id: -1 }); // Mengambil proyek terbaru berdasarkan ID terbaru
-    const latestBlog = await Blog.findOne().sort({ _id: -1 }); // Mengambil Blog terbaru berdasarkan ID terbaru
-    const latestUpdate = await Images.findOne().sort({ _id: -1 }); // Mengambil Picture terbaru berdasarkan ID terbaru
+    const latestProject = await Project.findOne().sort({ _id: -1 }).select('title gambar tanggal liveUrl').lean();
+    const latestBlog = await Blog.findOne().sort({ _id: -1 }).select('judul slug gambar tanggal ringkasan').lean();
+    const latestUpdate = await Images.findOne().sort({ _id: -1 }).select('gambar').lean();
 
+    res.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
     res.json({
       latestProject,
       latestBlog,

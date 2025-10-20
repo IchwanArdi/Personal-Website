@@ -44,11 +44,11 @@ router.get('/detail/:slug', async (req, res) => {
     const slugParam = req.params.slug;
 
     // Try to find by slug first
-    let mainBlog = await Blog.findOne({ slug: slugParam });
+    let mainBlog = await Blog.findOne({ slug: slugParam }).select('judul slug gambar tanggal ringkasan konten tags kategori').lean();
 
     // If not found by slug, try to find by generated slug from title
     if (!mainBlog) {
-      const blogs = await Blog.find();
+      const blogs = await Blog.find().select('judul slug gambar tanggal ringkasan konten tags kategori').lean();
       mainBlog = blogs.find((blog) => createSlug(blog.judul) === slugParam);
     }
 
@@ -57,7 +57,9 @@ router.get('/detail/:slug', async (req, res) => {
       const decodedTitle = decodeURIComponent(slugParam.replace(/-/g, ' '));
       mainBlog = await Blog.findOne({
         judul: { $regex: new RegExp(`^${decodedTitle}$`, 'i') },
-      });
+      })
+        .select('judul slug gambar tanggal ringkasan konten tags kategori')
+        .lean();
     }
 
     if (!mainBlog) {
@@ -69,10 +71,11 @@ router.get('/detail/:slug', async (req, res) => {
 
     // Add slug if not exists
     const blogWithSlug = {
-      ...mainBlog.toObject(),
+      ...mainBlog,
       slug: mainBlog.slug || createSlug(mainBlog.judul),
     };
 
+    res.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=1800');
     res.json({
       success: true,
       mainBlog: blogWithSlug,

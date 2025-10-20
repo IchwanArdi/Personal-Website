@@ -1,6 +1,7 @@
 import { Instagram, X, Github, MapPin, Coffee, ArrowUpRight } from 'lucide-react';
 import { useApp } from '../../../contexts/AppContext';
 import { SOCIAL_LINKS, TEXTS } from '../../../utils/constants';
+import { memo } from 'react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -80,4 +81,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default memo(Footer);

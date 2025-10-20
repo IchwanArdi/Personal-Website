@@ -1,7 +1,7 @@
 import { Settings, Moon, Sun } from 'lucide-react';
 import { useApp } from '../../../contexts/AppContext';
 import { TEXTS } from '../../../utils/constants';
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, memo } from 'react';
 import Toggle from '../../../UI/Toggle';
 
 const SettingsDropdown = ({ isOpen }) => {
@@ -93,4 +93,4 @@ const SettingsDropdown = ({ isOpen }) => {
   );
 };
 
-export default SettingsDropdown;
+export default memo(SettingsDropdown);

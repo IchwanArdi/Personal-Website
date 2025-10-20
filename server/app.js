@@ -1,9 +1,10 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const cors = require('cors');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
 const dotenv = require('dotenv');
+const compression = require('compression');
+const helmet = require('helmet');
+const morgan = require('morgan');
 
 // Create Express app
 const app = express();
@@ -16,32 +17,34 @@ connectDB();
 
 // Middleware
 app.use(express.json());
+
+// Security headers
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
+
+// Compression
+app.use(compression());
+
+// CORS with env override
+const allowedOrigin = process.env.CORS_ORIGIN || ['http://localhost:5173', 'https://ichwanardi.vercel.app'];
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'https://ichwanardi.vercel.app'], // frontend
+    origin: allowedOrigin,
     credentials: true,
+    optionsSuccessStatus: 204,
+    maxAge: 86400,
   })
 );
+
+// Logging (skip in test)
+if (process.env.NODE_ENV !== 'test') {
+  app.use(morgan('combined'));
+}
 
 app.set('trust proxy', 1); // penting di Railway / Vercel
-
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,
-      ttl: 14 * 24 * 60 * 60,
-    }),
-    cookie: {
-      maxAge: 14 * 24 * 60 * 60 * 1000, // 14 hari
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // ✅ JANGAN pakai array
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // agar bisa lintas domain di Vercel, tapi tetap aman saat lokal
-    },
-  })
-);
 
 // Import Routes
 const HomeRoute = require('./routes/api/home');

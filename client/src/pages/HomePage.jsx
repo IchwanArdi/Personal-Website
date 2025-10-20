@@ -224,7 +224,11 @@ const HomePage = () => {
                       alt={section.title}
                       className="w-full h-56 sm:h-64 md:h-80 lg:h-96 xl:h-[20rem] object-cover transition-transform duration-700 group-hover/image:scale-110"
                       onError={handleImageError}
-                      loading="lazy" // Lazy loading untuk performa
+                      loading={index === 0 ? 'eager' : 'lazy'} // First image eager for LCP
+                      decoding="async"
+                      fetchPriority={index === 0 ? 'high' : 'auto'} // High priority for LCP image
+                      width={800}
+                      height={600}
                     />
 
                     {/* Image overlay on hover */}

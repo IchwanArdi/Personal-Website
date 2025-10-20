@@ -1,17 +1,17 @@
-import { StrictMode } from 'react';
+import { StrictMode, lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-// import { HelmetProvider } from 'react-helmet';
 import { ToastContainer } from 'react-toastify';
 import './index.css';
 import App from './App.jsx';
 
-import HomePage from './pages/HomePage.jsx';
-import BlogsPage from './pages/BlogsPage.jsx';
-import ProjectsPage from './pages/ProjectsPage.jsx';
-import AboutPage from './pages/AboutPage.jsx';
-import BlogDetailPage from './pages/BlogDetailPage.jsx';
-import ProjectDetailPage from './pages/ProjectDetailPage.jsx';
+// Lazy load pages for code splitting
+const HomePage = lazy(() => import('./pages/HomePage.jsx'));
+const BlogsPage = lazy(() => import('./pages/BlogsPage.jsx'));
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage.jsx'));
+const AboutPage = lazy(() => import('./pages/AboutPage.jsx'));
+const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage.jsx'));
+const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage.jsx'));
 
 const router = createBrowserRouter([
   {
@@ -28,11 +28,21 @@ const router = createBrowserRouter([
   },
 ]);
 
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen bg-black">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+      <p className="text-gray-400">Loading...</p>
+    </div>
+  </div>
+);
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* <HelmetProvider> */}
-    <RouterProvider router={router} />
+    <Suspense fallback={<LoadingFallback />}>
+      <RouterProvider router={router} />
+    </Suspense>
     <ToastContainer position="top-right" autoClose={3000} theme="dark" />
-    {/* </HelmetProvider> */}
   </StrictMode>
 );

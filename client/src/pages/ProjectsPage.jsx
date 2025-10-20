@@ -22,14 +22,14 @@ function ProjectsPage() {
     return dataProjects.map((project) => ({
       id: project.id || project._id,
       title: project.title,
-      description: project.displayDescription || project.description,
+      description: project.displayDescription || project.description || project.deskripsi,
       image: project.image || project.gambar,
       technologies: project.technologies || [],
       category: project.category || project.kategori?.toUpperCase() || 'OTHER',
-      date: project.date,
+      date: project.date || project.tanggal,
       githubUrl: project.githubUrl || '#',
       liveUrl: project.liveUrl || project.link || null,
-      new: project.new || false,
+      new: project.new || project.featured || false,
     }));
   }, [dataProjects]);
 
