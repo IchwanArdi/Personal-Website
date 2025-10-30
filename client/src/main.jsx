@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import './index.css';
 import App from './App.jsx';
+import { AuthProvider } from './contexts/AuthContext.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 // Lazy load pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage.jsx'));
@@ -12,6 +14,10 @@ const ProjectsPage = lazy(() => import('./pages/ProjectsPage.jsx'));
 const AboutPage = lazy(() => import('./pages/AboutPage.jsx'));
 const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage.jsx'));
 const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage.jsx'));
+const LoginPage = lazy(() => import('./pages/LoginPage.jsx'));
+const DashboardLayout = lazy(() => import('./pages/dashboard/DashboardLayout.jsx'));
+const ProjectsAdmin = lazy(() => import('./pages/dashboard/ProjectsAdmin.jsx'));
+const BlogsAdmin = lazy(() => import('./pages/dashboard/BlogsAdmin.jsx'));
 
 const router = createBrowserRouter([
   {
@@ -24,6 +30,21 @@ const router = createBrowserRouter([
       { path: 'about', element: <AboutPage /> },
       { path: 'blog/:slug', element: <BlogDetailPage /> },
       { path: 'project/:id', element: <ProjectDetailPage /> },
+      { path: 'login', element: <LoginPage /> },
+      {
+        path: 'dashboard',
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: '',
+            element: <DashboardLayout />,
+            children: [
+              { path: 'projects', element: <ProjectsAdmin /> },
+              { path: 'blogs', element: <BlogsAdmin /> },
+            ],
+          },
+        ],
+      },
     ],
   },
 ]);
@@ -41,7 +62,9 @@ const LoadingFallback = () => (
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Suspense fallback={<LoadingFallback />}>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </Suspense>
     <ToastContainer position="top-right" autoClose={3000} theme="dark" />
   </StrictMode>

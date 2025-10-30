@@ -2,6 +2,7 @@ import { Settings } from 'lucide-react';
 import { useState, useRef, useMemo, useCallback, memo } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useApp } from '../../../contexts/AppContext';
+import { useAuth } from '../../../contexts/AuthContext';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import { NAVIGATION_LINKS } from '../../../utils/constants';
 import SettingsDropdown from './SettingsDropdown';
@@ -14,6 +15,7 @@ const Navbar = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const { isDarkMode, language } = useApp();
+  const { isAuthenticated } = useAuth();
 
   const settingsRef = useRef();
   const mobileMenuRef = useRef();
@@ -71,6 +73,14 @@ const Navbar = () => {
 
             {/* Right Side */}
             <div className="flex items-center space-x-3">
+              {isAuthenticated && (
+                <Link
+                  to="/dashboard/projects"
+                  className={`hidden lg:inline-block px-3 py-2 rounded text-sm font-semibold ${isDarkMode ? 'text-slate-200 hover:text-yellow-400 hover:bg-slate-800/30' : 'text-black hover:text-yellow-600 hover:bg-slate-100'}`}
+                >
+                  Dashboard
+                </Link>
+              )}
               {/* Settings Toggle */}
               <div className="relative" ref={settingsRef}>
                 <button
