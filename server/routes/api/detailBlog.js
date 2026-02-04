@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const redis = require('../../config/redis');
 
 // Import Blog model
 const Blog = require('../../models/Blog');
@@ -17,6 +18,14 @@ const createSlug = (title) => {
 // Get all blogs with slug generation
 router.get('/', async (req, res) => {
   try {
+    const CACHE_KEY = 'blogs:all_slugs';
+    
+    // Check Cache
+    const cachedData = await redis.get(CACHE_KEY);
+    if (cachedData) {
+      return res.json(JSON.parse(cachedData));
+    }
+
     const blogs = await Blog.find().sort({ tanggal: -1 });
 
     // Add slug to each blog if not exists
@@ -25,10 +34,15 @@ router.get('/', async (req, res) => {
       slug: blog.slug || createSlug(blog.judul),
     }));
 
-    res.json({
+    const responseData = {
       success: true,
       Blogs: blogsWithSlug,
-    });
+    };
+
+    // Cache for 5 minutes
+    await redis.set(CACHE_KEY, JSON.stringify(responseData), 'EX', 300);
+
+    res.json(responseData);
   } catch (error) {
     console.error('Error fetching blogs:', error);
     res.status(500).json({
@@ -42,6 +56,16 @@ router.get('/', async (req, res) => {
 router.get('/detail/:slug', async (req, res) => {
   try {
     const slugParam = req.params.slug;
+    const CACHE_KEY = `blog:${slugParam}`;
+
+    // 1. Check Cache
+    const cachedData = await redis.get(CACHE_KEY);
+    if (cachedData) {
+      console.log(`⚡ Cache Hit: BLOG ${slugParam}`);
+      return res.json(JSON.parse(cachedData));
+    }
+    
+    console.log(`🐢 Cache Miss: Fetching BLOG ${slugParam}`);
 
     // Try to find by slug first
     let mainBlog = await Blog.findOne({ slug: slugParam }).select('judul slug gambar tanggal ringkasan konten tags kategori').lean();
@@ -75,11 +99,16 @@ router.get('/detail/:slug', async (req, res) => {
       slug: mainBlog.slug || createSlug(mainBlog.judul),
     };
 
-    res.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=1800');
-    res.json({
+    const responseData = {
       success: true,
       mainBlog: blogWithSlug,
-    });
+    };
+
+    // 2. Save to Cache (TTL: 1 hour)
+    await redis.set(CACHE_KEY, JSON.stringify(responseData), 'EX', 3600);
+
+    res.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=1800');
+    res.json(responseData);
   } catch (error) {
     console.error('Error fetching blog detail:', error);
     res.status(500).json({
@@ -93,6 +122,13 @@ router.get('/detail/:slug', async (req, res) => {
 router.get('/detail/id/:id', async (req, res) => {
   try {
     const blogId = req.params.id;
+    const CACHE_KEY = `blog:id:${blogId}`;
+
+    // Check Cache
+    const cachedData = await redis.get(CACHE_KEY);
+    if (cachedData) {
+      return res.json(JSON.parse(cachedData));
+    }
 
     const mainBlog = await Blog.findById(blogId);
 
@@ -108,10 +144,15 @@ router.get('/detail/id/:id', async (req, res) => {
       slug: mainBlog.slug || createSlug(mainBlog.judul),
     };
 
-    res.json({
+    const responseData = {
       success: true,
       mainBlog: blogWithSlug,
-    });
+    };
+
+    // Cache (TTL: 1 hour)
+    await redis.set(CACHE_KEY, JSON.stringify(responseData), 'EX', 3600);
+
+    res.json(responseData);
   } catch (error) {
     console.error('Error fetching blog detail:', error);
     res.status(500).json({

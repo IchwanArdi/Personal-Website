@@ -33,9 +33,13 @@ export default async function handler(req, res) {
       const image = blog.gambar || 'https://ichwanardi-nine.vercel.app/og-image.jpg';
       const url = `https://ichwanardi.vercel.app/blog/${slug}`;
 
-      // Helper function untuk replace atau inject meta tag
+      // Helper function untuk replace atau inject meta tag yang lebih robust
+      // Menghandle variasi spasi dan urutan atribut
       const replaceMeta = (property, content) => {
-        const regex = new RegExp(`<meta property="${property}" content=".*?" />`, 'g');
+        // Regex untuk match <meta property="..." content="..." /> ATAU <meta content="..." property="..." />
+        // Flag 'i' untuk case-insensitive, 's' (dotAll) tidak perlu karena biasanya satu baris
+        const regex = new RegExp(`<meta\\s+(?:property="${property}"\\s+content="[^"]*"|content="[^"]*"\\s+property="${property}")\\s*\/?>`, 'gi');
+        
         if (regex.test(html)) {
            html = html.replace(regex, `<meta property="${property}" content="${content}" />`);
         } else {
@@ -44,7 +48,7 @@ export default async function handler(req, res) {
       };
 
       const replaceNameMeta = (name, content) => {
-          const regex = new RegExp(`<meta name="${name}" content=".*?" />`, 'g');
+          const regex = new RegExp(`<meta\\s+(?:name="${name}"\\s+content="[^"]*"|content="[^"]*"\\s+name="${name}")\\s*\/?>`, 'gi');
           if (regex.test(html)) {
               html = html.replace(regex, `<meta name="${name}" content="${content}" />`);
           } else {
@@ -52,8 +56,12 @@ export default async function handler(req, res) {
           }
       }
 
+      // Hapus tag dimensi gambar bawaan agar tidak konflik jika gambar blog berbeda ukuran
+      html = html.replace(/<meta property="og:image:width" content="[^"]*" \/>/gi, '');
+      html = html.replace(/<meta property="og:image:height" content="[^"]*" \/>/gi, '');
+
       // Replace Title
-      html = html.replace(/<title>.*?<\/title>/, `<title>${title}</title>`);
+      html = html.replace(/<title>.*?<\/title>/gi, `<title>${title}</title>`);
 
       // OG Tags
       replaceMeta('og:title', title);

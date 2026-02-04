@@ -54,7 +54,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 
 // Logging (skip in test)
 if (process.env.NODE_ENV !== 'test') {
