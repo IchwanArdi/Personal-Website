@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 // POST /api/auth/login
@@ -39,4 +39,4 @@ router.get('/me', (req, res) => {
   return res.json({ authenticated: false, user: null });
 });
 
-module.exports = router;
+export default router;

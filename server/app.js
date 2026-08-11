@@ -1,11 +1,11 @@
-const express = require('express');
-const connectDB = require('./config/db');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const compression = require('compression');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const session = require('express-session');
+import express from 'express';
+import connectDB from './config/db.js';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import compression from 'compression';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import session from 'express-session';
 
 // Create Express app
 const app = express();
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },
-  })
+  }),
 );
 
 // Compression
@@ -35,11 +35,11 @@ const defaultOrigins = ['http://localhost:5173', 'https://ichwanardi.vercel.app'
 const allowedOrigins = Array.isArray(rawCorsOrigin)
   ? rawCorsOrigin
   : typeof rawCorsOrigin === 'string'
-  ? rawCorsOrigin
-      .split(',')
-      .map((o) => o.trim())
-      .filter(Boolean)
-  : defaultOrigins;
+    ? rawCorsOrigin
+        .split(',')
+        .map((o) => o.trim())
+        .filter(Boolean)
+    : defaultOrigins;
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -79,18 +79,18 @@ app.use(
       sameSite: isProduction ? 'none' : 'lax',
       maxAge: 1000 * 60 * 60 * 8, // 8 jam
     },
-  })
+  }),
 );
 
 // Import Routes
-const HomeRoute = require('./routes/api/home');
-const BlogRoute = require('./routes/api/blog');
-const BlogDetailRoute = require('./routes/api/detailBlog');
-const ProjectRoute = require('./routes/api/projects');
-const ProjectDetailRoute = require('./routes/api/detailProject');
-const AuthRoute = require('./routes/api/auth');
-const AdminProjectsRoute = require('./routes/api/admin/projects');
-const AdminBlogsRoute = require('./routes/api/admin/blogs');
+import HomeRoute from './routes/api/home.js';
+import BlogRoute from './routes/api/blog.js';
+import BlogDetailRoute from './routes/api/detailBlog.js';
+import ProjectRoute from './routes/api/projects.js';
+import ProjectDetailRoute from './routes/api/detailProject.js';
+import AuthRoute from './routes/api/auth.js';
+import AdminProjectsRoute from './routes/api/admin/projects.js';
+import AdminBlogsRoute from './routes/api/admin/blogs.js';
 
 // Routes ke FrontEnd
 app.use('/api', HomeRoute);
@@ -102,4 +102,4 @@ app.use('/api/auth', AuthRoute);
 app.use('/api/admin/projects', AdminProjectsRoute);
 app.use('/api/admin/blogs', AdminBlogsRoute);
 
-module.exports = app;
+export default app;

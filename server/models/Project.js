@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Schema dan Model (Project) - Enhanced Version untuk UI Baru
 const projectSchema = new mongoose.Schema(
@@ -170,7 +170,7 @@ const projectSchema = new mongoose.Schema(
     // Virtual fields untuk compatibility
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-  }
+  },
 );
 
 // === VIRTUAL FIELDS (untuk mapping field lama ke baru) ===
@@ -286,7 +286,7 @@ projectSchema.pre('save', function (next) {
   next();
 });
 
-module.exports = mongoose.model('Project', projectSchema);
+export default mongoose.model('Project', projectSchema);
 
 // === CONTOH PENGGUNAAN ===
 /*

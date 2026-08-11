@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Schema dan Model (Blog) - Enhanced version
 const blogSchema = new mongoose.Schema(
@@ -67,7 +67,7 @@ const blogSchema = new mongoose.Schema(
   },
   {
     timestamps: true, // Otomatis menambah createdAt dan updatedAt
-  }
+  },
 );
 
 // Middleware untuk membuat slug otomatis
@@ -94,7 +94,7 @@ blogSchema.index({ kategori: 1, status: 1 });
 blogSchema.index({ tanggal: -1 });
 blogSchema.index({ slug: 1 });
 
-module.exports = mongoose.model('Blog', blogSchema);
+export default mongoose.model('Blog', blogSchema);
 
 // Tambahkan data baru ke database
 // const project1 = new Blog({

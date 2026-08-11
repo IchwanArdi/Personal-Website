@@ -1,8 +1,7 @@
-const express = require('express');
-const router = express.Router(); // Buat router modular untuk endpoint /dashboard
+import Project from '../../models/Project.js';
+import express from 'express';
 
-// ambil db Project
-const Project = require('../../models/Project');
+const router = express.Router();
 
 router.get('/project', async (req, res) => {
   try {
@@ -54,4 +53,4 @@ router.get('/project', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
