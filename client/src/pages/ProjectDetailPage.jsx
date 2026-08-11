@@ -32,18 +32,21 @@ function ProjectDetailPage() {
         credentials: 'include',
       });
 
+      console.log(response);
+
       if (!response.ok) {
         throw new Error('Project not found');
       }
 
       const result = await response.json();
+      console.log(result);
 
       // Transform API data dengan null safety yang lebih baik
       const transformedProject = {
-        id: result.id || result._id,
-        title: result.title || 'Untitled Project',
-        shortDescription: result.description || result.deskripsi || 'No description available',
-        description: result.detailedDescription || result.displayDescription || result.description || result.deskripsi || 'No detailed description available',
+        slug: result.slug,
+        title: result.title,
+        shortDescription: result.deskripsi,
+        description: result.detailedDescription,
         // Lebih efisien dalam menangani images array
         images: (() => {
           if (result.images?.length > 0) return result.images;
@@ -52,10 +55,10 @@ function ProjectDetailPage() {
           return ['https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop']; // fallback image
         })(),
         technologies: result.technologies || [],
-        category: result.category || result.kategori?.toUpperCase() || 'OTHER',
+        category: result.kategori?.toUpperCase() || 'OTHER',
         date: result.date || (result.tanggal ? new Date(result.tanggal).toLocaleDateString() : 'Not specified'),
-        githubUrl: result.githubUrl || null, // Menggunakan null daripada '#'
-        liveUrl: result.liveUrl || result.link || null,
+        githubUrl: result.githubUrl || null,
+        liveUrl: result.liveUrl || null,
         featured: Boolean(result.featured),
         duration: result.duration || 'Not specified',
         teamSize: result.teamSize || 'Not specified',
