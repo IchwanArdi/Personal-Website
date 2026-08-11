@@ -12,17 +12,18 @@ const createSlug = (title) => {
     .trim('-');
 };
 
-router.get('/', async (req, res) => {
+router.get('/all', async (req, res) => {
   try {
-    const blogs = await Blog.find().sort({ tanggal: -1 });
+    const blogs = await Blog.find().sort({ tanggal: -1 }).select('judul slug gambar tanggal ringkasan kategori').lean();
 
     const blogsWithSlug = blogs.map((blog) => ({
-      ...blog.toObject(),
+      ...blog,
       slug: blog.slug || createSlug(blog.judul),
     }));
 
     const responseData = {
       success: true,
+      data: blogsWithSlug,
       Blogs: blogsWithSlug,
     };
 
