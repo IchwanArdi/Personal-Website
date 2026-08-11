@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Schema dan Model (Gambar)
 const gambarSchema = new mongoose.Schema({
   gambar: String,
 });
 
-module.exports = mongoose.model('Images', gambarSchema);
+export default mongoose.model('Images', gambarSchema);

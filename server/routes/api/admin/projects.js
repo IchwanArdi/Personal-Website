@@ -1,9 +1,8 @@
-const express = require('express');
-const Project = require('../../../models/Project');
-const requireAuth = require('../../../middleware/requireAuth');
+import Project from '../../../models/Project.js';
+import requireAuth from '../../../middleware/requireAuth.js';
+import express from 'express';
 
 const router = express.Router();
-
 router.use(requireAuth);
 
 // GET /api/admin/projects
@@ -58,4 +57,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
