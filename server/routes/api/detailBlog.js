@@ -84,36 +84,4 @@ router.get('/detail/:slug', async (req, res) => {
   }
 });
 
-router.get('/detail/id/:id', async (req, res) => {
-  try {
-    const blogId = req.params.id;
-    const mainBlog = await Blog.findById(blogId);
-
-    if (!mainBlog) {
-      return res.status(404).json({
-        success: false,
-        message: 'Blog tidak ditemukan',
-      });
-    }
-
-    const blogWithSlug = {
-      ...mainBlog.toObject(),
-      slug: mainBlog.slug || createSlug(mainBlog.judul),
-    };
-
-    const responseData = {
-      success: true,
-      mainBlog: blogWithSlug,
-    };
-
-    res.json(responseData);
-  } catch (error) {
-    console.error('Error fetching blog detail:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Terjadi kesalahan pada server',
-    });
-  }
-});
-
 export default router;

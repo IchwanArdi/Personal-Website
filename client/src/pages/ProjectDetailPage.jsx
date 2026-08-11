@@ -6,7 +6,7 @@ import { useApp } from '../contexts/AppContext';
 import { DETAILPROJECT } from '../utils/constants';
 
 function ProjectDetailPage() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [projectDetail, setProjectDetail] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,11 +20,15 @@ function ProjectDetailPage() {
 
   // Callback untuk fetch data agar tidak dibuat ulang setiap render
   const fetchProjectDetail = useCallback(async () => {
-    if (!id) return;
+    if (!slug) {
+      toast.error('Slug project tidak ditemukan');
+      navigate('/projects', { replace: true });
+      return;
+    }
 
     setLoading(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/project/detail/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/project/detail/${slug}`, {
         credentials: 'include',
       });
 
@@ -68,7 +72,7 @@ function ProjectDetailPage() {
     } finally {
       setLoading(false);
     }
-  }, [id, navigate]);
+  }, [slug, navigate]);
 
   useEffect(() => {
     fetchProjectDetail();
@@ -89,7 +93,7 @@ function ProjectDetailPage() {
         </div>
       </div>
     ),
-    [isDarkMode, t.loadingProject]
+    [isDarkMode, t.loadingProject],
   );
 
   // Memoized not found component
@@ -105,7 +109,7 @@ function ProjectDetailPage() {
         </div>
       </div>
     ),
-    [isDarkMode, t.noProject, t.noProjectInfo, t.backToProjects, goBack]
+    [isDarkMode, t.noProject, t.noProjectInfo, t.backToProjects, goBack],
   );
 
   // Memoized class names untuk performa
@@ -115,7 +119,7 @@ function ProjectDetailPage() {
 
   const cardClass = useMemo(
     () => `backdrop-blur-sm rounded-2xl p-6 border ${isDarkMode ? 'bg-gradient-to-br from-gray-900/20 to-gray-900/30 border-gray-700/20' : 'bg-gradient-to-br from-white/70 to-gray-50/30 border-gray-300/30'}`,
-    [isDarkMode]
+    [isDarkMode],
   );
 
   // Handler untuk error gambar dengan useCallback

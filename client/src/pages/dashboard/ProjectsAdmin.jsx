@@ -2,10 +2,21 @@ import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useApp } from '../../contexts/AppContext';
 
+const createSlug = (value = '') =>
+  String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '') || 'project';
+
 const emptyForm = {
   title: '',
+  slug: '',
   kategori: 'FULLSTACK',
   deskripsi: '',
+  detailedDescription: '',
   technologies: '',
   gambar: '',
   images: '',
@@ -13,6 +24,9 @@ const emptyForm = {
   liveUrl: '',
   featured: false,
   status: 'Completed',
+  features: '',
+  duration: '',
+  teamSize: '',
 };
 
 const ProjectsAdmin = () => {
@@ -73,6 +87,7 @@ const ProjectsAdmin = () => {
     }
     const payload = {
       ...form,
+      slug: createSlug(form.slug || form.title),
       technologies: form.technologies
         ? form.technologies
             .split(',')
@@ -81,6 +96,12 @@ const ProjectsAdmin = () => {
         : [],
       images: form.images
         ? form.images
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : [],
+      features: form.features
+        ? form.features
             .split(',')
             .map((s) => s.trim())
             .filter(Boolean)
@@ -110,6 +131,7 @@ const ProjectsAdmin = () => {
     setEditingId(it._id);
     setForm({
       title: it.title || '',
+      slug: it.slug || createSlug(it.title || ''),
       kategori: it.kategori || 'FULLSTACK',
       deskripsi: it.deskripsi || '',
       technologies: Array.isArray(it.technologies) ? it.technologies.join(', ') : '',
@@ -119,6 +141,10 @@ const ProjectsAdmin = () => {
       liveUrl: it.liveUrl || '',
       featured: !!it.featured,
       status: it.status || 'Completed',
+      detailedDescription: it.detailedDescription || '',
+      features: Array.isArray(it.features) ? it.features.join(', ') : '',
+      duration: it.duration || '',
+      teamSize: it.teamSize || '',
     });
     setErrors({});
   };
@@ -170,8 +196,25 @@ const ProjectsAdmin = () => {
 
       <form onSubmit={onSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div>
-          <input className={`w-full px-3 py-2 rounded border ${errors.title ? 'border-red-500' : 'border-slate-300'}`} placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required />
+          <input
+            className={`w-full px-3 py-2 rounded border ${errors.title ? 'border-red-500' : 'border-slate-300'}`}
+            placeholder="Title"
+            value={form.title}
+            onChange={(e) => {
+              const nextTitle = e.target.value;
+              const previousGenerated = createSlug(form.title);
+              setForm({
+                ...form,
+                title: nextTitle,
+                slug: form.slug && form.slug !== previousGenerated ? form.slug : createSlug(nextTitle),
+              });
+            }}
+            required
+          />
           {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
+        </div>
+        <div>
+          <input className="w-full px-3 py-2 rounded border border-slate-300" placeholder="Slug" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
         </div>
         <select className="px-3 py-2 rounded border border-slate-300" value={form.kategori} onChange={(e) => setForm({ ...form, kategori: e.target.value })}>
           <option>FULLSTACK</option>
@@ -220,7 +263,24 @@ const ProjectsAdmin = () => {
           <option>Planning</option>
           <option>Archived</option>
         </select>
-        <textarea className="px-3 py-2 rounded border border-slate-300 md:col-span-2" placeholder="Deskripsi" value={form.deskripsi} onChange={(e) => setForm({ ...form, deskripsi: e.target.value })} required />
+        <textarea
+          className={`px-3 py-2 rounded border md:col-span-2 ${errors.deskripsi ? 'border-red-500' : 'border-slate-300'}`}
+          placeholder="Deskripsi Singkat (Slogan)"
+          value={form.deskripsi}
+          onChange={(e) => setForm({ ...form, deskripsi: e.target.value })}
+          required
+        />
+        {errors.deskripsi && <p className="text-red-500 text-xs mt-1">{errors.deskripsi}</p>}
+        <input className="px-3 py-2 rounded border border-slate-300" placeholder="Durasi (e.g. 1 Minggu)" value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })} />
+        <input className="px-3 py-2 rounded border border-slate-300" placeholder="Team Size (e.g. Solo Project)" value={form.teamSize} onChange={(e) => setForm({ ...form, teamSize: e.target.value })} />
+        <input className="px-3 py-2 rounded border border-slate-300 md:col-span-2" placeholder="Key Features (pisahkan koma)" value={form.features} onChange={(e) => setForm({ ...form, features: e.target.value })} />
+        <textarea
+          className="px-3 py-2 rounded border border-slate-300 md:col-span-2"
+          rows={4}
+          placeholder="Tentang Project Ini (Deskripsi Detail)"
+          value={form.detailedDescription}
+          onChange={(e) => setForm({ ...form, detailedDescription: e.target.value })}
+        />
         <label className="flex items-center gap-2">
           <input type="checkbox" checked={form.featured} onChange={(e) => setForm({ ...form, featured: e.target.checked })} />
           Featured

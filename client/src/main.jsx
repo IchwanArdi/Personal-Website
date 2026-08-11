@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       { path: 'blogs', element: <BlogsPage /> },
       { path: 'about', element: <AboutPage /> },
       { path: 'blog/:slug', element: <BlogDetailPage /> },
-      { path: 'project/:id', element: <ProjectDetailPage /> },
+      { path: 'project/:slug', element: <ProjectDetailPage /> },
       { path: 'login', element: <LoginPage /> },
       {
         path: 'dashboard',
@@ -67,5 +67,5 @@ createRoot(document.getElementById('root')).render(
       </AuthProvider>
     </Suspense>
     <ToastContainer position="top-right" autoClose={3000} theme="dark" />
-  </StrictMode>
+  </StrictMode>,
 );
