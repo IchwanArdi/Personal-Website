@@ -12,17 +12,18 @@ const createSlug = (title) => {
     .trim('-');
 };
 
-router.get('/', async (req, res) => {
+router.get('/all', async (req, res) => {
   try {
-    const blogs = await Blog.find().sort({ tanggal: -1 });
+    const blogs = await Blog.find().sort({ tanggal: -1 }).select('judul slug gambar tanggal ringkasan kategori').lean();
 
     const blogsWithSlug = blogs.map((blog) => ({
-      ...blog.toObject(),
+      ...blog,
       slug: blog.slug || createSlug(blog.judul),
     }));
 
     const responseData = {
       success: true,
+      data: blogsWithSlug,
       Blogs: blogsWithSlug,
     };
 
@@ -74,38 +75,6 @@ router.get('/detail/:slug', async (req, res) => {
     };
 
     res.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=1800');
-    res.json(responseData);
-  } catch (error) {
-    console.error('Error fetching blog detail:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Terjadi kesalahan pada server',
-    });
-  }
-});
-
-router.get('/detail/id/:id', async (req, res) => {
-  try {
-    const blogId = req.params.id;
-    const mainBlog = await Blog.findById(blogId);
-
-    if (!mainBlog) {
-      return res.status(404).json({
-        success: false,
-        message: 'Blog tidak ditemukan',
-      });
-    }
-
-    const blogWithSlug = {
-      ...mainBlog.toObject(),
-      slug: mainBlog.slug || createSlug(mainBlog.judul),
-    };
-
-    const responseData = {
-      success: true,
-      mainBlog: blogWithSlug,
-    };
-
     res.json(responseData);
   } catch (error) {
     console.error('Error fetching blog detail:', error);

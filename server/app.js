@@ -94,8 +94,8 @@ import AdminBlogsRoute from './routes/api/admin/blogs.js';
 
 // Routes ke FrontEnd
 app.use('/api', HomeRoute);
-app.use('/api', BlogRoute);
 app.use('/api/blog', BlogDetailRoute);
+app.use('/api', BlogRoute);
 app.use('/api', ProjectRoute);
 app.use('/api/project', ProjectDetailRoute);
 app.use('/api/auth', AuthRoute);

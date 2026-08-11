@@ -1,5 +1,14 @@
 import mongoose from 'mongoose';
 
+const generateSlug = (value) =>
+  String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '') || 'project';
+
 // Schema dan Model (Project) - Enhanced Version untuk UI Baru
 const projectSchema = new mongoose.Schema(
   {
@@ -9,6 +18,14 @@ const projectSchema = new mongoose.Schema(
       required: true,
       trim: true,
       maxLength: 100,
+    },
+
+    slug: {
+      type: String,
+      unique: true,
+      sparse: true,
+      lowercase: true,
+      trim: true,
     },
 
     // Mapping dari field lama ke baru
@@ -217,8 +234,7 @@ projectSchema.index({ isDeleted: 1, kategori: 1 });
 projectSchema.methods.toFrontendFormat = function () {
   return {
     id: this._id,
-    title: this.title,
-    description: this.displayDescription,
+    slug: this.slug || generateSlug(this.title),
     shortDescription: this.displayShortDescription,
     image: this.image,
     images: this.allImages,
@@ -235,6 +251,21 @@ projectSchema.methods.toFrontendFormat = function () {
     teamSize: this.teamSize,
     views: this.views,
   };
+};
+
+projectSchema.statics.ensureSlugs = async function () {
+  const projects = await this.find({ isDeleted: { $ne: true } })
+    .select('_id title slug')
+    .lean();
+
+  for (const project of projects) {
+    const nextSlug = generateSlug(project.title);
+    if (!project.slug || project.slug !== nextSlug) {
+      await this.updateOne({ _id: project._id }, { $set: { slug: nextSlug } });
+    }
+  }
+
+  return this.countDocuments({ slug: { $exists: true } });
 };
 
 // === STATIC METHODS ===
@@ -273,6 +304,14 @@ projectSchema.methods.incrementViews = function () {
 
 // Validasi sebelum save
 projectSchema.pre('save', function (next) {
+  if (!this.slug && this.title) {
+    this.slug = generateSlug(this.title);
+  }
+
+  if (this.isModified('title') && !this.isModified('slug') && this.title) {
+    this.slug = generateSlug(this.title);
+  }
+
   // Auto-generate shortDescription jika belum ada
   if (!this.shortDescription && this.deskripsi) {
     this.shortDescription = this.deskripsi.substring(0, 147) + '...';
@@ -281,6 +320,24 @@ projectSchema.pre('save', function (next) {
   // Auto-populate images jika kosong
   if (!this.images || this.images.length === 0) {
     this.images = [this.gambar];
+  }
+
+  next();
+});
+
+projectSchema.pre('findOneAndUpdate', function (next) {
+  const update = this.getUpdate();
+
+  if (!update) return next();
+
+  const target = update.$set || update;
+
+  if (!target.slug && target.title) {
+    target.slug = generateSlug(target.title);
+  }
+
+  if (update.$set) {
+    update.$set = target;
   }
 
   next();

@@ -18,11 +18,24 @@ router.get('/', async (req, res) => {
   }
 });
 
+const toSlug = (value = '') =>
+  String(value)
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '') || 'project';
+
 // POST /api/admin/projects
 router.post('/', async (req, res) => {
   try {
     const payload = req.body || {};
-    const created = await Project.create(payload);
+    const normalizedPayload = {
+      ...payload,
+      slug: payload.slug ? toSlug(payload.slug) : toSlug(payload.title),
+    };
+    const created = await Project.create(normalizedPayload);
     res.status(201).json({ success: true, data: created });
   } catch (error) {
     console.error('Error create project(admin):', error);
@@ -35,7 +48,12 @@ router.patch('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const payload = req.body || {};
-    const updated = await Project.findByIdAndUpdate(id, { $set: payload }, { new: true, runValidators: true });
+    const normalizedPayload = {
+      ...payload,
+      ...(payload.slug ? { slug: toSlug(payload.slug) } : {}),
+      ...(payload.title && !payload.slug ? { slug: toSlug(payload.title) } : {}),
+    };
+    const updated = await Project.findByIdAndUpdate(id, { $set: normalizedPayload }, { new: true, runValidators: true });
     if (!updated) return res.status(404).json({ success: false, message: 'Project tidak ditemukan' });
     res.json({ success: true, data: updated });
   } catch (error) {

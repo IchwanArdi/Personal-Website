@@ -16,7 +16,7 @@ router.get('/project', async (req, res) => {
       const [total, Projects] = await Promise.all([
         Project.countDocuments({ isDeleted: { $ne: true } }),
         Project.find({ isDeleted: { $ne: true } })
-          .select('title gambar kategori deskripsi technologies liveUrl githubUrl tanggal featured status')
+          .select('title slug gambar kategori deskripsi technologies liveUrl githubUrl tanggal featured status')
           .sort({ tanggal: -1 })
           .skip(skip)
           .limit(limit)
@@ -35,7 +35,7 @@ router.get('/project', async (req, res) => {
     } else {
       // Return all projects without pagination
       const Projects = await Project.find({ isDeleted: { $ne: true } })
-        .select('title gambar kategori deskripsi technologies liveUrl githubUrl tanggal featured status')
+        .select('title slug gambar kategori deskripsi technologies liveUrl githubUrl tanggal featured status')
         .sort({ tanggal: -1 })
         .lean();
 

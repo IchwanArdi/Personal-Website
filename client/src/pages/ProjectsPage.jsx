@@ -6,6 +6,15 @@ import SEO from '../components/SEO';
 import { useApp } from '../contexts/AppContext';
 import { PROJECTS } from '../utils/constants';
 
+const createSlug = (value) =>
+  String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '') || 'project';
+
 function ProjectsPage() {
   const [dataProjects, setDataProjects] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -21,6 +30,7 @@ function ProjectsPage() {
 
     return dataProjects.map((project) => ({
       id: project.id || project._id,
+      slug: project.slug || createSlug(project.title),
       title: project.title,
       description: project.displayDescription || project.description || project.deskripsi,
       image: project.image || project.gambar,
@@ -158,7 +168,7 @@ function ProjectsPage() {
       `w-full border rounded-lg py-3 pl-12 pr-4 transition-colors focus:outline-none focus:border-yellow-500 ${
         isDarkMode ? 'bg-transparent border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
       }`,
-    [isDarkMode]
+    [isDarkMode],
   );
 
   // Loading state
@@ -233,7 +243,7 @@ function ProjectsPage() {
 // Extracted components untuk better performance dan code organization
 const NewProjectSection = ({ project, isDarkMode, t, onButtonClick, onImageError }) => (
   <div className="mb-16">
-    <Link to={`/project/${project.id}`}>
+    <Link to={`/project/${project.slug || createSlug(project.title)}`}>
       <div
         className={`group relative overflow-hidden rounded-3xl backdrop-blur-sm border transition-all duration-500 ${
           isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/30 hover:border-yellow-400/30' : 'bg-white/70 md:bg-white/10 shadow-md border-gray-600/30 hover:border-yellow-500/40'
@@ -312,7 +322,7 @@ const OtherProjectsSection = ({ projects, isDarkMode, t, onButtonClick, onImageE
 );
 
 const ProjectCard = ({ project, isDarkMode, t, onButtonClick, onImageError }) => (
-  <Link to={`/project/${project.id}`}>
+  <Link to={`/project/${project.slug || createSlug(project.title)}`}>
     <article className="group cursor-pointer">
       <div
         className={`backdrop-blur-sm rounded-2xl overflow-hidden border transition-all duration-500 hover:transform ${
