@@ -11,7 +11,6 @@ function BlogsPage() {
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [loading, setLoading] = useState(false);
   const [blogData, setBlogData] = useState([]);
-
   const { language, isDarkMode } = useApp();
   const t = BLOGS[language];
 
@@ -67,11 +66,11 @@ function BlogsPage() {
     const transformed = blogData.map((blog) => ({
       bgImage: blog.gambar,
       title: blog.judul,
-      content: blog.konten || blog.ringkasan,
+      content: blog.konten,
       date: formatDate(blog.tanggal),
       category: blog.kategori || 'GENERAL',
-      readTime: getReadTime(blog.konten || blog.ringkasan),
-      excerpt: createExcerpt(blog.konten || blog.ringkasan, 150),
+      readTime: getReadTime(blog.konten),
+      excerpt: createExcerpt(blog.ringkasan, 150),
       featured: false,
       slug: blog.slug || createSlug(blog.judul),
     }));
@@ -178,12 +177,14 @@ function BlogsPage() {
         });
 
         const result = await response.json();
-
+        console.log('Data mentah dari API:', result); // 👈 TULIS DI SINI
+        
         if (!isMounted) return;
-
+        
         if (response.ok) {
           // Set raw data - transformation akan dilakukan di useMemo
           setBlogData(Array.isArray(result.Blogs) ? result.Blogs : []);
+         
         } else {
           toast.error(result.message || 'Gagal mengambil data blog.');
           setBlogData([]);

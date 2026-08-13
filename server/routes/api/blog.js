@@ -10,7 +10,7 @@ router.get('/blog', async (req, res) => {
 
     const skip = (page - 1) * limit;
 
-    const [total, Blogs] = await Promise.all([Blog.countDocuments({}), Blog.find({}, 'judul slug gambar ringkasan tanggal kategori').sort({ tanggal: -1 }).skip(skip).limit(limit).lean()]);
+    const [total, Blogs] = await Promise.all([Blog.countDocuments({}), Blog.find({}, 'judul konten slug gambar ringkasan tanggal kategori').sort({ tanggal: -1 }).skip(skip).limit(limit).lean()]);
 
     const responseData = {
       success: true,

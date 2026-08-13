@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { Search, Github, ExternalLink, Code, Calendar, Tag } from 'lucide-react';
+import { Search, Github, ExternalLink, Code, Calendar, Tag, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
@@ -20,28 +20,40 @@ function ProjectsPage() {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
-
   const { language, isDarkMode } = useApp();
   const t = PROJECTS[language];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 10;
+
+  const formatDate = useCallback((dateString) => {
+    try {
+      const date = new Date(dateString);
+      return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear().toString().slice(-2)}`;
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return dateString;
+    }
+  }, []);
 
   // Memoized data transformation untuk mencegah re-computation yang tidak perlu
   const transformedProjects = useMemo(() => {
     if (!Array.isArray(dataProjects)) return [];
 
     return dataProjects.map((project) => ({
-      id: project.id || project._id,
+      id: project._id,
       slug: project.slug || createSlug(project.title),
       title: project.title,
       description: project.displayDescription || project.description || project.deskripsi,
-      image: project.image || project.gambar,
+      image: project.gambar,
       technologies: project.technologies || [],
       category: project.category || project.kategori?.toUpperCase() || 'OTHER',
-      date: project.date || project.tanggal,
+      date: formatDate(project.tanggal),
       githubUrl: project.githubUrl || '#',
       liveUrl: project.liveUrl || project.link || null,
       new: project.new || project.featured || false,
     }));
-  }, [dataProjects]);
+  }, [dataProjects, formatDate]);
 
   // Memoized categories calculation
   const categories = useMemo(() => {
@@ -113,7 +125,7 @@ function ProjectsPage() {
     const fetchProjects = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/project`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/project?page=${currentPage}&limit=${limit}`, {
           credentials: 'include',
         });
         const result = await response.json();
@@ -122,6 +134,10 @@ function ProjectsPage() {
 
         // Set raw data - transformation akan dilakukan di useMemo
         setDataProjects(result.Projects || []);
+
+        // FIX: calculatedTotalPages sebelumnya dihitung tapi tidak pernah di-set ke state
+        const calculatedTotalPages = Math.max(1, Math.ceil((result.total || 0) / limit));
+        setTotalPages(calculatedTotalPages);
       } catch (error) {
         if (!isMounted) return;
         console.error('Error fetching projects:', error);
@@ -139,7 +155,7 @@ function ProjectsPage() {
     return () => {
       isMounted = false;
     };
-  }, []); // Removed language dan t dari dependencies - tidak diperlukan untuk API call
+  }, [currentPage]); // Removed language dan t dari dependencies - tidak diperlukan untuk API call
 
   // Memoized event handlers
   const handleSearchChange = useCallback((e) => {
@@ -220,7 +236,7 @@ function ProjectsPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6">
+      <div id="projects-container" className={`max-w-7xl mx-auto px-6 scroll-mt-24 ${containerClasses}`}>
         {/* New/Featured Project */}
         {newProject && <NewProjectSection project={newProject} isDarkMode={isDarkMode} t={t} onButtonClick={handleButtonClick} onImageError={handleImageError} />}
 
@@ -232,6 +248,9 @@ function ProjectsPage() {
 
         {/* No Data State */}
         {dataProjects.length === 0 && !loading && <NoDataSection isDarkMode={isDarkMode} t={t} />}
+
+        {/* Pagination */}
+        {dataProjects.length > 0 && <Pagination currentPage={currentPage} totalPages={totalPages} loading={loading} isDarkMode={isDarkMode} onChange={setCurrentPage} />}
       </div>
 
       {/* Bottom spacing */}
@@ -382,6 +401,59 @@ const ProjectCard = ({ project, isDarkMode, t, onButtonClick, onImageError }) =>
     </article>
   </Link>
 );
+
+const Pagination = ({ currentPage, totalPages, loading, isDarkMode, onChange }) => {
+  const isFirst = currentPage <= 1;
+  const isLast = currentPage >= totalPages;
+
+  const handlePageChange = (action) => {
+    // 1. Jalankan fungsi pengubah halaman bawaan dari parent
+    onChange(action);
+
+    // 2. Cek preferensi animasi user
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // 3. Cari elemen pembungkus konten proyek 👈
+    const container = document.getElementById('projects-container');
+
+    if (container) {
+      // Gulirkan layar pas ke posisi elemen pembungkus tersebut
+      container.scrollIntoView({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        block: 'start', // Berhenti tepat di awal/atas elemen ini
+      });
+    } else {
+      // Cadangan jika elemen tidak ditemukan, kembali ke atas browser
+      window.scrollTo({
+        top: 0,
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+      });
+    }
+  };
+
+  const buttonBase = 'inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md text-sm font-medium border transition-colors disabled:cursor-not-allowed';
+  const buttonTheme = isDarkMode
+    ? 'bg-transparent border-gray-800 text-gray-300 hover:bg-gray-900 hover:text-white disabled:text-gray-700 disabled:border-gray-900 disabled:hover:bg-transparent'
+    : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-gray-900 disabled:text-gray-300 disabled:border-gray-100 disabled:hover:bg-white';
+
+  return (
+    <div className={`flex items-center justify-center gap-3 mt-16 pt-8 ${isDarkMode ? 'border-gray-900' : 'border-gray-200'}`}>
+      <button onClick={() => handlePageChange((prev) => Math.max(prev - 1, 1))} disabled={isFirst || loading} className={`${buttonBase} ${buttonTheme}`}>
+        <ChevronLeft className="w-4 h-4" />
+        Sebelumnya
+      </button>
+
+      <span className={`text-sm tabular-nums px-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+        <span className={`font-semibold ${isDarkMode ? 'text-gray-200' : 'text-gray-900'}`}>{currentPage}</span> / {totalPages}
+      </span>
+
+      <button onClick={() => handlePageChange((prev) => Math.min(prev + 1, totalPages))} disabled={isLast || loading} className={`${buttonBase} ${buttonTheme}`}>
+        Selanjutnya
+        <ChevronRight className="w-4 h-4" />
+      </button>
+    </div>
+  );
+};
 
 const NoResultsSection = ({ isDarkMode, t }) => (
   <div className="text-center py-16">
