@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Search, Github, ExternalLink, Code, Calendar, Tag, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
@@ -25,6 +25,7 @@ function ProjectsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const limit = 10;
+  const shouldScrollRef = useRef(false);
 
   const formatDate = useCallback((dateString) => {
     try {
@@ -157,6 +158,28 @@ function ProjectsPage() {
     };
   }, [currentPage]); // Removed language dan t dari dependencies - tidak diperlukan untuk API call
 
+
+  useEffect(() => {
+    if (!loading && shouldScrollRef.current) {
+      shouldScrollRef.current = false;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const container = document.getElementById('projects-container');
+      if (container) {
+        container.scrollIntoView({
+          behavior: prefersReducedMotion ? 'auto' : 'smooth',
+          block: 'start',
+        });
+      } else {
+        window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      }
+    }
+  }, [loading]);
+
+  const handlePageChange = useCallback((updater) => {
+    shouldScrollRef.current = true;
+    setCurrentPage(updater);
+  }, []);
+
   // Memoized event handlers
   const handleSearchChange = useCallback((e) => {
     setSearchTerm(e.target.value);
@@ -181,8 +204,7 @@ function ProjectsPage() {
 
   const inputClasses = useMemo(
     () =>
-      `w-full border rounded-lg py-3 pl-12 pr-4 transition-colors focus:outline-none focus:border-yellow-500 ${
-        isDarkMode ? 'bg-transparent border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+      `w-full border rounded-lg py-3 pl-12 pr-4 transition-colors focus:outline-none focus:border-yellow-500 ${isDarkMode ? 'bg-transparent border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
       }`,
     [isDarkMode],
   );
@@ -205,7 +227,7 @@ function ProjectsPage() {
   }
 
   return (
-    <div className={containerClasses}>
+    <div id="projects-container" className={`${containerClasses} scroll-mt-24`}>
       <SEO customMeta={projectsMeta} />
 
       {/* Search Bar */}
@@ -224,9 +246,8 @@ function ProjectsPage() {
               <button
                 key={category}
                 onClick={() => handleCategoryClick(category)}
-                className={`px-4 py-2 text-sm font-semibold transition-colors ${
-                  selectedCategory === category ? 'text-yellow-500 border-b-2 border-yellow-500' : isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
-                }`}
+                className={`px-4 py-2 text-sm font-semibold transition-colors ${selectedCategory === category ? 'text-yellow-500 border-b-2 border-yellow-500' : isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                  }`}
               >
                 {category}
               </button>
@@ -236,7 +257,7 @@ function ProjectsPage() {
       </div>
 
       {/* Main Content */}
-      <div id="projects-container" className={`max-w-7xl mx-auto px-6 scroll-mt-24 ${containerClasses}`}>
+      <div className={`max-w-7xl mx-auto px-6 scroll-mt-24 ${containerClasses}`}>
         {/* New/Featured Project */}
         {newProject && <NewProjectSection project={newProject} isDarkMode={isDarkMode} t={t} onButtonClick={handleButtonClick} onImageError={handleImageError} />}
 
@@ -250,7 +271,9 @@ function ProjectsPage() {
         {dataProjects.length === 0 && !loading && <NoDataSection isDarkMode={isDarkMode} t={t} />}
 
         {/* Pagination */}
-        {dataProjects.length > 0 && <Pagination currentPage={currentPage} totalPages={totalPages} loading={loading} isDarkMode={isDarkMode} onChange={setCurrentPage} />}
+        {dataProjects.length > 0 && (
+          <Pagination currentPage={currentPage} totalPages={totalPages} loading={loading} isDarkMode={isDarkMode} onChange={handlePageChange} />
+        )}
       </div>
 
       {/* Bottom spacing */}
@@ -264,9 +287,8 @@ const NewProjectSection = ({ project, isDarkMode, t, onButtonClick, onImageError
   <div className="mb-16">
     <Link to={`/project/${project.slug || createSlug(project.title)}`}>
       <div
-        className={`group relative overflow-hidden rounded-3xl backdrop-blur-sm border transition-all duration-500 ${
-          isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/30 hover:border-yellow-400/30' : 'bg-white/70 md:bg-white/10 shadow-md border-gray-600/30 hover:border-yellow-500/40'
-        }`}
+        className={`group relative overflow-hidden rounded-3xl backdrop-blur-sm border transition-all duration-500 ${isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/30 border-gray-700/30 hover:border-yellow-400/30' : 'bg-white/70 md:bg-white/10 shadow-md border-gray-600/30 hover:border-yellow-500/40'
+          }`}
       >
         <div className="lg:flex">
           <div className="lg:w-3/5 relative">
@@ -344,9 +366,8 @@ const ProjectCard = ({ project, isDarkMode, t, onButtonClick, onImageError }) =>
   <Link to={`/project/${project.slug || createSlug(project.title)}`}>
     <article className="group cursor-pointer">
       <div
-        className={`backdrop-blur-sm rounded-2xl overflow-hidden border transition-all duration-500 hover:transform ${
-          isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/40 border-gray-700/30 hover:border-yellow-400/40' : 'bg-white/70 md:bg-white/10 border-gray-600/30 hover:border-yellow-500/50'
-        }`}
+        className={`backdrop-blur-sm rounded-2xl overflow-hidden border transition-all duration-500 hover:transform ${isDarkMode ? 'bg-gray-900/70 md:bg-gray-900/40 border-gray-700/30 hover:border-yellow-400/40' : 'bg-white/70 md:bg-white/10 border-gray-600/30 hover:border-yellow-500/50'
+          }`}
       >
         <div className="relative overflow-hidden">
           <img src={project.image} alt={project.title} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110" onError={onImageError} loading="lazy" />
@@ -406,31 +427,6 @@ const Pagination = ({ currentPage, totalPages, loading, isDarkMode, onChange }) 
   const isFirst = currentPage <= 1;
   const isLast = currentPage >= totalPages;
 
-  const handlePageChange = (action) => {
-    // 1. Jalankan fungsi pengubah halaman bawaan dari parent
-    onChange(action);
-
-    // 2. Cek preferensi animasi user
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // 3. Cari elemen pembungkus konten proyek 👈
-    const container = document.getElementById('projects-container');
-
-    if (container) {
-      // Gulirkan layar pas ke posisi elemen pembungkus tersebut
-      container.scrollIntoView({
-        behavior: prefersReducedMotion ? 'auto' : 'smooth',
-        block: 'start', // Berhenti tepat di awal/atas elemen ini
-      });
-    } else {
-      // Cadangan jika elemen tidak ditemukan, kembali ke atas browser
-      window.scrollTo({
-        top: 0,
-        behavior: prefersReducedMotion ? 'auto' : 'smooth',
-      });
-    }
-  };
-
   const buttonBase = 'inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md text-sm font-medium border transition-colors disabled:cursor-not-allowed';
   const buttonTheme = isDarkMode
     ? 'bg-transparent border-gray-800 text-gray-300 hover:bg-gray-900 hover:text-white disabled:text-gray-700 disabled:border-gray-900 disabled:hover:bg-transparent'
@@ -438,7 +434,7 @@ const Pagination = ({ currentPage, totalPages, loading, isDarkMode, onChange }) 
 
   return (
     <div className={`flex items-center justify-center gap-3 mt-16 pt-8 ${isDarkMode ? 'border-gray-900' : 'border-gray-200'}`}>
-      <button onClick={() => handlePageChange((prev) => Math.max(prev - 1, 1))} disabled={isFirst || loading} className={`${buttonBase} ${buttonTheme}`}>
+      <button onClick={() => onChange((prev) => Math.max(prev - 1, 1))} disabled={isFirst || loading} className={`${buttonBase} ${buttonTheme}`}>
         <ChevronLeft className="w-4 h-4" />
         Sebelumnya
       </button>
@@ -447,7 +443,7 @@ const Pagination = ({ currentPage, totalPages, loading, isDarkMode, onChange }) 
         <span className={`font-semibold ${isDarkMode ? 'text-gray-200' : 'text-gray-900'}`}>{currentPage}</span> / {totalPages}
       </span>
 
-      <button onClick={() => handlePageChange((prev) => Math.min(prev + 1, totalPages))} disabled={isLast || loading} className={`${buttonBase} ${buttonTheme}`}>
+      <button onClick={() => onChange((prev) => Math.min(prev + 1, totalPages))} disabled={isLast || loading} className={`${buttonBase} ${buttonTheme}`}>
         Selanjutnya
         <ChevronRight className="w-4 h-4" />
       </button>
