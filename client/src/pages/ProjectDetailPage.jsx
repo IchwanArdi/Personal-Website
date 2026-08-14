@@ -46,7 +46,7 @@ function ProjectDetailPage() {
         slug: result.slug,
         title: result.title,
         shortDescription: result.deskripsi,
-        description: result.detailedDescription,
+        description: result.detailedDescription || result.deskripsi || '',
         // Lebih efisien dalam menangani images array
         images: (() => {
           if (result.images?.length > 0) return result.images;
@@ -297,9 +297,8 @@ function ProjectDetailPage() {
                   {projectDetail.technologies.map((tech, index) => (
                     <span
                       key={index}
-                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 cursor-default ${
-                        isDarkMode ? 'bg-gray-800/50 hover:bg-yellow-400/10 text-gray-300 hover:text-yellow-400' : 'bg-gray-200 hover:bg-yellow-400/20 text-gray-700 hover:text-yellow-600'
-                      }`}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 cursor-default ${isDarkMode ? 'bg-gray-800/50 hover:bg-yellow-400/10 text-gray-300 hover:text-yellow-400' : 'bg-gray-200 hover:bg-yellow-400/20 text-gray-700 hover:text-yellow-600'
+                        }`}
                     >
                       {tech}
                     </span>
@@ -317,9 +316,8 @@ function ProjectDetailPage() {
                     href={projectDetail.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-all group ${
-                      isDarkMode ? 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900'
-                    }`}
+                    className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-all group ${isDarkMode ? 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900'
+                      }`}
                   >
                     <Github className="w-4 h-4 group-hover:text-yellow-500" />
                     <span>{t.viewSourceCode}</span>
@@ -349,9 +347,8 @@ function ProjectDetailPage() {
           <div className="text-center">
             <button
               onClick={goBack}
-              className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg transition-all ${
-                isDarkMode ? 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900'
-              }`}
+              className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg transition-all ${isDarkMode ? 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900'
+                }`}
             >
               <ArrowLeft className="w-4 h-4" />
               {t.viewAllProjects}

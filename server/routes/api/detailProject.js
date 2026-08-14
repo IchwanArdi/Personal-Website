@@ -20,14 +20,13 @@ router.get('/detail/:slug', async (req, res) => {
       return res.status(400).json({ message: 'Slug project tidak ditemukan' });
     }
 
-    let project = await Project.findOne({ slug: slugParam })
-      .select('title slug gambar images kategori deskripsi detailedDescription technologies liveUrl githubUrl tanggal featured status features challenges duration teamSize tags views')
-      .lean();
+    const PROJECT_FIELDS = 'title slug gambar images kategori deskripsi detailedDescription technologies liveUrl githubUrl tanggal featured status features challenges duration teamSize tags views';
+
+    let project = await Project.findOne({ slug: slugParam }).select(PROJECT_FIELDS).lean();
 
     if (!project) {
-      const projectList = await Project.find().select('title slug gambar images kategori deskripsi technologies liveUrl githubUrl tanggal featured status features challenges duration teamSize tags views').lean();
-
-      project = projectList.find((project) => createSlug(project.title) === slugParam);
+      const projectList = await Project.find().select(PROJECT_FIELDS).lean();
+      project = projectList.find((p) => createSlug(p.title) === slugParam);
     }
 
     if (!project) {
