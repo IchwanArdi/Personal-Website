@@ -211,259 +211,239 @@ export const DETAILBLOG = {
 
 export const ABOUT = {
   en: {
-    // Hero Section
-    heroTitle: "Hi, I'm",
-    heroName: 'Ichwan!',
-    heroDescription: "IT student who's",
-    heroPassionate: 'passionate',
-    heroAbout: 'about',
-    heroFullStack: 'full stack development',
-    heroLikes: ". I love building web applications that don't just work, but are also",
-    heroEnjoyable: 'enjoyable to use',
+    statusRole: 'Full Stack Developer',
+    statusGraduation: 'IT Student @ Amikom Purwokerto (Grad. Sep 2026)',
+    statusLocation: 'Purwokerto, Indonesia',
+    statusAvailable: 'Open for Roles & Projects',
 
-    // Fun Facts
-    funFactTitle: 'Fun Fact',
-    funFacts: ['🚀 Built 10+ web projects in 1+ year', "☕ Can't live without coffee while coding", '🌙 Night owl - most productive after 10 PM', '🎯 2025 Goal: Mastering Next.js & TypeScript', '💡 Always excited about new tech!'],
+    heroGreeting: 'ABOUT ME',
+    heroTitle: 'Full Stack Developer building APIs, practical AI integrations, and reliable web applications.',
+    heroBio:
+      "I'm a final-year IT student at Universitas Amikom Purwokerto with developer internship experience. I build full-stack web applications, work with REST APIs and databases, explore containerized development with Docker, and integrate AI into practical products.",
 
-    // Location
-    location: 'Purwokerto, Central Java',
-    availability: 'Available for remote work',
+    highlightsTitle: 'Key Projects & Record',
+    highlightsSubtitle: 'Measured performance gains, open-source code, and industry work',
 
-    // Tech Stack
-    techStackTitle: 'My',
-    techStackArsenal: 'Tech',
-    techStackSubtitle: 'Arsenal',
-    techStackDescription: 'Technologies I work with daily to build amazing web applications',
+    highlight1Number: '-81%',
+    highlight1Label: 'p95 Latency Reduction',
+    highlight1Title: 'Trackly App Optimization',
+    highlight1Desc: 'Reduced response latency by 81% through Vercel region alignment, database query tuning, and k6 load testing.',
 
-    // Tech Categories
-    frontend: 'frontend',
-    backend: 'backend',
-    database: 'database',
-    tools: 'tools',
+    highlight2Badge: 'OPEN SOURCE',
+    highlight2Title: 'git-smart-commit (Go CLI)',
+    highlight2Desc: 'Built an open-source Go CLI tool that analyzes staged git diffs and generates Conventional Commit messages via Gemini AI.',
 
-    // Journey Section
-    journeyTitle: 'My',
-    journeyHighlight: 'Journey',
-    journeySoFar: 'So Far',
-    journeyDescription: "From knowing only basic HTML-CSS to building full stack apps. Here's the story! 📖",
+    highlight3Badge: 'INTERNSHIP',
+    highlight3Title: 'Robot Panda Kiosk',
+    highlight3Desc: 'Co-developed digital village information kiosks during my Developer Internship at PuskoMedia Indonesia Kreatif.',
 
-    // Journey Items
-    journeyItems: [
+    highlight4Badge: 'THESIS RESEARCH',
+    highlight4Title: 'FIDO2 / WebAuthn Auth',
+    highlight4Desc: 'Researching and implementing passwordless authentication systems for local village government administration.',
+
+    techTitle: 'Tech Stack & Tools',
+    techSubtitle: "Technologies I've used across web development, backend systems, and infrastructure",
+
+    categories: {
+      backend: 'Backend & Core Systems',
+      devops: 'DevOps & Testing',
+      database: 'Database & Storage',
+      frontendAi: 'Frontend & AI Integration',
+    },
+
+    skillsList: {
+      backend: ['Node.js', 'Express.js', 'REST API', 'JWT', 'OAuth 2.0', 'WebAuthn', 'Go (Golang)'],
+      devops: ['Docker', 'CI/CD Pipelines', 'Git', 'k6 Load Testing', 'Postman'],
+      database: ['PostgreSQL', 'Prisma ORM', 'Supabase', 'Redis', 'MongoDB', 'MySQL'],
+      frontendAi: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Gemini AI API', 'OpenAI & Ollama'],
+    },
+
+    timelineTitle: 'Experience & Track Record',
+    timelineSubtitle: 'Industry internship, open-source work, and academic milestones',
+
+    timelineItems: [
       {
-        year: '2022',
-        title: 'Started My Journey',
-        desc: '📘 Started college at Amikom University Purwokerto. Not too focused on coding yet, still adapting to campus life and basic theory.',
+        period: 'Sep 2025 — Jan 2026',
+        role: 'Developer Intern',
+        company: 'PuskoMedia Indonesia Kreatif',
+        location: 'Purwokerto (On-site)',
+        description:
+          'Worked on "Robot Panda", a digital village info kiosk. Built application features, integrated AI services, and collaborated using Docker for local dev environments.',
+        tags: ['Docker', 'AI Services', 'Node.js', 'REST API'],
       },
       {
-        year: '2023',
-        title: 'Exploration Phase',
-        desc: '🧩 Learning programming basics and web development concepts. Tried several technologies but not intensely focused yet.',
+        period: '2025 — Present',
+        role: 'Creator & Maintainer',
+        company: 'git-smart-commit',
+        location: 'GitHub',
+        description:
+          'Created and published v1.0.0 of a Go CLI tool that automatically writes clean commit messages from staged diffs using the Gemini API.',
+        tags: ['Go (Golang)', 'Gemini API', 'CLI', 'Git'],
       },
       {
-        year: '2024',
-        title: 'Real Coding Journey',
-        desc: '🔥 Started seriously focusing on coding. Learning MERN Stack, React, building real projects like e-commerce, chat apps, and digital village services.',
+        period: '2025 — 2026',
+        role: 'Undergraduate Researcher',
+        company: 'Universitas Amikom Purwokerto',
+        location: 'Purwokerto',
+        description:
+          'Researching FIDO2/WebAuthn passwordless authentication implementation for village administration software. Graduation target: September 2026.',
+        tags: ['WebAuthn', 'FIDO2', 'React', 'Node.js', 'MongoDB'],
       },
       {
-        year: '2025',
-        title: 'Next Level Goals',
-        desc: '🎯 Focusing on mastering advanced concepts, performance optimization, and exploring latest frameworks and technologies.',
-      },
-    ],
-
-    // Personality Section
-    personalityTitle: 'What Makes Me',
-    personalityTick: 'Tick',
-    personalityDescription: 'More than just coding skills, this is what makes me passionate about development 🔥',
-
-    // Personality Traits
-    personalityTraits: [
-      {
-        trait: 'Problem Solver',
-        desc: 'Love coding challenges that make me think hard. Debugging until 3 AM? No problem! 🕐',
-      },
-      {
-        trait: 'Team Player',
-        desc: 'Working with teams is fun! Sharing knowledge and learning from others is my passion 🤝',
-      },
-      {
-        trait: 'Always Learning',
-        desc: 'Tech evolves so fast, so I always stay updated with the latest trends. FOMO about new tech! 📚',
-      },
-      {
-        trait: 'Detail Oriented',
-        desc: 'Pixel perfect UI and clean code are my obsession. If something is "kinda off" it really bothers me 😅',
-      },
-    ],
-
-    // Current Focus
-    currentFocusTitle: 'Currently',
-    currentFocusFocusing: 'Focusing',
-    currentFocusOn: 'On',
-
-    focusItems: [
-      {
-        title: 'Advanced React',
-        desc: 'Next.js, TypeScript, performance optimization',
-      },
-      {
-        title: 'System Design',
-        desc: 'Scalable architecture, microservices',
-      },
-      {
-        title: 'User Experience',
-        desc: 'Clean design, smooth interactions',
+        period: '2023 — Present',
+        role: 'Independent Full Stack Developer',
+        company: 'Personal Projects',
+        location: 'Purwokerto',
+        description:
+          'Built and shipped personal web applications including Trackly and Sopanin AI, with a focus on authentication, APIs, databases, performance optimization, and AI integration.',
+        tags: ['React', 'TypeScript', 'PostgreSQL', 'Prisma', 'k6'],
       },
     ],
 
-    // Fun Stats
-    funStats: [
-      { number: '10+', label: 'Projects Built', icon: '🚀' },
-      { number: '1+', label: 'Years Coding', icon: '⏰' },
-      { number: '∞', label: 'Cups of Coffee', icon: '☕' },
-      { number: '24/7', label: 'Learning Mode', icon: '🧠' },
+    principlesTitle: 'How I Work',
+    principlesSubtitle: 'Standards I follow when writing code and building systems',
+
+    principles: [
+      {
+        title: 'Performance-Driven Backend',
+        desc: 'I use p95 latency measurements and k6 load testing to evaluate and improve API performance when performance is a concern.',
+      },
+      {
+        title: 'Automate Repetitive Work',
+        desc: 'If a workflow can be automated, I build CLI tools or scripts in Go and containerize environments with Docker.',
+      },
+      {
+        title: 'Pragmatic AI Use',
+        desc: 'AI is a tool to solve user problems, not a replacement for solid system design, validation, and security.',
+      },
+      {
+        title: 'Clean Git & Documentation',
+        desc: 'Clear commit histories (Conventional Commits), structured READMEs, and readable code make teamwork smooth.',
+      },
     ],
 
-    // CTA Section
-    ctaTitle: "Let's Build Something",
-    ctaAmazing: 'Amazing',
-    ctaTogether: 'Together!',
-    ctaDescription: "Got a cool project idea? Or just want to chat about tech? I'm always excited to connect with fellow developers and collaborate on cool stuff! 🤝",
-
-    // CTA Buttons
-    ctaLetsTalk: "Let's Talk!",
-    ctaCheckWork: 'Check My Work',
-    ctaDownloadCV: 'Download CV',
+    ctaTitle: 'Get in Touch',
+    ctaDesc: "I'm available for Backend / Full Stack roles (On-site or Remote) and open-source collaborations.",
+    ctaEmail: 'Send Email',
+    ctaGithub: 'GitHub Profile',
+    ctaCv: 'Download Resume (PDF)',
   },
   id: {
-    // Hero Section
-    heroTitle: 'Hai, saya',
-    heroName: 'Ichwan!',
-    heroDescription: 'Mahasiswa IT yang',
-    heroPassionate: 'passionate',
-    heroAbout: 'banget sama',
-    heroFullStack: 'full stack development',
-    heroLikes: '. Suka banget bikin aplikasi web yang tidak cuma berfungsi, tapi juga',
-    heroEnjoyable: 'enak dipake',
+    statusRole: 'Full Stack Developer',
+    statusGraduation: 'Mahasiswa TI Amikom Purwokerto (Lulus Sep 2026)',
+    statusLocation: 'Purwokerto, Indonesia',
+    statusAvailable: 'Terbuka untuk Magang / Kerja / Proyek',
 
-    // Fun Facts
-    funFactTitle: 'Fun Fact',
-    funFacts: [
-      '🚀 Sudah coding 10+ project web dalam 1+ tahun',
-      '☕ Tidak bisa hidup tanpa kopi saat coding',
-      '🌙 Night owl - most productive jam 10 malam ke atas',
-      '🎯 Goal 2025: Mastering Next.js & TypeScript',
-      '💡 Always excited tentang tech baru!',
-    ],
+    heroGreeting: 'TENTANG SAYA',
+    heroTitle: 'Full Stack Developer yang membangun API, integrasi AI praktis, dan aplikasi web yang andal.',
+    heroBio:
+      'Mahasiswa tingkat akhir S1 Teknologi Informasi di Universitas Amikom Purwokerto (dijadwalkan lulus September 2026) dengan pengalaman sebagai Developer Intern. Membangun aplikasi web full-stack, bekerja dengan REST API dan database, mulai eksplorasi containerized development dengan Docker, serta mengintegrasikan AI ke produk nyata.',
 
-    // Location
-    location: 'Purwokerto, Jawa Tengah',
-    availability: 'Tersedia untuk remote work',
+    highlightsTitle: 'Proyek & Pencapaian Utama',
+    highlightsSubtitle: 'Pengukuran performa nyata, proyek open-source, dan pengalaman magang',
 
-    // Tech Stack
-    techStackTitle: 'Kumpulan',
-    techStackArsenal: 'Teknologi',
-    techStackSubtitle: 'Saya',
-    techStackDescription: 'Teknologi yang saya gunakan setiap hari untuk membangun aplikasi web yang menakjubkan',
+    highlight1Number: '-81%',
+    highlight1Label: 'Optimasi Latency (p95)',
+    highlight1Title: 'Trackly App Optimization',
+    highlight1Desc: 'Memotong p95 latency sebesar 81% melalui tuning region deployment Vercel, server-side pagination, dan load testing k6.',
 
-    // Tech Categories
-    frontend: 'frontend',
-    backend: 'backend',
-    database: 'database',
-    tools: 'tools',
+    highlight2Badge: 'OPEN SOURCE',
+    highlight2Title: 'git-smart-commit (Go CLI)',
+    highlight2Desc: 'Membangun CLI tool open-source berbasis Go yang menganalisis staged git diff dan men-generate pesan commit otomatis via Gemini AI.',
 
-    // Journey Section
-    journeyTitle: 'Perjalanan',
-    journeyHighlight: 'Saya',
-    journeySoFar: 'Sejauh Ini',
-    journeyDescription: "Dari yang awalnya cuma tau HTML-CSS basic, sekarang udah bisa bikin full stack app. Here's the story! 📖",
+    highlight3Badge: 'MAGANG INDUSTRI',
+    highlight3Title: 'Kios AI Robot Panda',
+    highlight3Desc: 'Mengembangkan fitur kios informasi desa digital di PuskoMedia Indonesia Kreatif menggunakan Docker untuk environment tim.',
 
-    // Journey Items
-    journeyItems: [
+    highlight4Badge: 'PENELITIAN SKRIPSI',
+    highlight4Title: 'Autentikasi FIDO2 / WebAuthn',
+    highlight4Desc: 'Merancang dan mengimplementasikan sistem autentikasi passwordless FIDO2/WebAuthn untuk layanan administrasi kelurahan.',
+
+    techTitle: 'Keahlian Teknis & Tools',
+    techSubtitle: 'Teknologi dan tools yang pernah saya gunakan di berbagai proyek dan workflow development',
+
+    categories: {
+      backend: 'Backend & Core Systems',
+      devops: 'DevOps & Testing',
+      database: 'Database & Storage',
+      frontendAi: 'Frontend & Integrasi AI',
+    },
+
+    skillsList: {
+      backend: ['Node.js', 'Express.js', 'REST API', 'JWT', 'OAuth 2.0', 'WebAuthn', 'Go (Golang)'],
+      devops: ['Docker', 'CI/CD Pipelines', 'Git', 'k6 Load Testing', 'Postman'],
+      database: ['PostgreSQL', 'Prisma ORM', 'Supabase', 'Redis', 'MongoDB', 'MySQL'],
+      frontendAi: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Gemini AI API', 'OpenAI & Ollama'],
+    },
+
+    timelineTitle: 'Pengalaman & Rekam Jejak',
+    timelineSubtitle: 'Pengalaman magang industri, proyek open-source, dan riset tugas akhir',
+
+    timelineItems: [
       {
-        year: '2022',
-        title: 'Awal Perjalanan',
-        desc: '📘 Mulai kuliah di Universitas Amikom Purwokerto. Belum terlalu fokus ke coding, masih adaptasi dunia kampus dan teori dasar.',
+        period: 'Sep 2025 — Jan 2026',
+        role: 'Developer Intern',
+        company: 'PuskoMedia Indonesia Kreatif',
+        location: 'Purwokerto (On-site)',
+        description:
+          'Mengembangkan Robot Panda (kios informasi desa digital berbasis AI). Merancang fitur aplikasi, integrasi model AI, serta berkolaborasi menggunakan Docker dari tahap awal hingga demo expo.',
+        tags: ['Docker', 'AI Services', 'Node.js', 'REST API'],
       },
       {
-        year: '2023',
-        title: 'Masa Eksplorasi',
-        desc: '🧩 Belajar dasar-dasar pemrograman dan konsep web development. Coba beberapa teknologi tapi belum fokus mendalam.',
+        period: '2025 — Sekarang',
+        role: 'Creator & Maintainer',
+        company: 'git-smart-commit',
+        location: 'GitHub',
+        description:
+          'Merancang dan merilis v1.0.0 CLI tool berbasis Go yang menganalisis staged git diff dan men-generate pesan commit otomatis sesuai standar Conventional Commits.',
+        tags: ['Go (Golang)', 'Gemini API', 'CLI', 'Git'],
       },
       {
-        year: '2024',
-        title: 'Mulai Serius Ngoding',
-        desc: '🔥 Fokus belajar coding lebih dalam. Mendalami MERN Stack, React, dan bikin project nyata seperti e-commerce, chat app, dan layanan desa digital.',
+        period: '2024 — 2026',
+        role: 'Peneliti Tugas Akhir',
+        company: 'Universitas Amikom Purwokerto',
+        location: 'Purwokerto',
+        description:
+          'Melakukan penelitian dan implementasi prototipe autentikasi passwordless FIDO2/WebAuthn untuk layanan publik Kelurahan Karangpucung. Target lulus September 2026.',
+        tags: ['WebAuthn', 'FIDO2', 'React', 'Node.js', 'MongoDB'],
       },
       {
-        year: '2025',
-        title: 'Tujuan Level Berikutnya',
-        desc: '🎯 Mendalami konsep advanced, optimasi performa, serta eksplorasi framework dan teknologi terbaru.',
-      },
-    ],
-
-    // Personality Section
-    personalityTitle: 'Apa yang Membuat Saya',
-    personalityTick: 'Bersemangat',
-    personalityDescription: 'Lebih dari sekedar coding skill, ini yang bikin gue passionate sama development 🔥',
-
-    // Personality Traits
-    personalityTraits: [
-      {
-        trait: 'Pemecah Masalah',
-        desc: 'Love banget sama challenge coding yang bikin mikir keras. Debugging sampe jam 3 pagi? No problem! 🕐',
-      },
-      {
-        trait: 'Pemain Tim',
-        desc: 'Kerja bareng tim itu seru! Sharing knowledge dan belajar dari orang lain adalah passion gue 🤝',
-      },
-      {
-        trait: 'Selalu Belajar',
-        desc: 'Tech berkembang cepet banget, makanya gue selalu update dengan trend terbaru. FOMO sama tech baru! 📚',
-      },
-      {
-        trait: 'Detail Banget',
-        desc: "Pixel perfect UI dan clean code adalah obsesi. Kalau ada yang 'agak-agak' pasti ganggu banget 😅",
+        period: '2023 — Sekarang',
+        role: 'Independent Full Stack Developer',
+        company: 'Proyek Personal',
+        location: 'Purwokerto',
+        description:
+          'Membangun dan merilis aplikasi web personal seperti Trackly dan Sopanin AI, dengan fokus pada autentikasi, API, database, optimasi performa, dan integrasi AI.',
+        tags: ['React', 'TypeScript', 'PostgreSQL', 'Prisma', 'k6'],
       },
     ],
 
-    // Current Focus
-    currentFocusTitle: 'Sedang',
-    currentFocusFocusing: 'Fokus',
-    currentFocusOn: 'Pada',
+    principlesTitle: 'Prinsip Kerja',
+    principlesSubtitle: 'Standar yang saya pegang dalam merancang sistem dan menulis kode',
 
-    focusItems: [
+    principles: [
       {
-        title: 'React Lanjutan',
-        desc: 'Next.js, TypeScript, dan optimasi performa',
+        title: 'Fokus Performa Backend',
+        desc: 'Saya menggunakan pengukuran p95 latency dan k6 load testing untuk mengevaluasi dan meningkatkan performa API saat performa menjadi concern.',
       },
       {
-        title: 'Desain Sistem',
-        desc: 'Arsitektur yang scalable, microservices',
+        title: 'Otomatisasi Workflow Berulang',
+        desc: 'Jika pekerjaan bisa diotomatisasi, saya bikin script / CLI tool berbasis Go dan merapikan environment dengan Docker.',
       },
       {
-        title: 'Pengalaman Pengguna',
-        desc: 'Desain yang bersih, interaksi yang mulus',
+        title: 'Integrasi AI yang Pragmatis',
+        desc: 'AI digunakan untuk menyelesaikan masalah pengguna, bukan sekadar gaya-gayaan tanpa fondasi sistem dan validasi yang kuat.',
+      },
+      {
+        title: 'Git Rapi & Dokumentasi Jelas',
+        desc: 'Commit message yang terstruktur (Conventional Commits) dan README yang informatif sangat membantu kolaborasi tim.',
       },
     ],
 
-    // Fun Stats
-    funStats: [
-      { number: '10+', label: 'Proyek Dibangun', icon: '🚀' },
-      { number: '1+', label: 'Tahun Ngoding', icon: '⏰' },
-      { number: '∞', label: 'Cangkir Kopi', icon: '☕' },
-      { number: '24/7', label: 'Mode Belajar', icon: '🧠' },
-    ],
-
-    // CTA Section
-    ctaTitle: 'Yuk Bikin Sesuatu',
-    ctaAmazing: 'Keren',
-    ctaTogether: 'Bareng!',
-    ctaDescription: 'Punya ide project yang keren? Atau cuma pengen ngobrol soal tech? Gue selalu excited buat connect dengan sesama developer dan kolaborasi bikin hal-hal seru! 🤝',
-
-    // CTA Buttons
-    ctaLetsTalk: 'Ngobrol Yuk!',
-    ctaCheckWork: 'Lihat Karyaku',
-    ctaDownloadCV: 'Unduh CV',
+    ctaTitle: 'Mari Terhubung',
+    ctaDesc: 'Saya terbuka untuk posisi Backend / Full Stack Developer (On-site maupun Remote) dan kolaborasi open-source.',
+    ctaEmail: 'Kirim Email',
+    ctaGithub: 'GitHub Saya',
+    ctaCv: 'Unduh Resume (PDF)',
   },
 };

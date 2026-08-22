@@ -3,11 +3,11 @@ export const DEFAULT_META = {
   siteUrl: 'https://ichwanardi-nine.vercel.app', // Ganti dengan domain Anda
   author: 'Ichwan',
   image: '/og-image.jpg', // Default OG image
-  twitterHandle: '@yourtwitterhandle', // Ganti dengan Twitter handle Anda
+  twitterHandle: '@IchwanArdi22',
 };
 
 // Function untuk generate meta tags untuk setiap halaman
-export const generatePageMeta = ({ title, description, image, url, type = 'website', keywords, publishedTime, modifiedTime }) => {
+export const generatePageMeta = ({ title, description, image, url, type = 'website', keywords, publishedTime, modifiedTime, locale = 'id_ID' }) => {
   const fullTitle = title ? `${title} | ${DEFAULT_META.siteName}` : DEFAULT_META.siteName;
   const fullUrl = url ? `${DEFAULT_META.siteUrl}${url}` : DEFAULT_META.siteUrl;
   const fullImage = image ? (image.startsWith('http') ? image : `${DEFAULT_META.siteUrl}${image}`) : `${DEFAULT_META.siteUrl}${DEFAULT_META.image}`;
@@ -30,7 +30,7 @@ export const generatePageMeta = ({ title, description, image, url, type = 'websi
       { property: 'og:image:height', content: '630' },
       { property: 'og:url', content: fullUrl },
       { property: 'og:site_name', content: DEFAULT_META.siteName },
-      { property: 'og:locale', content: 'id_ID' },
+      { property: 'og:locale', content: locale },
 
       // Twitter Card
       { name: 'twitter:card', content: 'summary_large_image' },
@@ -38,14 +38,14 @@ export const generatePageMeta = ({ title, description, image, url, type = 'websi
       { name: 'twitter:description', content: description },
       { name: 'twitter:image', content: fullImage },
       { name: 'twitter:url', content: fullUrl },
-      { name: 'twitter:creator', content: DEFAULT_META.twitterHandle },
+      ...(DEFAULT_META.twitterHandle ? [{ name: 'twitter:creator', content: DEFAULT_META.twitterHandle }] : []),
 
       // Article specific (untuk blog)
       ...(type === 'article' && publishedTime
         ? [
-            { property: 'article:published_time', content: publishedTime },
-            { property: 'article:author', content: DEFAULT_META.author },
-          ]
+          { property: 'article:published_time', content: publishedTime },
+          { property: 'article:author', content: DEFAULT_META.author },
+        ]
         : []),
 
       ...(type === 'article' && modifiedTime ? [{ property: 'article:modified_time', content: modifiedTime }] : []),
@@ -57,15 +57,15 @@ export const generatePageMeta = ({ title, description, image, url, type = 'websi
 export const PAGE_METAS = {
   home: {
     title: 'Home',
-    description: 'Portfolio pribadi Ichwan - Full Stack Developer yang berpengalaman dalam JavaScript, React, Node.js, dan teknologi web modern lainnya.',
-    keywords: 'Ichwan, Full Stack Developer, JavaScript, React, Node.js, Web Developer, Portfolio, Home',
+    description: 'Portfolio pribadi Ichwan - Full Stack Developer yang membangun aplikasi web dengan React, Node.js, dan REST API, serta mengintegrasikan AI ke produk nyata.',
+    keywords: 'Ichwan, Full Stack Developer, React, Node.js, TypeScript, REST API, AI Integration, Go, Docker, Portfolio, Home',
     url: '/',
   },
 
   about: {
     title: 'About Me',
-    description: 'Kenali lebih dekat Ichwan, seorang Full Stack Developer dengan passion dalam menciptakan solusi web yang inovatif dan user-friendly.',
-    keywords: 'Tentang Ichwan, About, Full Stack Developer, Profil, CV, Resume',
+    description: 'Profil Ichwan, Full Stack Developer yang membangun API, autentikasi (FIDO2/WebAuthn), dan integrasi AI menggunakan React, Node.js, dan Go.',
+    keywords: 'Tentang Ichwan, About, Full Stack Developer, React, Node.js, TypeScript, WebAuthn, Go, Profil, CV, Resume',
     url: '/about',
   },
 
